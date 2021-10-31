@@ -1,11 +1,9 @@
 package advent_of_code.day1
 
-import advent_of_code.Utils
-import java.io.File
+import advent_of_code.readInputFromFile
 
 fun main() {
-    val numbers = File("${Utils.BASE_FILE_PATH}/day1/input.txt")
-        .readLines()
+    val numbers = readInputFromFile("day1", "input.txt")
         .map(String::toInt)
 
     // List<T>.associate - specify keys and values to create a map

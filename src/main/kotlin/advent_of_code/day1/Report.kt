@@ -1,11 +1,9 @@
 package advent_of_code.day1
 
-import advent_of_code.Utils.BASE_FILE_PATH
-import java.io.File
+import advent_of_code.readInputFromFile
 
 fun main() {
-    val numbers = File("$BASE_FILE_PATH/day1/input.txt")
-        .readLines()
+    val numbers = readInputFromFile("day1", "input.txt")
         .map(String::toInt)
 
     for (first in numbers) {
