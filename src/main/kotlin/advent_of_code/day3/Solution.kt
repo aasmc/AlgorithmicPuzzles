@@ -1,9 +1,9 @@
 package advent_of_code.day3
 
-import advent_of_code.readInputFromFile
+import advent_of_code.readLinesFromFile
 
 fun main() {
-    val field = readInputFromFile("day3", "input.txt")
+    val field = readLinesFromFile("day3", "input.txt")
 
     val treeCount = solve(field, 3 to 1)
     println(treeCount)

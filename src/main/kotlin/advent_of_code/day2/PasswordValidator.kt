@@ -1,9 +1,9 @@
 package advent_of_code.day2
 
-import advent_of_code.readInputFromFile
+import advent_of_code.readLinesFromFile
 
 fun main() {
-    val passwords = readInputFromFile("day2", "input.txt")
+    val passwords = readLinesFromFile("day2", "input.txt")
         .map(PasswordWithPolicy::parse)
 
     println(passwords.count { it.validatePartOne() })
