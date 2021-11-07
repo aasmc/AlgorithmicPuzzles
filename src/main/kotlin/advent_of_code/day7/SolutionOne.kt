@@ -24,7 +24,7 @@ fun findContainersDFS(rules: Map<Color, Rule>): Set<Color> {
         known = known + next
         next = toFind.mapNotNull { rules[it] }.flatten().toSet()
     }
-    return known - SHINY_GOLD
+    return known
 }
 
 /**
@@ -36,8 +36,8 @@ fun buildBagTree(): Map<Color, Set<String>> {
     File("src/main/kotlin/advent_of_code/day7/input.txt")
         .forEachLine { line ->
             val (parent, allChildren) = line
-                .replace(Regex("\\d+"), "")
-                .replace(Regex("bags?\\.?"), "")
+                .replace(Regex("\\d+"), "")// remove all digits
+                .replace(Regex("bags?\\.?"), "") // remove all occurrences of: bag, bags, bag., bags.
                 .split("contain")
                 .map { it.trim() }
             val childrenColors = allChildren.split(',').map { it.trim() }.toSet()

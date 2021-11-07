@@ -15,7 +15,7 @@ private fun Map<Color, Rule>.getChildrenCountBFS(color: Color): Int {
     var total = 0
     for(child in children) {
         // findAll Returns a sequence of all occurrences of a regular expression (Sequence<MatchResult>)
-        // within the input string, beginning at the specified startIndex, which is 0 by default
+        // within the input string, beginning at the specified startIndex, which is 0 by default.
         // value is the substring from the input string captured by this match.
         val count = digits.findAll(child).first().value.toInt()
         // replace -> replaces all occurrences of this regular expression in the specified [input]
