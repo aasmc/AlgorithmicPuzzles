@@ -10,7 +10,7 @@ internal class BinarySearchTest {
         val input = intArrayOf(-1,0,3,5,9,12)
         val target = 9
         val expected = 4
-        assertEquals(expected, search(input, target))
+        assertEquals(expected, binarySearch(input, target))
     }
 
     @Test
@@ -18,6 +18,6 @@ internal class BinarySearchTest {
         val input = intArrayOf(-1,0,3,5,9,12)
         val target = 2
         val expected = -1
-        assertEquals(expected, search(input, target))
+        assertEquals(expected, binarySearch(input, target))
     }
 }

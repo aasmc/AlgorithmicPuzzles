@@ -1,6 +1,6 @@
 package leetcode.algo_study_plan01.binary_search
 
-fun search(nums: IntArray, target: Int): Int {
+fun binarySearch(nums: IntArray, target: Int): Int {
     if (nums.isEmpty()) {
         return -1
     }
