@@ -3,7 +3,7 @@ package leetcode.algo_study_plan01.move_zeroes
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-internal class SolutionKtTest {
+internal class MoveZeroesTest {
 
     @Test
     fun moveZeroes_whenZerosAreInTheMiddle() {
