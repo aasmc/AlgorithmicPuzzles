@@ -83,13 +83,91 @@ internal class GeeksForGeeksMathTest {
 
     @Test
     fun gdcEuclidModuloCorrect() {
-        assertEquals(10, gdcEuclidModulo(20, 30))
+        assertEquals(10, gcdEuclidModulo(20, 30))
     }
 
     @Test
     fun gdcEuclidTraditionalCorrect() {
-        assertEquals(10, gdcEuclidTraditional(20, 30))
+        assertEquals(10, gcdEuclidTraditional(20, 30))
     }
+
+    @Test
+    fun lcmNaiveIdentity() {
+        assertEquals(1, lowestCommonMultipleNaive(1, 1))
+    }
+
+    @Test
+    fun lcmNaiveCorrect() {
+        assertEquals(21, lowestCommonMultipleNaive(3, 7))
+    }
+
+    @Test
+    fun lcmEfficientIdentity() {
+        assertEquals(1, lowestCommonMultipleNaive(1, 1))
+    }
+
+    @Test
+    fun lcmEfficientICorrect() {
+        assertEquals(21, lowestCommonMultipleNaive(3, 7))
+    }
+
+    @Test
+    fun isPrimeTwo() {
+        assertTrue(isPrimeUsingSqrt(2))
+    }
+
+    @Test
+    fun isPrimeEvenNumber() {
+        assertFalse(isPrimeUsingSqrt(20))
+    }
+
+    @Test
+    fun isPrimeCorrect() {
+        assertTrue(isPrimeUsingSqrt(101))
+    }
+
+    @Test
+    fun isPrimeTwoLoop() {
+        assertTrue(isPrimeUsingLoopEfficient(2))
+    }
+
+    @Test
+    fun isPrimeEvenNumberLoop() {
+        assertFalse(isPrimeUsingLoopEfficient(20))
+    }
+
+    @Test
+    fun isPrimeCorrectLoop() {
+        assertTrue(isPrimeUsingLoopEfficient(101))
+    }
+
+    @Test
+    fun primeFactorsNaive_correct() {
+        val res = primeFactorsNaive(12)
+        val expected = listOf(2, 2, 3)
+        for (i in res.indices) {
+            assertEquals(expected[i], res[i])
+        }
+    }
+
+    @Test
+    fun primeFactorsEfficient_correct() {
+        val res = primeFactorsEfficient(450)
+        val expected = listOf(2, 3, 3,5,5)
+        for (i in res.indices) {
+            assertEquals(expected[i], res[i])
+        }
+    }
+
+    @Test
+    fun primeFactorsEfficient_correct84() {
+        val res = primeFactorsEfficient(84)
+        val expected = listOf(2, 2, 3,7)
+        for (i in res.indices) {
+            assertEquals(expected[i], res[i])
+        }
+    }
+
 }
 
 
