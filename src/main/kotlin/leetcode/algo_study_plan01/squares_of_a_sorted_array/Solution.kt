@@ -1,7 +1,5 @@
 package leetcode.algo_study_plan01.squares_of_a_sorted_array
 
-import kotlin.math.abs
-
 fun sortedSquares(nums: IntArray): IntArray {
     var start = 0
     var end = nums.lastIndex

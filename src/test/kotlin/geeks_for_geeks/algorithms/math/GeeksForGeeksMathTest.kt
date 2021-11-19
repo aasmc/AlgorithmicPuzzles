@@ -153,7 +153,7 @@ internal class GeeksForGeeksMathTest {
     @Test
     fun primeFactorsEfficient_correct() {
         val res = primeFactorsEfficient(450)
-        val expected = listOf(2, 3, 3,5,5)
+        val expected = listOf(2, 3, 3, 5, 5)
         for (i in res.indices) {
             assertEquals(expected[i], res[i])
         }
@@ -162,12 +162,77 @@ internal class GeeksForGeeksMathTest {
     @Test
     fun primeFactorsEfficient_correct84() {
         val res = primeFactorsEfficient(84)
-        val expected = listOf(2, 2, 3,7)
+        val expected = listOf(2, 2, 3, 7)
         for (i in res.indices) {
             assertEquals(expected[i], res[i])
         }
     }
 
+    @Test
+    fun allDivisorsOfNumberNaive() {
+        val res = divisorsOfNumberNaive(15)
+        val expected = listOf(1, 3, 5, 15)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+    }
+
+    @Test
+    fun allDivisorsOfNumberEfficient() {
+        val res = divisorsOfNumberEfficient(15)
+        val expected = listOf(1, 3, 5, 15)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+    }
+
+    @Test
+    fun allDivisorsOfNumberEfficientOne() {
+        val res = divisorsOfNumberEfficient(1)
+        val expected = listOf(1)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+    }
+
+    @Test
+    fun allDivisorsOfNumberEfficient15() {
+        val res = divisorsOfNumberEfficient(25)
+        val expected = listOf(1, 5, 25)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+    }
+
+    @Test
+    fun primesLessThanOrEqualTo10() {
+        val expected = listOf(2,3,5,7)
+        val res = primesLessThanOrEqualTo(10)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+        assertEquals(expected.size, res.size)
+    }
+
+    @Test
+    fun primesLessThanOrEqualTo23() {
+        val expected = listOf(2,3,5,7,11,13,17,19, 23)
+        val res = primesLessThanOrEqualTo(23)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+        assertEquals(expected.size, res.size)
+    }
+
+    @Test
+    fun sieveOfEratosthenes23() {
+        val expected = listOf(2,3,5,7,11,13,17,19, 23)
+        val res = sieveOfEratosthenes(23)
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+        assertEquals(expected.size, res.size)
+    }
 }
 
 

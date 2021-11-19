@@ -184,6 +184,8 @@ fun primeFactorsEfficient(number: Int): List<Int> {
     val res = mutableListOf<Int>()
     var num = number
 
+    // since we know that 2 and 3 are prime numbers we can check if the number is divisible by 2 and 3 beforehand.
+    // it will dramatically decrease the number of iterations needed to find out the rest of the factors.
     while (num % 2 == 0) {
         res.add(2)
         num /= 2
@@ -193,26 +195,115 @@ fun primeFactorsEfficient(number: Int): List<Int> {
         res.add(3)
         num /= 3
     }
-
+    // we have crossed all possible divisors (factors) of 2 and 3, (4, 6, 8, 10 are among them), so we start from 5
+    // since we crossed divisors of 3 as well (9, 15 are among them) we can iterate using i and i + 2, because
+    // we have 7, 11, 17, 19 and so on divisors (factors) left. Therefore, we use step 6.
     var i = 5
     while (i * i <= num) {
+        // while the number is divisible by 5 then 11 them 17 etc. we keep on adding them to the result list
         while (num % i == 0) {
             res.add(i)
             num /= i
         }
+        // while number is divisible by 7, 13, 19 etc. we keep on adding them to the result list
         while (num % (i + 2) == 0) {
             res.add(i)
             num /= (i + 2)
         }
         i += 6
     }
+    // if the remaining part of the number is greater than 1, them we know that is the last remaining prime factor
+    // so, we add it to the list as well.
     if (num > 1) {
         res.add(num)
     }
     return res
 }
 
+/**
+ * Finds divisors of a number in a sorted order.
+ */
+fun divisorsOfNumberNaive(number: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    for (i in 1..number) {
+        if (number % i == 0) {
+            result.add(i)
+        }
+    }
+    return result
+}
 
+/**
+ * Finds divisors of a number in a sorted order.
+ */
+fun divisorsOfNumberEfficient(number: Int): List<Int> {
+    val result = mutableListOf<Int>()
+
+    var i = 1
+    while (i * i < number) {
+        if (number % i == 0) {
+            result.add(i)
+        }
+        ++i
+    }
+    while (i >= 1) {
+        if (number % i == 0) {
+            result.add(number / i)
+        }
+        --i
+    }
+    return result
+}
+
+fun nextPrime(num: Int): Int {
+    return generateSequence(num + 1) { i ->
+        i + 1
+    }.first {
+        isPrimeUsingLoopEfficient(it)
+    }
+}
+
+fun primesLessThanOrEqualTo(max: Int): List<Int> {
+    return generateSequence(2, ::nextPrime)
+        .takeWhile { it <= max }
+        .toList()
+}
+
+/**
+ * Time complexity of the algorithm is O(n*log*logn).
+ */
+fun sieveOfEratosthenes(max: Int): List<Int> {
+    // initially we mark all numbers as prime
+    val sieve = BooleanArray(max + 1) { true }
+    val result = mutableListOf<Int>()
+    // skip 0 and 1
+    var i = 2
+    // traverse numbers one by one
+    while (i <= max) {
+        // if it is marked as prime, then it has been previously traversed and checked
+        if (sieve[i]) {
+            // so add it to the result
+            result.add(i)
+            // start with i * i, because we know that we have already previously traversed all smaller numbers
+            // e.g. i = 2, j = 4 (first iteration, we skip 3, but it is a prime number)
+            // second iteration j = 4 + 2 = 6
+            // third iteration j = 6 + 2 = 8 ... j = 10, j = 12, j = 14
+            // then i = 3, j = 9, we have already traversed all previous multiples of 2, and only 7 is left - it is a prime
+            // j = 12, j = 16
+            // then i = 4, j = 16, so this is a pattern
+            // here's a math explanation. Composite number smaller than i can be represented as:
+            // i * (i - 1) or i * (i - 2) etc.
+            // so it has a smaller divisor than i. And these smaller divisors are already considered in earlier iterations.
+            var j = i * i
+            while (j <= max) {
+                sieve[j] = false
+                j += i
+            }
+        }
+        ++i
+    }
+    return result
+}
 
 
 
