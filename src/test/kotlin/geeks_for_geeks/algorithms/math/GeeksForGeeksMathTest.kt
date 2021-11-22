@@ -233,6 +233,61 @@ internal class GeeksForGeeksMathTest {
         }
         assertEquals(expected.size, res.size)
     }
+
+    @Test
+    fun powerNaive_toThePowerOfZero() {
+        assertEquals(1, powerNaive(10, 0))
+    }
+
+    @Test
+    fun powerNaive_toThePowerOfOne() {
+        assertEquals(10, powerNaive(10, 1))
+    }
+
+    @Test
+    fun powerNaive_toThePowerOfThree() {
+        assertEquals(8, powerNaive(2, 3))
+    }
+
+    @Test
+    fun powerRec_toThePowerOfZero() {
+        assertEquals(1, powerRecursionEffective(10, 0))
+    }
+
+    @Test
+    fun powerRec_toThePowerOfOne() {
+        assertEquals(10, powerRecursionEffective(10, 1))
+    }
+
+    @Test
+    fun powerRec_toThePowerOfThree() {
+        assertEquals(8, powerRecursionEffective(2, 3))
+    }
+
+    @Test
+    fun powerRec_toThePowerOfFive() {
+        assertEquals(243, powerRecursionEffective(3, 5))
+    }
+
+    @Test
+    fun powerIterative_toThePowerOfZero() {
+        assertEquals(1, powerIterative(10, 0))
+    }
+
+    @Test
+    fun powerIterative_toThePowerOfOne() {
+        assertEquals(10, powerIterative(10, 1))
+    }
+
+    @Test
+    fun powerIterative_toThePowerOfThree() {
+        assertEquals(8, powerIterative(2, 3))
+    }
+
+    @Test
+    fun powerIterative_toThePowerOfFive() {
+        assertEquals(243, powerIterative(3, 5))
+    }
 }
 
 

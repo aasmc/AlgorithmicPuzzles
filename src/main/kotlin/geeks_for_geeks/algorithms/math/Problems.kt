@@ -242,12 +242,17 @@ fun divisorsOfNumberEfficient(number: Int): List<Int> {
     var i = 1
     while (i * i < number) {
         if (number % i == 0) {
+            // add the smaller of the two divisors (remember that if a number is divisible by another
+            // number, than it has another divisor. All divisors come in pairs. E.g. 30 is divisible by (2, 15),
+            // this is the pair of divisors, and among them there's always one that is less than or equal to the other)
+            // here we add the smaller one
             result.add(i)
         }
         ++i
     }
     while (i >= 1) {
         if (number % i == 0) {
+            // here we add the greater of the divisors.
             result.add(number / i)
         }
         --i
@@ -304,6 +309,107 @@ fun sieveOfEratosthenes(max: Int): List<Int> {
     }
     return result
 }
+
+fun powerNaive(number: Int, p: Int): Long {
+    var res = 1L
+    for (i in 1..p) {
+        res *= number
+    }
+    return res
+}
+
+/**
+ * The solution is based on the fact that a number^p can be represented as
+ * number^(p/2) * number^(p/2) if p is equal, and if p is not equal
+ * it can be represented as number^(p-1/2) * number^(p-1/2) * number
+ *
+ * Time complexity is O(logN)
+ * Space complexity is O(logN) + function call overhead
+ */
+fun powerRecursionEffective(number: Int, p: Int): Long {
+    if (p == 0) {
+        return 1L
+    }
+    var tmp = powerRecursionEffective(number, p / 2)
+    tmp *= tmp
+    return if (p % 2 == 0) {
+        tmp
+    } else {
+        tmp * number
+    }
+}
+
+/**
+ * Solution is based on the fact that any decimal number can be represented as the sum of
+ * 2-s raised to some power. E.g. 10 = 2^3 + 2^1 = 0b1010.
+ *
+ * So, the problem is that we need to raise [number] to the power of [p].
+ * E.g. 3^10. It can be represented as 3^8 * 3^2. We decomposed [p] which initially was
+ * 10 into 8 and 2. We then need to traverse bits of [p] from LSB to MSB and consider each bit as
+ * a multiplier of [number] raised to the bit position.
+ *
+ * E.g. 3^ 10 = 3^8 * 3^2
+ *                          10 = 0b 1   0   1   0
+ *                                 3^8 3^4 3^2 3^1
+ *
+ * When we see a 0 bit, we ignore the result, when we see a 1 bit we multiply the result by the number, BUT
+ * we need to raise the number to the power of 2 on every iteration of bit traversal.
+ *
+ * We use the binary representation of the [p]
+ * Time complexity is O(logN)
+ * Space complexity is O(1)
+ */
+fun powerIterative(number: Int, p: Int): Long {
+    var res = 1L
+    var num = number
+    var pp = p
+    // traverse the power bit by bit from LSB to MSB
+    while (pp > 0) {
+        // if LSB is 1 (pp is not divisible by 2)
+        if (pp and 1 != 0) { // a bitwise trick to check if a number is odd or not
+            // then we multiply the result by the number
+            res *= num
+        }
+        // on every iteration we multiply number by the number
+        num *= num
+        // divide the power by two to get the next LSB
+        // use bit shift operation for optimisation
+        pp = pp shr 1
+    }
+    return res
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
