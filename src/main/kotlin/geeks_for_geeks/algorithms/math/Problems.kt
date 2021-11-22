@@ -3,6 +3,7 @@ package geeks_for_geeks.algorithms.math
 import java.math.BigInteger
 import kotlin.math.abs
 import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.sqrt
 
 fun findNumberOfDigitsIn(number: Int): Int {
@@ -377,6 +378,17 @@ fun powerIterative(number: Int, p: Int): Long {
         pp = pp shr 1
     }
     return res
+}
+
+fun quadraticEquasionRoots(a: Int, b: Int, c: Int): List<Int> {
+    val discriminant = b * b * 1.0 - 4 * a * c * 1.0
+    if (discriminant < 0) {
+        return mutableListOf(-1)
+    }
+
+    val root1 = floor((-b + sqrt(discriminant)) / (2 * a))
+    val root2 = floor((-b - sqrt(discriminant)) / (2 * a))
+    return listOf(root1.toInt(), root2.toInt())
 }
 
 

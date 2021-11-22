@@ -288,6 +288,29 @@ internal class GeeksForGeeksMathTest {
     fun powerIterative_toThePowerOfFive() {
         assertEquals(243, powerIterative(3, 5))
     }
+
+    @Test
+    fun quadraticEquasion_twoRoots() {
+        val res = quadraticEquasionRoots(1, -7, 12)
+        assertEquals(4, res[0])
+        assertEquals(3, res[1])
+    }
+
+    @Test
+    fun quadraticEquasion_oneRoot() {
+        val res = quadraticEquasionRoots(1, -2, 1)
+        assertEquals(1, res[0])
+        assertEquals(1, res[1])
+    }
+
+    @Test
+    fun quadraticEquasion_noRoots() {
+        val res = quadraticEquasionRoots(752, 904, 164)
+        assertEquals(-1, res[0])
+        assertEquals(-1, res[1])
+    }
+
+
 }
 
 
