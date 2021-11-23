@@ -1,10 +1,7 @@
 package geeks_for_geeks.algorithms.math
 
 import java.math.BigInteger
-import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.sqrt
+import kotlin.math.*
 
 fun findNumberOfDigitsIn(number: Int): Int {
     if (number == 0) return 1
@@ -154,7 +151,7 @@ fun isPrimeUsingLoopEfficient(number: Int): Boolean {
         return false
     }
     var i = 5
-    while (i * i < number) {
+    while (i * i <= number) {
         if (number % i == 0 || number % (i + 2) == 0) {
             return false
         }
@@ -391,15 +388,131 @@ fun quadraticEquasionRoots(a: Int, b: Int, c: Int): List<Int> {
     return listOf(root1.toInt(), root2.toInt())
 }
 
+fun digitsInFactorial(number: Int): Int {
+    // code here
+    var factorial: BigInteger = BigInteger.ONE
+    for (i in 2..number) {
+        factorial *= BigInteger.valueOf(i.toLong())
+    }
+    var count = 0
+    while (factorial > BigInteger.ZERO) {
+        factorial /= BigInteger.TEN
+        ++count
+    }
+    return count
+}
 
 
+fun termOfGDB(a: Int, b: Int, n: Int): Double {
+    if (n == 1) {
+        return a.toDouble();
+    }
+    val ratio = b * 1.0 / a
+    return a * ratio.pow((n - 1).toDouble())
+}
 
+/**
+ * Given a positive integer value N. The task is to find
+ * how many numbers less than or equal to N have numbers of divisors exactly equal to 3.
+ *
+ * Solution to the problem lies in the fact that only a perfect square of a prime number has
+ * exactly 3 divisors.
+ */
+fun exactly3Divisors(n: Int): Int {
+    var count = 0
+    var i = 2
+    while (i * i <= n) {
+        if (isPrimeUsingLoopEfficient(i)) {
+            ++count
+        }
+        ++i
+    }
+    return count
+}
 
+/**
+ * Given two numbers a and b,
+ * find the sum of a and b. Since the sum can be very large,
+ * find the sum modulo 10^9+7.
+ *
+ * Example:
+ * Input:
+ * a = 9223372036854775807
+ * b = 9223372036854775807
+ * Output: 582344006
+ * Explanation:
+ * 9223372036854775807 + 9223372036854775807
+ * = 18446744073709551614.
+ * 18446744073709551614 mod (10^9+7)
+ * = 582344006
+ */
+fun sumUnderModulo(a: Long, b: Long): Long {
+    val mod = 1_000_000_007
+    return (a % mod + b % mod) % mod
+}
 
+/**
+ * You are given two numbers a and b.
+ * You need to find the multiplication of a and b under modulo M (M as 10^9+7).
+ *
+ * Since a and b may be very large numbers, if we try to multiply directly then it will
+ * definitely overflow. Therefore we use the basic approach of multiplication i.e.,
+ * a * b = a + a + … + a (b times).
+ *
+ * But if we try to add the value of a repeatedly up to b times then it will definitely
+ * timeout for the large value of b, since the time complexity of this
+ * approach would become O(b).
+ *
+ * So we divide the above repeated steps of a in simpler way i.e.,
+ *
+ * If b is even then
+ *  a * b = 2 * a * (b / 2),
+ *
+ *  else
+ *  a * b = a + a *(b -1)
+ */
+fun multiplicationUnderModulo(aa: Long, bb: Long): Long {
+    val mod = 1_000_000_007
+    var res = 0L
+    var a = aa
+    var b = bb
+    a %= mod
+    // step 1: update a if it is larger or equal to mod
+    while (b > 0) {
+        // if b is odd
+        if ((b and 1) != 0L) {
+            res = (res + a) % mod
+        }
+        a = ((2 * a) % mod)
+        b = (b shr 1)
+    }
+    return res
+}
 
-
-
-
+/**
+ * Given two integers ‘a’ and ‘m’.
+ * The task is to find the smallest modular multiplicative inverse of
+ * ‘a’ under modulo ‘m’.
+ *
+ * Example 1:
+ * Input:
+ * a = 3
+ * m = 11
+ * Output: 4
+ * Explanation: Since (4*3) mod 11 = 1, 4
+ * is modulo inverse of 3. One might think,
+ * 15 also as a valid output as "(15*3)
+ * mod 11"  is also 1, but 15 is not in
+ * ring {0, 1, 2, ... 10}, so not valid.
+ */
+fun modInverse(a: Int, m: Int): Int {
+    for(i in 1 until m) {
+        if (a * i % m == 1) {
+            return i
+        }
+    }
+    return -1
+}
 
 
 

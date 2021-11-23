@@ -3,6 +3,7 @@ package geeks_for_geeks.algorithms.math
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
+import kotlin.math.exp
 
 internal class GeeksForGeeksMathTest {
 
@@ -133,7 +134,7 @@ internal class GeeksForGeeksMathTest {
 
     @Test
     fun isPrimeEvenNumberLoop() {
-        assertFalse(isPrimeUsingLoopEfficient(20))
+        assertFalse(isPrimeUsingLoopEfficient(25))
     }
 
     @Test
@@ -310,7 +311,48 @@ internal class GeeksForGeeksMathTest {
         assertEquals(-1, res[1])
     }
 
+    @Test
+    fun digitsInFactorial() {
+        val expected = 52
+        val res = digitsInFactorial(42)
+        assertEquals(expected, res)
+    }
 
+    @Test
+    fun termOfGdpTest() {
+        val res = termOfGDB(2,3,1)
+        assertEquals(2.0, res)
+    }
+
+    @Test
+    fun termOfGdpTestSecond() {
+        val res = termOfGDB(2,4,5)
+        assertEquals(32.0, res)
+    }
+
+    @Test
+    fun exactly3Divisors() {
+        val expected = 168
+        assertEquals(expected, exactly3Divisors(999999))
+    }
+
+    @Test
+    fun sumUnderModulo_correct() {
+        val expected = 582344006L
+        assertEquals(expected, sumUnderModulo(9223372036854775807, 9223372036854775807))
+    }
+
+    @Test
+    fun multiplicationUnderModulo_correct() {
+        val expected = 484266119L
+        assertEquals(expected, multiplicationUnderModulo(92233720368547758, 92233720368547758))
+    }
+
+    @Test
+    fun moduloInverse_correct() {
+        val expected = 12
+        assertEquals(expected, modInverse(10, 17))
+    }
 }
 
 
