@@ -3,6 +3,8 @@ package geeks_for_geeks.algorithms.bitwise_operations
 /**
  * Sets the i-th bit in the [set] to 1.
  *
+ * Note that the position of the first bit is 0.
+ *
  * Step 1: move 1 to the i-th position by using (1 shl i)
  * Step 2: OR the set with the result.
  */
