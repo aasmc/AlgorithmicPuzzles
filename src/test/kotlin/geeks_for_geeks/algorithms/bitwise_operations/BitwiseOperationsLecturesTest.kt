@@ -18,6 +18,11 @@ internal class BitwiseOperationsLecturesTest {
     }
 
     @Test
+    fun isSetByShl_correct_on_39_5() {
+        assertFalse(isSetByShl(39, 5))
+    }
+
+    @Test
     fun isSetByShr_correct() {
         assertTrue(isSetByShr(0b1000, 4))
     }
@@ -115,11 +120,84 @@ internal class BitwiseOperationsLecturesTest {
     }
 
     @Test
+    fun getLastSetBitCorrect6636() {
+        assertEquals(0b100, getLastSetBit(6636))
+    }
+
+    @Test
     fun generatePowerSet_correct() {
         val expected = listOf<String>("", "a", "b", "c", "ab", "ac", "bc", "abc")
         val result = generatePowerSet("abc")
         assertEquals(expected.size, result.size)
         assertTrue(expected.containsAll(result))
+    }
+
+
+    @Test
+    fun findMSB_correct() {
+        val expected = 0b100000
+        val input = 0b101011
+        assertEquals(expected, findMSB(input))
+    }
+
+    @Test
+    fun findMSB_correctOnOne() {
+        val expected = 0b1
+        val input = 0b1
+        assertEquals(expected, findMSB(input))
+    }
+
+    @Test
+    fun findMaxAndInArray_correct() {
+        val expected = 0b1000
+        val input = intArrayOf(4,8,12,16)
+        assertEquals(expected, findMaximumANDInArray(input))
+    }
+
+    @Test
+    fun posOfRightmostDifBit_correct_on_52_4() {
+        val expected = 5
+        assertEquals(expected, positionOfRightmostDifferentBit(52, 4))
+    }
+
+    @Test
+    fun posOfRightmostDifBit_correct_on_11_9() {
+        val expected = 2
+        assertEquals(expected, positionOfRightmostDifferentBit(11, 9))
+    }
+
+    @Test
+    fun posOfRightmostDifBit_correct_on_same_number() {
+        val expected = -1
+        assertEquals(expected, positionOfRightmostDifferentBit(11, 11))
+    }
+
+    @Test
+    fun countAllSetBitsUntilNumber_correct() {
+        val expected = 35
+        assertEquals(expected, countSetBitsInAllNumbersUntil(17))
+    }
+
+    @Test
+    fun countBitsToFlip_identical_correct() {
+        val expected = 0
+        assertEquals(expected, countBitToFlip(2, 2))
+    }
+
+    @Test
+    fun countBitsToFlip_different_correct() {
+        val expected = 3
+        assertEquals(expected, countBitToFlip(25, 20))
+    }
+
+    @Test
+    fun isSparse_true() {
+        assertTrue(isSparse(2))
+    }
+
+    @Test
+    fun isSparse_false() {
+        assertFalse(isSparse(3))
     }
 }
 

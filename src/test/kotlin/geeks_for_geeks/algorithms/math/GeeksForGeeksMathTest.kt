@@ -1,9 +1,10 @@
 package geeks_for_geeks.algorithms.math
 
+import geeks_for_geeks.algorithms.bitwise_operations.findMSB
+import geeks_for_geeks.algorithms.bitwise_operations.findMaximumANDInArray
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
-import kotlin.math.exp
 
 internal class GeeksForGeeksMathTest {
 
@@ -353,6 +354,7 @@ internal class GeeksForGeeksMathTest {
         val expected = 12
         assertEquals(expected, modInverse(10, 17))
     }
+
 }
 
 
