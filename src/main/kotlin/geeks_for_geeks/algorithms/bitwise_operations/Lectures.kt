@@ -544,11 +544,106 @@ fun findMaxConsecutiveOnes(num: Int) : Int {
     return max
 }
 
+/**
+ * You are given a decimal number N.
+ * You need to find the gray code of the number N and convert it into decimal.
+ *
+ * Example 1:
+ * Input: N = 7
+ * Output: 4
+ * Explanation: 7 is represented as 111 in
+ * binary form. The gray code of 111 is 100,
+ * in the binary form whose decimal equivalent
+ * is 4.
+ *
+ * Example 2:
+ * Input: N = 10
+ * Output: 15
+ * Explanation: 10 is represented as 1010 in
+ * binary form. The gray code of 1010 is 1111,
+ * in the binary form whose decimal equivalent
+ * is 15.
+ *
+ * Example 3:
+ * Input: N = 0
+ * Output: 0
+ * Explanation: Zero is represented as zero
+ * in binary, gray, and decimal.
+ *
+ * Expected Time Complexity: O(1).
+ * Expected Auxiliary Space: O(1).
+ *
+ * Constraints:
+ * 0 <= N <= 10^9
+ *
+ * Binary to Gray conversion :
+ *  1) The Most Significant Bit (MSB) of the gray code is always
+ *  equal to the MSB of the given binary code.
+ *  2) Other bits of the output gray code can be obtained by XORing
+ *  binary code bit at that index and previous index.
+ *
+ */
+fun binaryToGrayConverter(num: Int): Int {
+    if (num == 0) {
+        return 0
+    }
+    val shifted = num shr 1
+    return num xor shifted
+}
 
-
-
-
-
+/**
+ * Given N in Gray Code, find its binary equivalent.
+ * Return the decimal representation of the binary equivalent.
+ *
+ * Example 1:
+ * Input: N = 4
+ * Output: 7
+ * Explanation:
+ * Given 4 representing gray code 110.
+ * Binary equivalent of gray code 110 is 100.
+ * Return 7 representing gray code 100.
+ *
+ * Example 2:
+ * Input: N = 15
+ * Output: 10
+ * Explanation:
+ * Given 15 representing gray code 1000.
+ * Binary equivalent of gray code 1000 is 1111.
+ * Return 10 representing gray code 1111
+ * ie binary 1010.
+ *
+ * Example 3:
+ * Input: N = 0
+ * Output: 0
+ * Explanation:
+ * Zero remains the same in all systems.
+ *
+ *
+ * Expected Time Complexity: O(log N)
+ * Expected Auxiliary Space: O(1)
+ *
+ * Constraints:
+ * 0 <= N <= 10^8
+ *
+ * Gray to binary conversion :
+ * 1) The Most Significant Bit (MSB) of the binary code is always equal
+ * to the MSB of the given gray code.
+ * 2) Other bits of the output binary code can be obtained by checking
+ * gray code bit at that index. If current gray code bit is 0, then copy
+ * previous binary code bit, else copy invert of previous binary code bit.
+ */
+fun grayToBinaryConverter(num: Int): Int {
+    if (num == 0 || num == 1) {
+        return num
+    }
+    var result = 0
+    var gray = num
+    while (gray != 0) {
+        result = result xor gray
+        gray = gray shr 1
+    }
+    return result
+}
 
 
 

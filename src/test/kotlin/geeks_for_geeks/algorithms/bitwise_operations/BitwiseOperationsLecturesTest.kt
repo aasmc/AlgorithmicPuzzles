@@ -2,7 +2,6 @@ package geeks_for_geeks.algorithms.bitwise_operations
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.math.exp
 
 internal class BitwiseOperationsLecturesTest {
 
@@ -216,6 +215,42 @@ internal class BitwiseOperationsLecturesTest {
     fun findMaxConsecutiveOnes_correctOnMixed() {
         val expected = 4
         assertEquals(expected, findMaxConsecutiveOnes(222))
+    }
+
+    @Test
+    fun binaryToGrayConversion_onZero_correct() {
+        val expected = 0
+        assertEquals(expected, binaryToGrayConverter(0))
+    }
+
+    @Test
+    fun binaryToGrayConversion_onSeven_correct() {
+        val expected = 4
+        assertEquals(expected, binaryToGrayConverter(7))
+    }
+
+    @Test
+    fun binaryToGrayConversion_onTen_correct() {
+        val expected = 15
+        assertEquals(expected, binaryToGrayConverter(10))
+    }
+
+    @Test
+    fun grayToBinaryConverter_onZero() {
+        val expected = 0
+        assertEquals(expected, grayToBinaryConverter(0))
+    }
+
+    @Test
+    fun grayToBinaryConverter_onFour() {
+        val expected = 7
+        assertEquals(expected, grayToBinaryConverter(4))
+    }
+
+    @Test
+    fun grayToBinaryConverter_onFifteen() {
+        val expected = 10
+        assertEquals(expected, grayToBinaryConverter(15))
     }
 }
 

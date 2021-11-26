@@ -105,6 +105,28 @@ public class Solutions {
         return max;
     }
 
+    //  Function to find the gray code of given number n
+    public static int greyConverter(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        int shifted = n >> 1;
+        return n ^ shifted;
+    }
+
+    // function to convert a given Gray equivalent n to Binary equivalent.
+    public static int grayToBinary(int n) {
+        if (n == 0 || n == 1) {
+            return n;
+        }
+        int result = 0;
+        while (n != 0) {
+            result = result ^ n;
+            n = n >> 1;
+        }
+        return result;
+    }
+
 }
 
 
