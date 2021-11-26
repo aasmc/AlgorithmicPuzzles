@@ -199,6 +199,24 @@ internal class BitwiseOperationsLecturesTest {
     fun isSparse_false() {
         assertFalse(isSparse(3))
     }
+
+    @Test
+    fun findMaxConsecutiveOnes_correctOnZero() {
+        val expected = 0
+        assertEquals(expected, findMaxConsecutiveOnes(0))
+    }
+
+    @Test
+    fun findMaxConsecutiveOnes_correctOnAllOnes() {
+        val expected = 4
+        assertEquals(expected, findMaxConsecutiveOnes(15))
+    }
+
+    @Test
+    fun findMaxConsecutiveOnes_correctOnMixed() {
+        val expected = 4
+        assertEquals(expected, findMaxConsecutiveOnes(222))
+    }
 }
 
 

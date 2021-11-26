@@ -504,7 +504,45 @@ fun isSparse(n: Int): Boolean {
     return true
 }
 
-
+/**
+ * Given a number N. Find the length of the longest consecutive
+ * 1s in its binary representation.
+ *
+ * Example1:
+ * Input: N = 14
+ * Output: 3
+ * Explanation:
+ * Binary representation of 14 is
+ * 1110, in which 111 is the longest
+ * consecutive set bits of length is 3.
+ *
+ * Expected Time Complexity: O(log N).
+ * Expected Auxiliary Space: O(1).
+ *
+ * Constraints:
+ * 1 <= N <= 10^6
+ */
+fun findMaxConsecutiveOnes(num: Int) : Int {
+    var max = 0
+    var counter = 0
+    var n = num
+    while (n > 0) {
+        if (n and 1 > 0) {
+            ++counter
+        } else {
+            if (max < counter) {
+                max = counter
+            }
+            counter = 0
+        }
+        n = n shr 1
+    }
+    // ensure correct result if number consists only of 1s
+    if (max < counter) {
+        max = counter
+    }
+    return max
+}
 
 
 

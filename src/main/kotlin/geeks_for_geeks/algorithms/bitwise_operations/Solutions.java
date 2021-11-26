@@ -82,6 +82,29 @@ public class Solutions {
         return true;
     }
 
+    /*  Function to calculate the longest consecutive ones
+     *   N: given input to calculate the longest consecutive ones
+     */
+    public static int maxConsecutiveOnes(int N) {
+        int max = 0;
+        int counter = 0;
+        while (N > 0) {
+            if ((N & 1) > 0) {
+                ++counter;
+            } else {
+                if (max < counter) {
+                    max = counter;
+                }
+                counter = 0;
+            }
+            N = N >> 1;
+        }
+        if (max < counter) {
+            max = counter;
+        }
+        return max;
+    }
+
 }
 
 
