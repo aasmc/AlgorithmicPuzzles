@@ -371,7 +371,13 @@ fun findMaximumANDInArray(arr: IntArray): Int {
     var res = 0
     // iterate over all the bits starting from 31 down to 0
     (31 downTo 0).forEach { bit ->
-        // count the elements in the array that have the MSB set to 1
+        // count the elements in the array that have that particular MSB set to 1
+        // on the first iteration when we perform
+        // res or (1 shl bit) we will get = 0b1000000000000000000000000000000
+        // we count the elements in the array with that bit set to 1
+        // if more than 2 elements are present in the array, then we save
+        // the bit to the result
+        // then we continue the operation for bit 30 etc. down to 0
         val count = checkBit(res or (1 shl bit), arr)
         if (count >= 2) {
             res = res or (1 shl bit)
@@ -522,7 +528,7 @@ fun isSparse(n: Int): Boolean {
  * Constraints:
  * 1 <= N <= 10^6
  */
-fun findMaxConsecutiveOnes(num: Int) : Int {
+fun findMaxConsecutiveOnes(num: Int): Int {
     var max = 0
     var counter = 0
     var n = num
@@ -645,10 +651,70 @@ fun grayToBinaryConverter(num: Int): Int {
     return result
 }
 
+/**
+ * Given an unsigned integer N. The task is to swap all odd
+ * bits with even bits. For example, if the given number is
+ * 23 (00010111), it should be converted to 43(00101011).
+ * Here, every even position bit is swapped with adjacent bit
+ * on the right side(even position bits are highlighted in the
+ * binary representation of 23), and every odd position bit
+ * is swapped with an adjacent on the left side.
+ *
+ * Example 1:
+ * Input: N = 23
+ * Output: 43
+ * Explanation:
+ * Binary representation of the given number
+ * is 00010111 after swapping
+ * 00101011 = 43 in decimal.
+ *
+ * Example 2:
+ * Input: N = 2
+ * Output: 1
+ * Explanation:
+ * Binary representation of the given number
+ * is 10 after swapping 01 = 1 in decimal.
+ *
+ *
+ * Expected Time Complexity: O(1).
+ * Expected Auxiliary Space: O(1).
+ *
+ * Constraints:
+ * 1 ≤ N ≤ 109
+ *
+ * Solution:
+ * This solution is based on using bit-masks.
+ * A mask for all even bits in a 32-bit Integer is 0xAAAAAAAA,
+ * since 0xA = 0b1010
+ * A mask for all odd bits in a 32-bit Integer is 0x55555555,
+ * since 0x5 = 0b0101
+ *
+ * Example: N = 23
+ * Step 1. Mask the number with EVEN and ODD masks and save the results.
+ *     EVEN:             ODD:
+ *     00010111          00010111
+ * AND 10101010     AND  01010101
+ *     00000010          00010101
+ * Step 2. Shift the even result to the right by 1 bit, odd result to the left by 1 bit.
+ *     EVEN >> 1         ODD << 1
+ *     00000010          00010101
+ *     00000001          00101010
+ * Step 3. Perform bitwise OR operation on the results.
+ *     EVEN OR ODD
+ *     00000001
+ *     00101010
+ *     00101011   =  43 in decimal
+ */
+fun swapOddAndEvenBits(num: Int): Int {
+    val evenMask = 0xAAAAAAAA
+    val oddMask = 0x55555555
+    var even = num and evenMask.toInt()
+    var odd = num and oddMask
 
-
-
-
+    even = even shr 1
+    odd = odd shl 1
+    return even or odd
+}
 
 
 

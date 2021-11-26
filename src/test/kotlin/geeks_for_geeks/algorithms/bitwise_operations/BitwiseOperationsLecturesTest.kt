@@ -252,6 +252,18 @@ internal class BitwiseOperationsLecturesTest {
         val expected = 10
         assertEquals(expected, grayToBinaryConverter(15))
     }
+
+    @Test
+    fun swapOddAndEvenBits_on23() {
+        val expected = 43
+        assertEquals(expected, swapOddAndEvenBits(23))
+    }
+
+    @Test
+    fun swapOddAndEvenBits_on2() {
+        val expected = 1
+        assertEquals(expected, swapOddAndEvenBits(2))
+    }
 }
 
 

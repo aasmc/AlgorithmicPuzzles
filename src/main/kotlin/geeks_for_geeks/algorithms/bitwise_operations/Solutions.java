@@ -127,6 +127,37 @@ public class Solutions {
         return result;
     }
 
+    //Function to swap odd and even bits.
+    public static int swapBits(int n) {
+        int even = n & 0xAAAAAAAA;
+        int odd = n & 0x55555555;
+
+        even >>= 1;
+        odd <<= 1;
+        return even | odd;
+    }
+
+    // Function for finding maximum AND value.
+    public static int maxAND(int[] arr, int N) {
+        int res = 0;
+        for (int i = 31; i >= 0; --i) {
+            int count = countSetBitsAtPosition(arr, res | (1 << i));
+            if (count >= 2) {
+                res = res | (1 << i);
+            }
+        }
+        return res;
+    }
+
+    public static int countSetBitsAtPosition(int[] arr, int pattern) {
+        int count = 0;
+        for (int j : arr) {
+            if ((j & pattern) == pattern) {
+                ++count;
+            }
+        }
+        return count;
+    }
 }
 
 
