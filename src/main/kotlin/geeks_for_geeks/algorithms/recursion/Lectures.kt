@@ -17,3 +17,41 @@ fun sumOfNRecursive(ceil: Int): Int {
     }
     return ceil + sumOfNRecursive(ceil - 1)
 }
+
+/**
+ * Checks if a given String [line] is a palindrome or not,
+ * using recursive method.
+ */
+fun isPalindromeRecursive(line: String) : Boolean {
+    return isPalindromeRecursive(line, 0, line.length - 1)
+}
+
+private fun isPalindromeRecursive(line: String, start: Int, endInclusive: Int) : Boolean {
+    if (start >= endInclusive) {
+        return true
+    }
+    return (line[start] == line[endInclusive] && isPalindromeRecursive(line, start + 1, endInclusive - 1))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

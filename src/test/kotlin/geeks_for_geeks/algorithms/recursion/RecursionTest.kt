@@ -16,4 +16,19 @@ internal class RecursionTest {
             { assertEquals(21, sumOfNRecursive(6)) },
         )
     }
+
+    @Test
+    fun isPalindromeRecursive_correct() {
+        assertAll(
+            "Is Palindrome Recursion",
+            { assertEquals(true, isPalindromeRecursive("")) },
+            { assertEquals(true, isPalindromeRecursive("a")) },
+            { assertEquals(true, isPalindromeRecursive("aa")) },
+            { assertEquals(true, isPalindromeRecursive("abba")) },
+            { assertEquals(true, isPalindromeRecursive("aaa")) },
+            { assertEquals(true, isPalindromeRecursive("aaabbbaaa")) },
+            { assertEquals(false, isPalindromeRecursive("aaab_aaa")) },
+            { assertEquals(false, isPalindromeRecursive("ab")) },
+        )
+    }
 }
