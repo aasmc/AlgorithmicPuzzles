@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.recursion
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import kotlin.test.assertEquals
@@ -62,7 +63,16 @@ internal class RecursionTest {
             { assertEquals(5, ropeCutting(5, 2,5,1)) },
             { assertEquals(2, ropeCutting(23, 12, 9,11)) },
             { assertEquals(-1, ropeCutting(5, 4,2,6)) },
+            { assertEquals(-1, ropeCutting(9, 2,2,2)) },
         )
+    }
+
+    @Test
+    fun generatePowerSetRecursive_correct() {
+        val expected = setOf<String>("", "a", "b", "c", "ab", "ac", "bc", "abc")
+        val result = generateSubsetsRecursive("abc")
+        Assertions.assertEquals(expected.size, result.size)
+        Assertions.assertTrue(expected.containsAll(result))
     }
 }
 

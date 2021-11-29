@@ -57,7 +57,6 @@ fun sumOfDigitsNoTailrec(num: Int): Int {
  *
  * Time Complexity O(3 ^ N)
  */
-
 fun ropeCutting(n: Int, a: Int, b: Int, c: Int): Int {
     if (n == 0) {
         return 0
@@ -77,8 +76,56 @@ fun ropeCutting(n: Int, a: Int, b: Int, c: Int): Int {
     return res + 1
 }
 
+/**
+ * Given a string of length N, the task is to generate all subsets of the string.
+ * All characters in the string are distinct.
+ *
+ * The solution is based on the following idea:
+ *  If we have subsets of string of length n - 1, we
+ *  can generate subsets of string length n.
+ *
+ *  Example:
+ *        ""
+ *      /
+ *   "" - "C"
+ *       "A"
+ *      /
+ *  "A" - "AC"
+ *
+ *       "B"
+ *      /
+ *  "B" - "BC"
+ *
+ *       "AB"
+ *      /
+ *  "AB" - "ABC"
+ *
+ */
+fun generateSubsetsRecursive(input: String): Set<String> {
+    val result = mutableSetOf<String>()
+    generateSubsetsRecursive(input, "", result, 0)
+    return result
+}
 
-
+/**
+ * Example. input = abc
+ * Recursion Tree for the method is as follows:
+ *                                 ""  -  current, index = 0
+ *                               /    \
+ *                            ""        "a" - current, index = 1
+ *                          /   \      /  \
+ *                       ""    "b"  "a"    "ab" - current, index = 2
+ *                      / \   / \   /  \   /   \
+ *                    "" c  b  cb a  ac   ab   abc - current, index = 3 == input.length
+ */
+private fun generateSubsetsRecursive(input: String, current: String, result: MutableSet<String>, index: Int) {
+    if (index == input.length) {
+        result.add(current)
+        return
+    }
+    generateSubsetsRecursive(input, current, result, index + 1)
+    generateSubsetsRecursive(input, current + input[index], result, index + 1)
+}
 
 
 
