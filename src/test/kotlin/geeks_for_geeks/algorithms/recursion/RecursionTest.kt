@@ -74,6 +74,7 @@ internal class RecursionTest {
         Assertions.assertEquals(expected.size, result.size)
         Assertions.assertTrue(expected.containsAll(result))
     }
+
 }
 
 

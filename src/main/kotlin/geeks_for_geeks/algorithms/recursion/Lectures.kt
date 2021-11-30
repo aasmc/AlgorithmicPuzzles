@@ -128,8 +128,25 @@ private fun generateSubsetsRecursive(input: String, current: String, result: Mut
 }
 
 
+fun towerOfHanoiRecursive(num: Int, src: Char = 'A', aux: Char = 'B', dst: Char = 'C') {
+    // if the number of disks is 1, then we simply move it from source to destination
+    if (num == 1) {
+        println("Move 1 from $src to $dst")
+        return
+    }
+    // recursive call to move remaining disks from source to auxiliary tower,
+    // using destination as the helper
+    towerOfHanoiRecursive(num - 1, src, dst, aux)
+    // after previous step we have a disk on a source tower, that we need to move to destination
+    println("Move $num from $src to $dst")
+    // recursively move remaining disks from auxiliary tower to destination,
+    // using source tower as the helper.
+    towerOfHanoiRecursive(num - 1, aux, src, dst)
+}
 
-
+fun main() {
+    towerOfHanoiRecursive(3)
+}
 
 
 
