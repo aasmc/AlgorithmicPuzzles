@@ -149,6 +149,7 @@ fun towerOfHanoiRecursive(num: Int, src: Char = 'A', aux: Char = 'B', dst: Char 
 
 fun main() {
     towerOfHanoiRecursive(3)
+    println(5 / 2)
 }
 
 /**
@@ -280,7 +281,16 @@ private fun swap(arr: CharArray, from: Int, to: Int) {
     arr[to] = tmp
 }
 
+fun searchInArray(arr: IntArray, target: Int): Boolean {
+    return searchRecursivelyInArray(arr, target, 0, arr.lastIndex)
+}
 
+private fun searchRecursivelyInArray(arr: IntArray, target: Int, lower: Int, upper: Int): Boolean {
+    if (lower > upper) return false
+    if (arr[lower] == target) return true
+    if (arr[upper] == target) return true
+    return searchRecursivelyInArray(arr, target, lower + 1, upper - 1)
+}
 
 
 

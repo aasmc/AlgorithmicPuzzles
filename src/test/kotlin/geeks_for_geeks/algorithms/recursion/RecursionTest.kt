@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class RecursionTest {
@@ -113,6 +114,16 @@ internal class RecursionTest {
         assertTrue { empty.isEmpty() }
         assertTrue { two.containsAll(listOf("ab", "ba")) }
         assertTrue { six.containsAll(listOf("abc", "acb", "bac", "bca", "cab", "cba")) }
+    }
+
+    @Test
+    fun searchRecursivelyInArray() {
+        assertAll(
+            "Search Recursively in array",
+            { assertTrue(searchInArray(intArrayOf(1,2,3,4), 3)) },
+            { assertFalse(searchInArray(intArrayOf(1,2,3,4), 10)) },
+            { assertTrue(searchInArray(intArrayOf(1,2,3,4,444,666,73,2,44623,9908), 73)) },
+        )
     }
 
 }
