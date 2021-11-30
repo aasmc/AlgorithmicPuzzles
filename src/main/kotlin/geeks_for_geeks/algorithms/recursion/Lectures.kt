@@ -127,7 +127,10 @@ private fun generateSubsetsRecursive(input: String, current: String, result: Mut
     generateSubsetsRecursive(input, current + input[index], result, index + 1)
 }
 
-
+/**
+ * The number of movements is calculated by formula:
+ *  (2 ^ n) - 1 where n is the number of disks we need to move from source to the dst.
+ */
 fun towerOfHanoiRecursive(num: Int, src: Char = 'A', aux: Char = 'B', dst: Char = 'C') {
     // if the number of disks is 1, then we simply move it from source to destination
     if (num == 1) {
@@ -142,6 +145,52 @@ fun towerOfHanoiRecursive(num: Int, src: Char = 'A', aux: Char = 'B', dst: Char 
     // recursively move remaining disks from auxiliary tower to destination,
     // using source tower as the helper.
     towerOfHanoiRecursive(num - 1, aux, src, dst)
+}
+
+/**
+ * Josephus' permutations.
+ *
+ * Given N number of people standing in a circle, the task is to
+ * remove k-th person from the circle iteratively until only one of the people remains in the circle.
+ *
+ * After it, we need to return the initial position of the person, that remained in the circle.
+ *
+ * The solution is based on the idea that we start each iteration with the recursive call and
+ * pass parameters to the function and freshly called recursive function knows nothing about
+ * the previous call etc. Since on each iteration we remove only one person from the circle, the k-th person
+ * then to find the index of the person to remain after all subsequent recursive calls are executed, we need to
+ * add k to the result. To prevent overflow we take modulo of the result.
+ *
+ * Base case of the recursion is when there's only one person in the circle, then
+ * this person returns its index, which is 0. Since we start indices from 0.
+ *
+ * Example. num = 5, k = 3
+ * Function call stack:
+ *   jos(5,3) = (0 + 3) % 5 = 3
+ *   jos(4,3) = (1 + 3) % 4 = 0
+ *   jos(3,3) = (1 + 3) % 3 = 1
+ *   jos(2,3) = (0 + 3) % 2 = 1
+ *   jos(1,3) = 0
+ *
+ * Example. num = 7, k = 3
+ * Function call stack:
+ *   jos(7,3) = (0 + 3) % 7 = 3
+ *   jos(6,3) = (3 + 3) % 6 = 0
+ *   jos(5,3) = (0 + 3) % 5 = 3
+ *   jos(4,3) = (1 + 3) % 4 = 0
+ *   jos(3,3) = (1 + 3) % 3 = 1
+ *   jos(2,3) = (0 + 3) % 2 = 1
+ *   jos(1,3) = 0
+ *
+ * Time complexity is O(n)
+ * Space complexity is O(n)
+ */
+fun josephusRecursion(num: Int, k: Int): Int {
+    if (num == 1) {
+        return 0
+    }
+
+    return (josephusRecursion(num - 1, k) + k) % num
 }
 
 fun main() {

@@ -75,6 +75,15 @@ internal class RecursionTest {
         Assertions.assertTrue(expected.containsAll(result))
     }
 
+    @Test
+    fun josephusPermutationsRecursive_correct() {
+        assertAll(
+            "Josephus permutations",
+            { assertEquals(3, josephusRecursion(7, 3)) },
+            { assertEquals(3, josephusRecursion(5, 3)) },
+        )
+    }
+
 }
 
 
