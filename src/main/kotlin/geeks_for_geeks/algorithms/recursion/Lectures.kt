@@ -147,6 +147,10 @@ fun towerOfHanoiRecursive(num: Int, src: Char = 'A', aux: Char = 'B', dst: Char 
     towerOfHanoiRecursive(num - 1, aux, src, dst)
 }
 
+fun main() {
+    towerOfHanoiRecursive(3)
+}
+
 /**
  * Josephus' permutations.
  *
@@ -193,14 +197,88 @@ fun josephusRecursion(num: Int, k: Int): Int {
     return (josephusRecursion(num - 1, k) + k) % num
 }
 
-fun main() {
-    towerOfHanoiRecursive(3)
+/**
+ * Given an array of numbers and a sum = S, count the number of
+ * subsets of the elements in the array, whose sum is equal to S.
+ */
+fun countSubsetsEqualToSum(arr: IntArray, sum: Int): Int {
+    return countSubsetsRecursive(arr, sum, arr.size)
 }
 
+/**
+ * The solution is based on the idea that if we subtract the sum of elements in the subset from
+ * the initial parameter sum, we can get 0 only if the sum of elements in the subset is equal to the sum.
+ *
+ * So we recursively traverse the array, level by level (the number of levels is equal to the size of the array
+ * because the number of all possible subsets = 2 ^ arr.size). If we draw the picture, then we get a complete binary
+ * tree where all the leaf nodes are on the same level and represent all possible subsets of the given array.
+ *
+ * During each all we either subtract the value of the element from the sum, or keep the sum as it is
+ * just passing it downwards to the next recursive iteration.
+ *
+ * When we reach the base case (i.e. we reach the last level) we check if the sum == 0. If so, we found a subset,
+ * whose elements give the correct result. So we return 1 from that recursive call. In all other cases, we return
+ * 0, because the subset wasn't found. Initial call will accumulate the results.
+ *
+ * Time complexity O(2^n)
+ */
+private fun countSubsetsRecursive(arr: IntArray, sum: Int, level: Int): Int {
+    if (level == 0) {
+        return if (sum == 0) 1 else 0
+    }
+    return countSubsetsRecursive(arr, sum, level - 1) +
+            countSubsetsRecursive(arr, sum - arr[level - 1], level - 1)
+}
 
+/**
+ * Given a string [str] return all possible permutations of that string using recursion.
+ * The number of permutations is factorial of [str.length]
+ */
+fun findAllPermutationsOfString(str: String): List<String> {
+    val res = mutableListOf<String>()
+    findAllPermutationsOfStringRecursion(str.toCharArray(), res, 0)
+    return res
+}
 
+/**
+ * Example input = "ABC"
+ *
+ *                      i = 2
+ *             i = 1    ABC
+ *             ABC      ACB
+ *  i = 0 ABC
+ *             BAC      BAC
+ *                      BCA
+ *
+ *             CBA      CBA
+ *                      CAB
+ */
+private fun findAllPermutationsOfStringRecursion(str: CharArray, result: MutableList<String>, index: Int) {
+    if (str.size - 1 == index) {
+        result.add(str.joinToString(separator = ""))
+        return
+    }
+    // for every char in sht string
+    for (i in index until str.size) {
+        // permute the string
+        if (i != index) {
+            swap(str, index, i)
+        }
+        // recursively find all possible permutations of the current permutation
+        findAllPermutationsOfStringRecursion(str, result, index + 1)
+        // to preserve the original string we need to undo the permutation
+        // so that the next iteration is started with the correct string.
+        if (i != index) {
+            swap(str, index, i)
+        }
+    }
+}
 
-
+private fun swap(arr: CharArray, from: Int, to: Int) {
+    val tmp = arr[from]
+    arr[from] = arr[to]
+    arr[to] = tmp
+}
 
 
 

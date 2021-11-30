@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class RecursionTest {
 
@@ -44,6 +45,7 @@ internal class RecursionTest {
             { assertEquals(37, sumOfDigitsRecursive(667738)) },
         )
     }
+
     @Test
     fun sumOfDigitsNoTailRecRecursive_correct() {
         assertAll(
@@ -60,10 +62,10 @@ internal class RecursionTest {
     fun ropeCutting_correct() {
         assertAll(
             "Rope cutting",
-            { assertEquals(5, ropeCutting(5, 2,5,1)) },
-            { assertEquals(2, ropeCutting(23, 12, 9,11)) },
-            { assertEquals(-1, ropeCutting(5, 4,2,6)) },
-            { assertEquals(-1, ropeCutting(9, 2,2,2)) },
+            { assertEquals(5, ropeCutting(5, 2, 5, 1)) },
+            { assertEquals(2, ropeCutting(23, 12, 9, 11)) },
+            { assertEquals(-1, ropeCutting(5, 4, 2, 6)) },
+            { assertEquals(-1, ropeCutting(9, 2, 2, 2)) },
         )
     }
 
@@ -82,6 +84,35 @@ internal class RecursionTest {
             { assertEquals(3, josephusRecursion(7, 3)) },
             { assertEquals(3, josephusRecursion(5, 3)) },
         )
+    }
+
+    @Test
+    fun countSubsetsEqualToSum_correct() {
+        assertAll(
+            "Count subsets equal to sum",
+            { assertEquals(2, countSubsetsEqualToSum(intArrayOf(10, 5, 2, 3, 6), 8)) },
+            { assertEquals(1, countSubsetsEqualToSum(intArrayOf(1, 2, 3), 4)) },
+            { assertEquals(0, countSubsetsEqualToSum(intArrayOf(10, 15, 20), 37)) },
+            { assertEquals(1, countSubsetsEqualToSum(intArrayOf(10, 15, 20), 0)) },
+        )
+    }
+
+    @Test
+    fun findAllPermutationsOfSting_correct() {
+
+        val empty = findAllPermutationsOfString("")
+        val two = findAllPermutationsOfString("ab")
+        val six = findAllPermutationsOfString("abc")
+        assertAll(
+            "Find all permutations of string",
+            { assertEquals(0, empty.size) },
+            { assertEquals(2, two.size) },
+            { assertEquals(6, six.size) },
+        )
+
+        assertTrue { empty.isEmpty() }
+        assertTrue { two.containsAll(listOf("ab", "ba")) }
+        assertTrue { six.containsAll(listOf("abc", "acb", "bac", "bca", "cab", "cba")) }
     }
 
 }
