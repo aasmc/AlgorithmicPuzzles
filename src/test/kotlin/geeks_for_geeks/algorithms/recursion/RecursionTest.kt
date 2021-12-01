@@ -126,6 +126,79 @@ internal class RecursionTest {
         )
     }
 
+    @Test
+    fun printNos_correct() {
+        printNos(64)
+    }
+
+    @Test
+    fun countOfDigitsRecursive_correct() {
+        assertEquals(5, countOfDigitsRecursive(99999))
+        assertEquals(10, countOfDigitsRecursive(1234567891))
+        assertEquals(1, countOfDigitsRecursive(0))
+        assertEquals(3, countOfDigitsRecursive(322))
+    }
+
+    @Test
+    fun digitalRoot_correct() {
+        assertAll(
+            "Digital Root recursive:",
+            { assertEquals(9, digitalRoot(99999)) },
+            { assertEquals(1, digitalRoot(1)) },
+            { assertEquals(6, digitalRoot(123)) },
+            { assertEquals(1, digitalRoot(445672)) },
+        )
+    }
+
+    @Test
+    fun digitalRootV2_correct() {
+        assertAll(
+            "Digital Root recursive:",
+            { assertEquals(9, digitalRootV2(99999)) },
+            { assertEquals(1, digitalRootV2(1)) },
+            { assertEquals(6, digitalRootV2(123)) },
+            { assertEquals(1, digitalRootV2(445672)) },
+        )
+    }
+
+    @Test
+    fun fibonacci_correct() {
+        assertAll(
+            "Fibonacci recursive:",
+            { assertEquals(1, fibonacciRecursion(1)) },
+            { assertEquals(6765, fibonacciRecursion(20)) },
+        )
+    }
+
+    @Test
+    fun towerOfHanoi_countSteps_correct() {
+        assertAll(
+            "Tower of Hanoi count steps",
+            { assertEquals(3, toh(2,1,3,2)) },
+            { assertEquals(7, toh(3,1,2,3)) },
+        )
+    }
+
+    @Test
+    fun isLuckyNumber_correct() {
+        assertTrue { isLucky(19) }
+        assertFalse(isLucky(5))
+    }
+
+    @Test
+    fun powerRecursive_correct() {
+        assertEquals(512, recursivePower(2, 9))
+        assertEquals(387420489, recursivePower(9, 9))
+        assertEquals(1, recursivePower(9, 0))
+        assertEquals(9, recursivePower(9, 1))
+    }
+
+    @Test
+    fun powerRecursionByModulo_correct() {
+        assertEquals(4, powerOfReverse(2, 2))
+        assertEquals(864354781L, powerOfReverse(12, 21))
+    }
+
 }
 
 

@@ -108,6 +108,14 @@ fun generateSubsetsRecursive(input: String): Set<String> {
 }
 
 /**
+ * Recursively generates all possible subsets of characters of a given string.
+ *
+ * @param input Stores input string
+ * @param index index in the current subset
+ * @param current current subset
+ * @param result list that contains generated subsets
+ *
+ *
  * Example. input = abc
  * Recursion Tree for the method is as follows:
  *                                 ""  -  current, index = 0
@@ -242,6 +250,23 @@ fun findAllPermutationsOfString(str: String): List<String> {
 }
 
 /**
+ * Idea: We iterate from first to last index. For every index i, we swap
+ * the i-th character with the first index. This is how we fix characters at
+ * the current first index, then we recursively generate all permutations
+ * beginning with fixed characters (by parent recursive calls). After we have
+ * recursively generated all permutations with the first character fixed, then
+ * we move the first character back to its original position so that we can get
+ * the original string back and fix the next character at first position.
+ *
+ * We swap 'A' with 'A'. Then we recursively generate all permutations beginning with A.
+ * While returning from the recursive calls, we revert the changes made by them using
+ * the same swap again. So we get the original string "ABC".
+ * Then we swap 'A' with 'B' and generate all permutations beginning with 'B'.
+ * Similarly, we generate all permutations beginning with 'C'
+ *
+ * Illustration:
+ * src/main/resources/images/NewPermutation.gif
+ *
  * Example input = "ABC"
  *
  *                      i = 2
@@ -291,6 +316,265 @@ private fun searchRecursivelyInArray(arr: IntArray, target: Int, lower: Int, upp
     if (arr[upper] == target) return true
     return searchRecursivelyInArray(arr, target, lower + 1, upper - 1)
 }
+
+fun printNos(num: Int) {
+    if (num == 1) {
+        print("$num ")
+        return
+    }
+    printNos(num - 1)
+    print("$num ")
+}
+
+fun countOfDigitsRecursive(num: Int): Int {
+    if (num < 10) {
+        return 1
+    }
+    return 1 + countOfDigitsRecursive(num / 10)
+}
+
+/**
+ * You are given a number n. You need to find the digital root of n.
+ * DigitalRoot of a number is the recursive sum of its digits
+ * until we get a single digit number.
+ *
+ * Example 1:
+ * Input:
+ * n = 1
+ * Output:  1
+ * Explanation: Digital root of 1 is 1
+ *
+ * Example 2:
+ * Input:
+ * n = 99999
+ * Output: 9
+ * Explanation: Sum of digits of 99999 is 45
+ * which is not a single digit number, hence
+ * sum of digit of 45 is 9 which is a single
+ * digit number.
+ *
+ * Expected Time Complexity: O((Num of Digits)^2).
+ * Expected Auxiliary Space: O(Num of Digits).
+ *
+ * Constraints:
+ * 1 <= n <= 10^7
+ *
+ */
+fun digitalRoot(num: Int): Int {
+    if (num < 10) {
+        return num
+    }
+    return digitalRoot(num / 10 + num % 10)
+}
+
+fun digitalRootV2(num: Int): Int {
+    if (num < 10) {
+        return num
+    }
+    val sum = num % 10 + digitalRootV2(num / 10)
+    return digitalRoot(sum)
+}
+
+/**
+ * You are given a number n. You need to find n-th Fibonacci number.
+ * F(n)=F(n-1)+F(n-2); where F(1)=1 and F(2)=1
+ */
+fun fibonacciRecursion(num: Int) : Int {
+    if (num == 1 || num == 2) {
+        return 1
+    }
+    return fibonacciRecursion(num - 2) + fibonacciRecursion(num - 1)
+}
+
+/**
+ * The tower of Hanoi is a famous puzzle where we have three rods and N disks.
+ * The objective of the puzzle is to move the entire stack to another rod.
+ * You are given the number of discs N. Initially, these discs are in the rod 1.
+ * You need to print all the steps of discs movement so that all the discs reach
+ * the 3rd rod. Also, you need to find the total moves.
+ *
+ * Note: The discs are arranged such that the top disc is numbered 1 and the
+ * bottom-most disc is numbered N. Also, all the discs have different sizes
+ * and a bigger disc cannot be put on the top of a smaller disc.
+ *
+ * Example 1:
+ * Input:
+ * N = 2
+ * Output:
+ * move disk 1 from rod 1 to rod 2
+ * move disk 2 from rod 1 to rod 3
+ * move disk 1 from rod 2 to rod 3
+ * 3
+ * Explanation: For N=2 , steps will be
+ * as follows in the example and total
+ * 3 steps will be taken.
+ */
+fun toh(N: Int, from: Int = 1, to: Int = 3, aux: Int = 2) : Long {
+    if (N == 1) {
+        println("move disk 1 from rod $from to rod $to")
+        return 1L
+    }
+
+    var sum = toh(N - 1, from, aux, to)
+    ++sum
+    println("move disk $N from rod $from to rod $to")
+    sum += toh(N - 1, aux, to, from)
+    return sum
+}
+
+/**
+ * Lucky numbers are subset of integers. Rather than going into much theory,
+ * let us see the process of arriving at lucky numbers,
+ * Take the set of integers
+ * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,……
+ * First, delete every second number, we get following reduced set.
+ * 1, 3, 5, 7, 9, 11, 13, 15, 17, 19,…………
+ * Now, delete every third number, we get
+ * 1, 3, 7, 9, 13, 15, 19,….….
+ * Continue this process indefinitely……
+ * Any number that does NOT get deleted due to above process is called “lucky”.
+ *
+ * Example 1:
+ * Input:
+ * N = 5
+ * Output: 0
+ * Explanation: 5 is not a lucky number
+ * as it gets deleted in the second
+ * iteration.
+ *
+ * Example 2:
+ * Input:
+ * N = 19
+ * Output: 1
+ * Explanation: 19 is a lucky number
+ *
+ * Expected Time Complexity: O(sqrt(N)).
+ * Expected Auxiliary Space: O(sqrt(N)).
+ *
+ * Constraints:
+ * 1 <= N <= 10^5
+ */
+fun isLucky(num: Int) : Boolean {
+    return isLuckyHelper(num, 2)
+}
+
+/**
+ * Solution is based on the following idea:
+ *
+ * Initially we consider the given number as a set of indices of an array
+ * from 0 to the number. We also need to keep track of the positions of numbers to
+ * be eliminated. We start from the 2-nd position.
+ *
+ * Step 1: check if position is greater than the number, then the number is lucky.
+ * Step 2: check if the number is divisible by the position. If so, the number
+ *         can't be lucky. So return false.
+ * Step 3: perform the elimination of numbers at position  [position]. We achieve
+ *         this by shifting the indices of the initial array by the number of
+ *         eliminated positions. nextPos = num - num / position.
+ */
+private fun isLuckyHelper(num: Int, position: Int) : Boolean {
+    if (position > num) {
+        return true
+    }
+    if (num % position == 0) {
+        return false
+    }
+    val nextPos = num - num / position
+    return isLuckyHelper(nextPos, position + 1)
+}
+
+/**
+ * You are given two numbers n and p. You need to find n^p
+ *
+ * Example 1:
+ * Input:
+ * n = 9 p = 9
+ * Output: 387420489
+ * Explanation: 387420489 is the value
+ * obtained when 9 is raised to the
+ * power of 9.
+ *
+ * Example 2:
+ *
+ * Input:
+ * n = 2 p = 9
+ * Output: 512
+ * Explanation: 512 is the value
+ * obtained when 2 is raised to
+ * the power of 9.
+ */
+fun recursivePower(num: Int, pow: Int) : Int {
+    if (pow == 0) {
+        return 1
+    }
+    if (pow == 1) {
+        return num
+    }
+    return num * recursivePower(num, pow - 1)
+}
+
+/**
+ * Given a number and its reverse.
+ * Find that number raised to the power of its own reverse.
+ *
+ * Note: As answers can be very large, print the result modulo 10^9 + 7.
+ *
+ * Example 1:
+ * Input:
+ * N = 2
+ * Output: 4
+ * Explanation: The reverse of 2 is 2
+ * and after raising power of 2 by 2
+ * we get 4 which gives remainder as
+ * 4 by dividing 1000000007.
+ *
+ * Example 2:
+ * Input:
+ * N = 12
+ * Output: 864354781
+ * Explanation: The reverse of 12 is 21
+ * and 12^21 , when divided by 1000000007
+ * gives remainder as 864354781.
+ *
+ * Expected Time Complexity: O(LogN).
+ * Expected Auxiliary Space: O(LogN).
+ *
+ * Constraints:
+ * 1 <= N <= 10^9
+ */
+fun powerOfReverse(num: Int, reverse: Int): Long  {
+    if (reverse == 0) {
+        return 1L
+    }
+    if (reverse == 1) {
+        return num.toLong() % 1000000007
+    }
+    var tmp = powerOfReverse(num, reverse / 2) % 1000000007
+    tmp = (tmp * tmp) % 1000000007
+    return if (reverse % 2 == 0) {
+        tmp
+    } else {
+        (num * tmp) % 1000000007
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
