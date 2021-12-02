@@ -1,22 +1,31 @@
 package geeks_for_geeks.algorithms.arrays
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class ArraysTest {
 
+    private lateinit var arrayOfFive: ArrayList<Int>
+
+    @BeforeEach
+    fun setArray() {
+        arrayOfFive = ArrayList(5)
+        for (i in 0..4) {
+            arrayOfFive.add(i + 1)
+        }
+    }
+
     @Test
     fun insertIntoArray_correctWhenInsertionToTheMiddle() {
-        val array = IntArray(10) { -1 }
+        val capacity = 10
+        val array = ArrayList<Int>(capacity)
         val elem = 10
         val index = 3
-        array[0] = 1
-        array[1] = 2
-        array[2] = 3
-        array[3] = 4
-        array[4] = 5
+        for (i in 0..4) {
+            array.add(i + 1)
+        }
         val size = 5
-        val capacity = 10
         val expected = 6
         assertEquals(expected, insertIntoArray(array, elem, index, size, capacity))
         assertEquals(elem, array[index])
@@ -24,19 +33,33 @@ internal class ArraysTest {
 
     @Test
     fun insertIntoArray_correctWhenArrayIsFull() {
-        val array = IntArray(5) { -1 }
+        val capacity = 5
+        val array = ArrayList<Int>(capacity)
         val elem = 10
         val index = 3
-        array[0] = 1
-        array[1] = 2
-        array[2] = 3
-        array[3] = 4
-        array[4] = 5
+        for (i in 0..4) {
+            array.add(i + 1)
+        }
         val size = 5
-        val capacity = 5
         val expected = 5
         assertEquals(expected, insertIntoArray(array, elem, index, size, capacity))
         assertEquals(4, array[index])
+    }
+
+    @Test
+    fun deleteFromArray_elementExists_correct() {
+        val actualSize = deleteFromArray(arrayOfFive, 3, 5)
+        val expectedSize = 4
+        assertEquals(expectedSize, actualSize)
+
+        assertEquals(4, arrayOfFive[2])
+    }
+
+    @Test
+    fun deleteFromArray_elementNotExists_correct() {
+        val actualSize = deleteFromArray(arrayOfFive, 6, 5)
+        val expectedSize = 5
+        assertEquals(expectedSize, actualSize)
     }
 
 }
