@@ -120,9 +120,9 @@ internal class RecursionTest {
     fun searchRecursivelyInArray() {
         assertAll(
             "Search Recursively in array",
-            { assertTrue(searchInArray(intArrayOf(1,2,3,4), 3)) },
-            { assertFalse(searchInArray(intArrayOf(1,2,3,4), 10)) },
-            { assertTrue(searchInArray(intArrayOf(1,2,3,4,444,666,73,2,44623,9908), 73)) },
+            { assertTrue(searchInArray(intArrayOf(1, 2, 3, 4), 3)) },
+            { assertFalse(searchInArray(intArrayOf(1, 2, 3, 4), 10)) },
+            { assertTrue(searchInArray(intArrayOf(1, 2, 3, 4, 444, 666, 73, 2, 44623, 9908), 73)) },
         )
     }
 
@@ -174,8 +174,8 @@ internal class RecursionTest {
     fun towerOfHanoi_countSteps_correct() {
         assertAll(
             "Tower of Hanoi count steps",
-            { assertEquals(3, toh(2,1,3,2)) },
-            { assertEquals(7, toh(3,1,2,3)) },
+            { assertEquals(3, toh(2, 1, 3, 2)) },
+            { assertEquals(7, toh(3, 1, 2, 3)) },
         )
     }
 
@@ -197,6 +197,19 @@ internal class RecursionTest {
     fun powerRecursionByModulo_correct() {
         assertEquals(4, powerOfReverse(2, 2))
         assertEquals(864354781L, powerOfReverse(12, 21))
+    }
+
+    @Test
+    fun generatePossibleWords_correct() {
+        val expected = listOf<String>(
+            "adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg",
+            "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh",
+            "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi",
+        )
+
+        val actual = possibleWords(intArrayOf(2,3,4), 3)
+        assertEquals(expected.size, actual.size)
+        assertEquals(expected, actual)
     }
 
 }

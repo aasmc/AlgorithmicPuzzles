@@ -558,10 +558,78 @@ fun powerOfReverse(num: Int, reverse: Int): Long  {
     }
 }
 
+/**
+ * Given a typical keypad that was used on old phones like Nokia,
+ * and an N digit number which is represented by array a[ ],
+ * the task is to list all words which are possible by pressing these numbers
+ * in lexicographical increasing order. .
+ *
+ * Example 1:
+ * Input: N = 3, a[] = {2, 3, 4}
+ * Output:
+ * adg adh adi aeg aeh aei afg afh afi
+ * bdg bdh bdi beg beh bei bfg bfh bfi
+ * cdg cdh cdi ceg ceh cei cfg cfh cfi
+ * Explanation: When we press 2,3,4 then
+ * adg, adh, adi, ... cfi are the list of
+ * possible words.
+ *
+ * Example 2:
+ * Input: N = 3, a[] = {3, 4, 5}
+ * Output:
+ * dgj dgk dgl dhj dhk dhl dij dik dil
+ * egj egk egl ehj ehk ehl eij eik eil
+ * fgj fgk fgl fhj fhk fhl fij fik fil
+ * Explanation: When we press 3,4,5 then
+ * dgj, dgk, dgl, ... fil are the list of
+ * possible words.
+ *
+ * Expected Time Complexity: O(4^N * N).
+ * Expected Auxiliary Space: O(N).
+ *
+ * Constraints:
+ * 1 ≤ N ≤ 10
+ * 2 ≤ a[i] ≤ 9
+ */
+fun possibleWords(arr: IntArray, num: Int) : List<String> {
+    if (arr.isEmpty()) {
+        return emptyList()
+    }
+    val result = mutableListOf<String>()
+    val mappings = arrayOf(
+        "0",
+        "1",
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxyz"
+    )
+    generatePossibleWordCombinations(arr, num, mappings, result)
+    result.sort()
+    return result
+}
 
-
-
-
+private fun generatePossibleWordCombinations(
+    arr: IntArray,
+    num: Int,
+    mappings: Array<String>,
+    result: MutableList<String>,
+    index: Int = 0,
+    current: String = ""
+) {
+    if (index == num) {
+        result.add(current)
+        return
+    }
+    val letters = mappings[arr[index]]
+    for (i in letters.indices) {
+        generatePossibleWordCombinations(arr, num, mappings, result, index + 1, current + letters[i])
+    }
+}
 
 
 

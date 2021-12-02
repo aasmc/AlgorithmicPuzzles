@@ -1,5 +1,9 @@
 package geeks_for_geeks.algorithms.recursion;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class Solutions {
     /**
      * Print numbers from 1 to N without the help of loops.
@@ -121,6 +125,71 @@ public class Solutions {
             return tmp;
         } else {
             return (N * tmp) % mod;
+        }
+    }
+
+    //Function to return the lexicographically sorted power-set of the string.
+    static ArrayList<String> powerSet(String s) {
+        // add your code here
+        ArrayList<String> result = new ArrayList<>();
+
+        generatePowerSet(s, "", result, 0);
+
+        result.sort(Comparator.naturalOrder());
+        return result;
+    }
+
+    private static void generatePowerSet(
+            String input,
+            String current,
+            ArrayList<String> result,
+            int index
+    ) {
+        if (index == input.length()) {
+            result.add(current);
+            return;
+        }
+        generatePowerSet(input, current, result, index + 1);
+        generatePowerSet(input, current + input.charAt(index), result, index + 1);
+    }
+
+    //Function to find list of all words possible by pressing given numbers.
+    static ArrayList<String> possibleWords(int a[], int N) {
+        ArrayList<String> result = new ArrayList<>();
+        if (a.length == 0 || N == 0) {
+            return result;
+        }
+        String[] mapping = {
+                "0",
+                "1",
+                "abc",
+                "def",
+                "ghi",
+                "jkl",
+                "mno",
+                "pqrs",
+                "tuv",
+                "wxyz"
+        };
+        generatePossibleCombinations(a, N, result, mapping, "", 0);
+
+        Collections.sort(result);
+        return result;
+    }
+
+    private static void generatePossibleCombinations(
+            int[] arr, int num, ArrayList<String> result,
+            String[] mapping, String current, int index
+    ) {
+        if (index == num) {
+            result.add(current);
+            return;
+        }
+        String letters = mapping[arr[index]];
+        for (int i = 0; i < letters.length(); i++) {
+            generatePossibleCombinations(
+                    arr, num, result, mapping, current + letters.charAt(i), index + 1
+            );
         }
     }
 
