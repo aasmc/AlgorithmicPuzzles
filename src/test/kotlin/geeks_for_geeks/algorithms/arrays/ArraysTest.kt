@@ -111,6 +111,49 @@ internal class ArraysTest {
         assertTrue(checkIfSortedArray(intArrayOf(3,3,3,3,3,3)))
     }
 
+    @Test
+    fun reverseArray_correct() {
+        val arr = intArrayOf(1,2,3,4,5)
+        reverseArray(arr)
+        assertEquals(5, arr[0])
+        assertEquals(4, arr[1])
+        assertEquals(3, arr[2])
+        assertEquals(2, arr[3])
+        assertEquals(1, arr[4])
+    }
+
+    @Test
+    fun reverseArray_correctOnSingleElementArray() {
+        val arr = intArrayOf(1)
+        reverseArray(arr)
+        assertEquals(1, arr[0])
+    }
+
+    @Test
+    fun removeDuplicates_correctOnArrayOfEqualElements() {
+        assertEquals(1, removeDuplicatesFromArray(intArrayOf(1,1,1,1,1,1,1,1,1)))
+    }
+
+    @Test
+    fun removeDuplicates_correctOnRandomSortedArray() {
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(1,1,1,2,2,2,3,3,3)))
+    }
+
+    @Test
+    fun removeDuplicates_correctOnRandomSortedArrayV2() {
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,20,30,30,30,30)))
+    }
+
+    @Test
+    fun removeDuplicates_correctOnRandomSortedArrayV3() {
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,10,10,20,30)))
+    }
+
+    @Test
+    fun removeDuplicates_correctOnRandomSortedArrayV4() {
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,20, 20, 20,30)))
+    }
+
 }
 
 

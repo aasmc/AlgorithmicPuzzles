@@ -71,7 +71,7 @@ fun secondLargestElementInArray(arr: IntArray): Int {
         if (arr[i] > arr[max]) {
             secondMax = max
             max = i
-        } else if (arr[i] > arr[secondMax]){
+        } else if (arr[i] > arr[secondMax]) {
             secondMax = i
         }
     }
@@ -93,9 +93,6 @@ fun checkIfSortedArray(arr: IntArray): Boolean {
     if (arr.isEmpty()) {
         throw IllegalArgumentException("Array $arr is empty.")
     }
-    if (arr.size == 1) {
-        return true
-    }
     var checkIndex = 0
     for (i in 1 until arr.size) {
         if (arr[checkIndex] > arr[i]) {
@@ -106,9 +103,41 @@ fun checkIfSortedArray(arr: IntArray): Boolean {
     return true
 }
 
+fun reverseArray(arr: IntArray) {
+    var left = 0
+    var right = arr.lastIndex
+    while (left < right) {
+        swap(arr, left++, right--)
+    }
+}
 
+private fun swap(arr: IntArray, left: Int, right: Int) {
+    val tmp = arr[left]
+    arr[left] = arr[right]
+    arr[right] = tmp
+}
 
-
+/**
+ * Removes duplicate elements from a sorted array.
+ * It doesn't deallocate elements or create a new array without
+ * duplicates. It simply returns new size of the array, where all
+ * the elements from 0 to size are sorted and contain no duplicates.
+ *
+ * @return number of distinct elements .
+ */
+fun removeDuplicatesFromArray(arr: IntArray): Int {
+    if (arr.size == 1) {
+        return 1
+    }
+    var positionAfterUnique = 1
+    for (i in 1 until arr.size) {
+        if (arr[i] != arr[positionAfterUnique - 1]) {
+            arr[positionAfterUnique] = arr[i]
+            ++positionAfterUnique
+        }
+    }
+    return positionAfterUnique
+}
 
 
 
