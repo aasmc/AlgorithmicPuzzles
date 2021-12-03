@@ -62,6 +62,22 @@ internal class ArraysTest {
         assertEquals(expectedSize, actualSize)
     }
 
+    @Test
+    fun secondLargestInArray_throwsOnEmpty() {
+        assertThrows(IllegalArgumentException::class.java) { secondLargestElementInArray(intArrayOf()) }
+    }
+
+    @Test
+    fun secondLargestOInArray_correct_onArrayWithOneElement() {
+        assertEquals(0, secondLargestElementInArray(intArrayOf(3)))
+    }
+
+    @Test
+    fun secondLargestOInArray_correct_onRandomArray() {
+        assertEquals(5,
+            secondLargestElementInArray(intArrayOf(3, 6, 1, 33, 78, 100, 23, 788)))
+    }
+
 }
 
 
