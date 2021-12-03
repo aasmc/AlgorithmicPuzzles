@@ -54,6 +54,7 @@ fun deleteFromArray(arr: ArrayList<Int>, elem: Int, size: Int): Int {
  * If the array contains only one element, its index is returned.
  *
  * @return index of the second largest element in the array
+ *         or -1 if all elements are the same
  * @throws IllegalArgumentException if the array is empty.
  */
 fun secondLargestElementInArray(arr: IntArray): Int {
@@ -74,7 +75,35 @@ fun secondLargestElementInArray(arr: IntArray): Int {
             secondMax = i
         }
     }
+    if (max == secondMax) {
+        return -1
+    }
     return secondMax
+}
+
+/**
+ * Checks if a given array is sorted in ascending order.
+ * Time complexity O(N).
+ *
+ * @return true if the array [arr] is sorted in ascending order
+ *         false otherwise.
+ * @throws IllegalArgumentException if the array is empty.
+ */
+fun checkIfSortedArray(arr: IntArray): Boolean {
+    if (arr.isEmpty()) {
+        throw IllegalArgumentException("Array $arr is empty.")
+    }
+    if (arr.size == 1) {
+        return true
+    }
+    var checkIndex = 0
+    for (i in 1 until arr.size) {
+        if (arr[checkIndex] > arr[i]) {
+            return false
+        }
+        checkIndex = i
+    }
+    return true
 }
 
 

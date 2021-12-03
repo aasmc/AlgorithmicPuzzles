@@ -78,6 +78,39 @@ internal class ArraysTest {
             secondLargestElementInArray(intArrayOf(3, 6, 1, 33, 78, 100, 23, 788)))
     }
 
+    @Test
+    fun secondLargestOInArray_correct_onArrayOfEqualElements() {
+        assertEquals(-1,
+            secondLargestElementInArray(intArrayOf(3,3,3,3,3,3,3,3)))
+    }
+
+    @Test
+    fun isSorted_throwsOnEmpty() {
+        assertThrows(IllegalArgumentException::class.java) {
+            checkIfSortedArray(intArrayOf())
+        }
+    }
+
+    @Test
+    fun isSorted_correctOnSingleElementArray() {
+        assertTrue(checkIfSortedArray(intArrayOf(3)))
+    }
+
+    @Test
+    fun isSorted_true_onSortedArray() {
+        assertTrue(checkIfSortedArray(intArrayOf(1,2,3,4,5,6,7,8,9,10)))
+    }
+
+    @Test
+    fun isSorted_false_onNotSortedArray() {
+        assertFalse(checkIfSortedArray(intArrayOf(1,2,3,4,5,6,8,7,9,10)))
+    }
+
+    @Test
+    fun isSorted_true_onArrayOfEqualElements() {
+        assertTrue(checkIfSortedArray(intArrayOf(3,3,3,3,3,3)))
+    }
+
 }
 
 
