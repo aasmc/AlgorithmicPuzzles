@@ -154,6 +154,17 @@ internal class ArraysTest {
         assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,20, 20, 20,30)))
     }
 
+    @Test
+    fun moveZeroes_correct() {
+        val arr = intArrayOf(3,0,4,0,5,0,6,0,7,0,0,0,0,6,5,4)
+        moveZeroesToTheEndOfArray(arr)
+        for (i in 0 until 8) {
+            assertTrue(arr[i] != 0)
+        }
+        for (i in 8 until arr.size) {
+            assertTrue(arr[i] == 0)
+        }
+    }
 }
 
 

@@ -139,7 +139,19 @@ fun removeDuplicatesFromArray(arr: IntArray): Int {
     return positionAfterUnique
 }
 
-
+/**
+ * Moves all zeroes in the array, if any, to the end of the array,]
+ * the rest of the elements appear in the array in the initial order.
+ */
+fun moveZeroesToTheEndOfArray(arr: IntArray) {
+    var zeroIndex = 0
+    for (i in arr.indices) {
+        if (arr[i] != 0) {
+            swap(arr, zeroIndex, i)
+            ++zeroIndex
+        }
+    }
+}
 
 
 
