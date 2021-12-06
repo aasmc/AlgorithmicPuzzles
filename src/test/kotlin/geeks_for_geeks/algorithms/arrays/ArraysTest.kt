@@ -259,6 +259,23 @@ internal class ArraysTest {
         assertEquals(expected3, findMaxDifference(arr3))
     }
 
+    @Test
+    fun findFrequenciesInSorted_array() {
+        val res1 = findFrequenciesInSortedArray(intArrayOf(4,5,5,5))
+        assertEquals(1, res1[4])
+        assertEquals(3, res1[5])
+
+        val res2 = findFrequenciesInSortedArray(intArrayOf(5,5,5,5))
+        assertEquals(4, res2[5])
+
+        val res3 = findFrequenciesInSortedArray(intArrayOf(1,2,3,4,5))
+        assertEquals(1, res3[1])
+        assertEquals(1, res3[2])
+        assertEquals(1, res3[3])
+        assertEquals(1, res3[4])
+        assertEquals(1, res3[5])
+    }
+
 }
 
 

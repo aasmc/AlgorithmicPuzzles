@@ -284,6 +284,27 @@ fun findMaxDifference(arr: IntArray): Int {
     return currentRes
 }
 
+fun findFrequenciesInSortedArray(array: IntArray) : Map<Int, Int> {
+    val res = hashMapOf<Int, Int>()
+    var frequency = 1
+    var i = 1
+    while (i < array.size) {
+        while (i < array.size && array[i] == array[i - 1]) {
+            ++frequency
+            ++i
+        }
+        res.put(array[i - 1], frequency)
+        ++i
+        frequency = 1
+    }
+    // handle corner case when last element is not the same as second to last
+    // of the array.size == 1
+    if (array.size == 1 || array[array.lastIndex] != array[array.lastIndex - 1]) {
+        res.put(array[array.lastIndex], 1)
+    }
+
+    return res
+}
 
 
 
