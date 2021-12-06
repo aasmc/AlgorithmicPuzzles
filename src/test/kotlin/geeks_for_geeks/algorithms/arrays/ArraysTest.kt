@@ -74,14 +74,18 @@ internal class ArraysTest {
 
     @Test
     fun secondLargestOInArray_correct_onRandomArray() {
-        assertEquals(5,
-            secondLargestElementInArray(intArrayOf(3, 6, 1, 33, 78, 100, 23, 788)))
+        assertEquals(
+            5,
+            secondLargestElementInArray(intArrayOf(3, 6, 1, 33, 78, 100, 23, 788))
+        )
     }
 
     @Test
     fun secondLargestOInArray_correct_onArrayOfEqualElements() {
-        assertEquals(-1,
-            secondLargestElementInArray(intArrayOf(3,3,3,3,3,3,3,3)))
+        assertEquals(
+            -1,
+            secondLargestElementInArray(intArrayOf(3, 3, 3, 3, 3, 3, 3, 3))
+        )
     }
 
     @Test
@@ -98,22 +102,22 @@ internal class ArraysTest {
 
     @Test
     fun isSorted_true_onSortedArray() {
-        assertTrue(checkIfSortedArray(intArrayOf(1,2,3,4,5,6,7,8,9,10)))
+        assertTrue(checkIfSortedArray(intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)))
     }
 
     @Test
     fun isSorted_false_onNotSortedArray() {
-        assertFalse(checkIfSortedArray(intArrayOf(1,2,3,4,5,6,8,7,9,10)))
+        assertFalse(checkIfSortedArray(intArrayOf(1, 2, 3, 4, 5, 6, 8, 7, 9, 10)))
     }
 
     @Test
     fun isSorted_true_onArrayOfEqualElements() {
-        assertTrue(checkIfSortedArray(intArrayOf(3,3,3,3,3,3)))
+        assertTrue(checkIfSortedArray(intArrayOf(3, 3, 3, 3, 3, 3)))
     }
 
     @Test
     fun reverseArray_correct() {
-        val arr = intArrayOf(1,2,3,4,5)
+        val arr = intArrayOf(1, 2, 3, 4, 5)
         reverseArray(arr)
         assertEquals(5, arr[0])
         assertEquals(4, arr[1])
@@ -131,32 +135,32 @@ internal class ArraysTest {
 
     @Test
     fun removeDuplicates_correctOnArrayOfEqualElements() {
-        assertEquals(1, removeDuplicatesFromArray(intArrayOf(1,1,1,1,1,1,1,1,1)))
+        assertEquals(1, removeDuplicatesFromArray(intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1)))
     }
 
     @Test
     fun removeDuplicates_correctOnRandomSortedArray() {
-        assertEquals(3, removeDuplicatesFromArray(intArrayOf(1,1,1,2,2,2,3,3,3)))
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(1, 1, 1, 2, 2, 2, 3, 3, 3)))
     }
 
     @Test
     fun removeDuplicates_correctOnRandomSortedArrayV2() {
-        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,20,30,30,30,30)))
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10, 20, 30, 30, 30, 30)))
     }
 
     @Test
     fun removeDuplicates_correctOnRandomSortedArrayV3() {
-        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,10,10,20,30)))
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10, 10, 10, 20, 30)))
     }
 
     @Test
     fun removeDuplicates_correctOnRandomSortedArrayV4() {
-        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10,20, 20, 20,30)))
+        assertEquals(3, removeDuplicatesFromArray(intArrayOf(10, 20, 20, 20, 30)))
     }
 
     @Test
     fun moveZeroes_correct() {
-        val arr = intArrayOf(3,0,4,0,5,0,6,0,7,0,0,0,0,6,5,4)
+        val arr = intArrayOf(3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 0, 0, 0, 6, 5, 4)
         moveZeroesToTheEndOfArray(arr)
         for (i in 0 until 8) {
             assertTrue(arr[i] != 0)
@@ -168,7 +172,7 @@ internal class ArraysTest {
 
     @Test
     fun rotateArrayByOne_correct() {
-        val array = intArrayOf(1,2,3,4,5)
+        val array = intArrayOf(1, 2, 3, 4, 5)
         leftRotateArrayByOne(array)
         assertEquals(2, array[0])
         assertEquals(3, array[1])
@@ -179,7 +183,7 @@ internal class ArraysTest {
 
     @Test
     fun rotateArrayByD_correct() {
-        val array = intArrayOf(1,2,3,4,5)
+        val array = intArrayOf(1, 2, 3, 4, 5)
         leftRotateByD(array, 3)
         assertEquals(4, array[0])
         assertEquals(5, array[1])
@@ -190,7 +194,7 @@ internal class ArraysTest {
 
     @Test
     fun rotateArrayByD_using_tmpArray_correct() {
-        val array = intArrayOf(1,2,3,4,5)
+        val array = intArrayOf(1, 2, 3, 4, 5)
         leftRotateUsingTmpArray(array, 3)
         assertEquals(4, array[0])
         assertEquals(5, array[1])
@@ -201,7 +205,7 @@ internal class ArraysTest {
 
     @Test
     fun rotateArrayByD_reversal_correct() {
-        val array = intArrayOf(1,2,3,4,5)
+        val array = intArrayOf(1, 2, 3, 4, 5)
         leftRotateReverse(array, 3)
         assertEquals(4, array[0])
         assertEquals(5, array[1])
@@ -213,7 +217,7 @@ internal class ArraysTest {
     @Test
     fun findLeadersNaive_correct() {
         val expected = listOf<Int>(10, 6, 5, 2)
-        val res = findLeadersInArrayNaive(intArrayOf(7,10,4,3,6,5,2))
+        val res = findLeadersInArrayNaive(intArrayOf(7, 10, 4, 3, 6, 5, 2))
         expected.forEachIndexed { index, i ->
             assertEquals(i, res[index])
         }
@@ -227,8 +231,8 @@ internal class ArraysTest {
 
     @Test
     fun findLeadersBackwards_correct() {
-        val expected = listOf<Int>(2,5,6,10)
-        val res = findLeadersInArrayBackwards(intArrayOf(7,10,4,3,6,5,2))
+        val expected = listOf<Int>(2, 5, 6, 10)
+        val res = findLeadersInArrayBackwards(intArrayOf(7, 10, 4, 3, 6, 5, 2))
         expected.forEachIndexed { index, i ->
             assertEquals(i, res[index])
         }
@@ -238,6 +242,21 @@ internal class ArraysTest {
         expectedSorted.forEachIndexed { index, i ->
             assertEquals(i, resSorted[index])
         }
+    }
+
+    @Test
+    fun findMaxDifference_correct() {
+        val arr1 = intArrayOf(2, 3, 10, 6, 4, 8, 1)
+        val expected1 = 8
+        assertEquals(expected1, findMaxDifference(arr1))
+
+        val arr2 = intArrayOf(7, 9, 5, 6, 3, 2)
+        val expected2 = 2
+        assertEquals(expected2, findMaxDifference(arr2))
+
+        val arr3 = intArrayOf(30, 10, 8, 2)
+        val expected3 = -2
+        assertEquals(expected3, findMaxDifference(arr3))
     }
 
 }

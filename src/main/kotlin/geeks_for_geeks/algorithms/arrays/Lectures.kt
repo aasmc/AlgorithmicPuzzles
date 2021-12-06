@@ -1,5 +1,8 @@
 package geeks_for_geeks.algorithms.arrays
 
+import kotlin.math.max
+import kotlin.math.min
+
 /**
  * Inserts an integer [elem] into array [arr] at specified index.
  * If the array is full, then no insertion happens.
@@ -257,6 +260,29 @@ fun findLeadersInArrayBackwards(arr: IntArray) : List<Int> {
     return res
 }
 
+/**
+ * Given an array of integers, find maximum value
+ * arr[j] - arr[i] such that j > i.
+ *
+ * @return max difference of elements in the array.
+ *         If the array is empty it throws IllegalArgumentException.
+ *         If the array's size is 1, return its only element.
+ */
+fun findMaxDifference(arr: IntArray): Int {
+    if (arr.isEmpty()) {
+        throw IllegalArgumentException("The array is empty")
+    }
+    if (arr.size == 1) {
+        return arr[0]
+    }
+    var currentRes = arr[1] - arr[0]
+    var currentMin = arr[0]
+    for (i in 1 until arr.size) {
+        currentRes = max(currentRes, arr[i] - currentMin)
+        currentMin = min(currentMin, arr[i])
+    }
+    return currentRes
+}
 
 
 
