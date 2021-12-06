@@ -217,6 +217,67 @@ private fun reverseArray(array: IntArray, start: Int, end: Int) {
     }
 }
 
+/**
+ * Given array of integers find leaders in that array.
+ * An element is considered to be a leader if no other element
+ * in the right part of the array is greater than that element.
+ *
+ * E.g. [7,10,4,3,6,5,2]
+ * Leaders: [10,6,5,2]
+ *
+ * Time complexity O(N^2)
+ */
+fun findLeadersInArrayNaive(arr: IntArray): List<Int> {
+    val res = mutableListOf<Int>()
+    for (i in arr.indices) {
+        var leader = true
+        for (j in i + 1 until arr.size) {
+            if (arr[i] <= arr[j]) {
+                leader = false
+                break
+            }
+        }
+        if (leader) {
+            res.add(arr[i])
+        }
+    }
+    return res
+}
+
+fun findLeadersInArrayBackwards(arr: IntArray) : List<Int> {
+    val res = mutableListOf<Int>()
+    var currentLeader = arr[arr.lastIndex]
+    res.add(currentLeader)
+    for (i in arr.lastIndex - 1 downTo 0) {
+        if (currentLeader < arr[i]) {
+            currentLeader = arr[i]
+            res.add(currentLeader)
+        }
+    }
+    return res
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

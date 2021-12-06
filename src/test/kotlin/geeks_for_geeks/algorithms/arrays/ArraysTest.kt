@@ -210,6 +210,36 @@ internal class ArraysTest {
         assertEquals(3, array[4])
     }
 
+    @Test
+    fun findLeadersNaive_correct() {
+        val expected = listOf<Int>(10, 6, 5, 2)
+        val res = findLeadersInArrayNaive(intArrayOf(7,10,4,3,6,5,2))
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+
+        val expectedSorted = listOf(30, 20, 10)
+        val resSorted = findLeadersInArrayNaive(intArrayOf(30, 20, 10))
+        expectedSorted.forEachIndexed { index, i ->
+            assertEquals(i, resSorted[index])
+        }
+    }
+
+    @Test
+    fun findLeadersBackwards_correct() {
+        val expected = listOf<Int>(2,5,6,10)
+        val res = findLeadersInArrayBackwards(intArrayOf(7,10,4,3,6,5,2))
+        expected.forEachIndexed { index, i ->
+            assertEquals(i, res[index])
+        }
+
+        val expectedSorted = listOf(10, 20, 30)
+        val resSorted = findLeadersInArrayBackwards(intArrayOf(30, 20, 10))
+        expectedSorted.forEachIndexed { index, i ->
+            assertEquals(i, resSorted[index])
+        }
+    }
+
 }
 
 
