@@ -153,9 +153,69 @@ fun moveZeroesToTheEndOfArray(arr: IntArray) {
     }
 }
 
+/**
+ * Rotates array by one position counterclockwise in place.
+ */
+fun leftRotateArrayByOne(arr: IntArray) {
+    if (arr.isEmpty()|| arr.size == 1) {
+        return
+    }
+    val tmp = arr[0]
+    for (i in 1 until arr.size) {
+        arr[i - 1] = arr[i]
+    }
+    arr[arr.lastIndex] = tmp
+}
 
 
+/**
+ * Rotates array by D positions counterclockwise in place.
+ *
+ * Time complexity  O(N*D)
+ */
+fun leftRotateByD(arr: IntArray, d: Int) {
+    repeat(d) {
+        leftRotateArrayByOne(arr)
+    }
+}
 
+fun leftRotateUsingTmpArray(arr: IntArray, d: Int) {
+    if (arr.isEmpty() || arr.size == d || arr.size == 1) {
+        return
+    }
+    val dd = d % arr.size
+    val tmpArr = IntArray(dd)
+    for (i in 0 until dd) {
+        tmpArr[i] = arr[i]
+    }
+    for (i in dd until arr.size) {
+        arr[i - dd] = arr[i]
+    }
+    for (i in 0 until dd) {
+        arr[arr.size - dd + i] = tmpArr[i]
+    }
+}
+
+fun leftRotateReverse(arr: IntArray, d: Int) {
+    if (arr.size == d) {
+        return
+    }
+    val numRotations = d % arr.size
+    reverseArray(arr, 0, numRotations - 1)
+    reverseArray(arr, numRotations, arr.lastIndex)
+
+    reverseArray(arr, 0, arr.lastIndex)
+}
+
+private fun reverseArray(array: IntArray, start: Int, end: Int) {
+    var e = end
+    for (i in start..(start + end) / 2) {
+        val tmp = array[i]
+        array[i] = array[e]
+        array[e] = tmp
+        --e
+    }
+}
 
 
 

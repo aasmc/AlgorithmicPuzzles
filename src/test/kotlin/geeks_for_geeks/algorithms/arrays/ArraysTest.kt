@@ -165,6 +165,51 @@ internal class ArraysTest {
             assertTrue(arr[i] == 0)
         }
     }
+
+    @Test
+    fun rotateArrayByOne_correct() {
+        val array = intArrayOf(1,2,3,4,5)
+        leftRotateArrayByOne(array)
+        assertEquals(2, array[0])
+        assertEquals(3, array[1])
+        assertEquals(4, array[2])
+        assertEquals(5, array[3])
+        assertEquals(1, array[4])
+    }
+
+    @Test
+    fun rotateArrayByD_correct() {
+        val array = intArrayOf(1,2,3,4,5)
+        leftRotateByD(array, 3)
+        assertEquals(4, array[0])
+        assertEquals(5, array[1])
+        assertEquals(1, array[2])
+        assertEquals(2, array[3])
+        assertEquals(3, array[4])
+    }
+
+    @Test
+    fun rotateArrayByD_using_tmpArray_correct() {
+        val array = intArrayOf(1,2,3,4,5)
+        leftRotateUsingTmpArray(array, 3)
+        assertEquals(4, array[0])
+        assertEquals(5, array[1])
+        assertEquals(1, array[2])
+        assertEquals(2, array[3])
+        assertEquals(3, array[4])
+    }
+
+    @Test
+    fun rotateArrayByD_reversal_correct() {
+        val array = intArrayOf(1,2,3,4,5)
+        leftRotateReverse(array, 3)
+        assertEquals(4, array[0])
+        assertEquals(5, array[1])
+        assertEquals(1, array[2])
+        assertEquals(2, array[3])
+        assertEquals(3, array[4])
+    }
+
 }
 
 
