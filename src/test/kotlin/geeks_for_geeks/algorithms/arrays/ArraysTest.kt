@@ -276,6 +276,16 @@ internal class ArraysTest {
         assertEquals(1, res3[5])
     }
 
+    @Test
+    fun stockMaxPricesNaive_correct() {
+        assertEquals(13, stockMaxProfitNaive(intArrayOf(1,5,3,8,12)))
+    }
+
+    @Test
+    fun stockMaxPricesEfficient_correct() {
+        assertEquals(13, maxStockPriceEfficient(intArrayOf(1,5,3,8,12)))
+    }
+
 }
 
 

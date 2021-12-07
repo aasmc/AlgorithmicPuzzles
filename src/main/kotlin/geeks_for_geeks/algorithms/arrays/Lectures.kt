@@ -160,7 +160,7 @@ fun moveZeroesToTheEndOfArray(arr: IntArray) {
  * Rotates array by one position counterclockwise in place.
  */
 fun leftRotateArrayByOne(arr: IntArray) {
-    if (arr.isEmpty()|| arr.size == 1) {
+    if (arr.isEmpty() || arr.size == 1) {
         return
     }
     val tmp = arr[0]
@@ -247,7 +247,7 @@ fun findLeadersInArrayNaive(arr: IntArray): List<Int> {
     return res
 }
 
-fun findLeadersInArrayBackwards(arr: IntArray) : List<Int> {
+fun findLeadersInArrayBackwards(arr: IntArray): List<Int> {
     val res = mutableListOf<Int>()
     var currentLeader = arr[arr.lastIndex]
     res.add(currentLeader)
@@ -284,7 +284,7 @@ fun findMaxDifference(arr: IntArray): Int {
     return currentRes
 }
 
-fun findFrequenciesInSortedArray(array: IntArray) : Map<Int, Int> {
+fun findFrequenciesInSortedArray(array: IntArray): Map<Int, Int> {
     val res = hashMapOf<Int, Int>()
     var frequency = 1
     var i = 1
@@ -306,9 +306,49 @@ fun findFrequenciesInSortedArray(array: IntArray) : Map<Int, Int> {
     return res
 }
 
+/**
+ * Stock problem. Given a list of stock prices corresponding to
+ * certain days, find the maximum profit, under condition that you
+ * can't sell stock in the same day that you bought it.
+ *
+ * E.g. days  1  2  3  4   5
+ *    prices  1  5  3  8  12
+ *    Buy on day 1, sell on day 2 get profit of 4.
+ *    Buy on dat 3, sell on day 5, get profit of 9.
+ *    Total profit = 13.
+ */
+fun stockMaxProfitNaive(prices: IntArray): Int {
+    return stockMaxProfitRecursiveHelper(prices, 0, prices.lastIndex)
+}
 
+private fun stockMaxProfitRecursiveHelper(prices: IntArray, start: Int, end: Int): Int {
+    if (end <= start) {
+        return 0
+    }
+    var profit = 0
+    for (i in start until end) {
+        for (j in i + 1..end) {
+            if (prices[j] > prices[i]) {
+                val currentMax = prices[j] - prices[i] +
+                        stockMaxProfitRecursiveHelper(prices, start, i - 1) +
+                        stockMaxProfitRecursiveHelper(prices, j + 1, end)
 
+                profit = max(profit, currentMax)
+            }
+        }
+    }
+    return profit
+}
 
+fun maxStockPriceEfficient(prices: IntArray): Int {
+    var max = 0
+    for (i in 1 until prices.size) {
+        if (prices[i] > prices[i - 1]) {
+            max += prices[i] - prices[i - 1]
+        }
+    }
+    return max
+}
 
 
 
