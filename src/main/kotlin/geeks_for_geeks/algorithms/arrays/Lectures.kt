@@ -435,10 +435,44 @@ fun maxSubarraySum(arr: IntArray): Int {
     return res
 }
 
+/**
+ * Given an array of integers, find the maximum length of
+ * a subarray, that contains alternating odd and even numbers.
+ *
+ * Time complexity O(N^2).
+ */
+fun maxLengthEvenOddSubarrayNaive(arr: IntArray): Int {
+    var res = 1
+    for (i in arr.indices) {
+        var current = 1
+        for (j in i + 1 until arr.size) {
+            if ((arr[j] % 2 == 0 && arr[j - 1] % 2 != 0) ||
+                (arr[j] % 2 != 0 && arr[j - 1] % 2 == 0)
+            ) {
+                ++current
+            } else {
+                break
+            }
+        }
+        res = max(res, current)
+    }
+    return res
+}
 
-
-
-
+fun maxLengthEvenOddSubarrayEfficient(arr: IntArray): Int {
+    var res = 1
+    var current = 1
+    for (i in 1 until arr.size) {
+        if ((arr[i] % 2 == 0 && arr[i - 1] % 2 != 0) ||
+            (arr[i] % 2 != 0 && arr[i - 1] % 2 == 0)) {
+            ++current
+            res = max(res, current)
+        } else {
+            current = 1
+        }
+    }
+    return res
+}
 
 
 

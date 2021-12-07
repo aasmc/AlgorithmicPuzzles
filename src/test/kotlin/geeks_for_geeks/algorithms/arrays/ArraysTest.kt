@@ -261,14 +261,14 @@ internal class ArraysTest {
 
     @Test
     fun findFrequenciesInSorted_array() {
-        val res1 = findFrequenciesInSortedArray(intArrayOf(4,5,5,5))
+        val res1 = findFrequenciesInSortedArray(intArrayOf(4, 5, 5, 5))
         assertEquals(1, res1[4])
         assertEquals(3, res1[5])
 
-        val res2 = findFrequenciesInSortedArray(intArrayOf(5,5,5,5))
+        val res2 = findFrequenciesInSortedArray(intArrayOf(5, 5, 5, 5))
         assertEquals(4, res2[5])
 
-        val res3 = findFrequenciesInSortedArray(intArrayOf(1,2,3,4,5))
+        val res3 = findFrequenciesInSortedArray(intArrayOf(1, 2, 3, 4, 5))
         assertEquals(1, res3[1])
         assertEquals(1, res3[2])
         assertEquals(1, res3[3])
@@ -278,49 +278,62 @@ internal class ArraysTest {
 
     @Test
     fun stockMaxPricesNaive_correct() {
-        assertEquals(13, stockMaxProfitNaive(intArrayOf(1,5,3,8,12)))
+        assertEquals(13, stockMaxProfitNaive(intArrayOf(1, 5, 3, 8, 12)))
     }
 
     @Test
     fun stockMaxPricesEfficient_correct() {
-        assertEquals(13, maxStockPriceEfficient(intArrayOf(1,5,3,8,12)))
+        assertEquals(13, maxStockPriceEfficient(intArrayOf(1, 5, 3, 8, 12)))
     }
 
     @Test
     fun tappingWaterNaive_correct() {
-        val input1 = intArrayOf(2,0,2)
+        val input1 = intArrayOf(2, 0, 2)
         assertEquals(2, tappingWaterNaive(input1))
-        val input2 = intArrayOf(3,0,1,2,5)
+        val input2 = intArrayOf(3, 0, 1, 2, 5)
         assertEquals(6, tappingWaterNaive(input2))
-        assertEquals(0, tappingWaterNaive(intArrayOf(1,2,3)))
-        assertEquals(0, tappingWaterNaive(intArrayOf(3,2,1)))
+        assertEquals(0, tappingWaterNaive(intArrayOf(1, 2, 3)))
+        assertEquals(0, tappingWaterNaive(intArrayOf(3, 2, 1)))
     }
 
     @Test
     fun tappingWaterEfficient_correct() {
-        val input1 = intArrayOf(2,0,2)
+        val input1 = intArrayOf(2, 0, 2)
         assertEquals(2, tappingWaterEfficient(input1))
-        val input2 = intArrayOf(3,0,1,2,5)
+        val input2 = intArrayOf(3, 0, 1, 2, 5)
         assertEquals(6, tappingWaterEfficient(input2))
-        assertEquals(0, tappingWaterEfficient(intArrayOf(1,2,3)))
-        assertEquals(0, tappingWaterEfficient(intArrayOf(3,2,1)))
+        assertEquals(0, tappingWaterEfficient(intArrayOf(1, 2, 3)))
+        assertEquals(0, tappingWaterEfficient(intArrayOf(3, 2, 1)))
     }
 
     @Test
     fun maxConsecutiveOnes_correct() {
-        assertEquals(0, maxConsecutiveOnes( intArrayOf(0,0,0,0,0)))
-        assertEquals(5, maxConsecutiveOnes( intArrayOf(1,1,1,1,1)))
-        assertEquals(4, maxConsecutiveOnes( intArrayOf(1,1,0,0,1,1,1,1,0,0,1,1,0,1)))
+        assertEquals(0, maxConsecutiveOnes(intArrayOf(0, 0, 0, 0, 0)))
+        assertEquals(5, maxConsecutiveOnes(intArrayOf(1, 1, 1, 1, 1)))
+        assertEquals(4, maxConsecutiveOnes(intArrayOf(1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1)))
     }
 
     @Test
     fun maxSubarraySum_correct() {
-//        assertEquals(11, maxSubarraySum(intArrayOf(2,3,-8,7,-1,2,3)))
-//        assertEquals(16, maxSubarraySum(intArrayOf(5,8,3)))
+        assertEquals(11, maxSubarraySum(intArrayOf(2, 3, -8, 7, -1, 2, 3)))
+        assertEquals(16, maxSubarraySum(intArrayOf(5, 8, 3)))
         assertEquals(-1, maxSubarraySum(intArrayOf(-6, -1, -8)))
-        assertEquals(4, maxSubarraySum(intArrayOf(-5,1,-2,3,-1,2,-2)))
+        assertEquals(4, maxSubarraySum(intArrayOf(-5, 1, -2, 3, -1, 2, -2)))
     }
 
+    @Test
+    fun maxLengthEvenOddSubarrayNaive_correct() {
+        assertEquals(3, maxLengthEvenOddSubarrayNaive(intArrayOf(10, 12, 14, 7, 8)))
+        assertEquals(4, maxLengthEvenOddSubarrayNaive(intArrayOf(7, 10, 9, 14)))
+        assertEquals(1, maxLengthEvenOddSubarrayNaive(intArrayOf(10, 12, 8, 4)))
+    }
+
+    @Test
+    fun maxLengthEvenOddSubarrayEfficient_correct() {
+        assertEquals(3, maxLengthEvenOddSubarrayEfficient(intArrayOf(10, 12, 14, 7, 8)))
+        assertEquals(4, maxLengthEvenOddSubarrayEfficient(intArrayOf(7, 10, 9, 14)))
+        assertEquals(1, maxLengthEvenOddSubarrayEfficient(intArrayOf(10, 12, 8, 4)))
+    }
 }
 
 
