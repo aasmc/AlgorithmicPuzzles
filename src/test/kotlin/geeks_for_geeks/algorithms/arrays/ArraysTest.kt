@@ -313,6 +313,14 @@ internal class ArraysTest {
         assertEquals(4, maxConsecutiveOnes( intArrayOf(1,1,0,0,1,1,1,1,0,0,1,1,0,1)))
     }
 
+    @Test
+    fun maxSubarraySum_correct() {
+//        assertEquals(11, maxSubarraySum(intArrayOf(2,3,-8,7,-1,2,3)))
+//        assertEquals(16, maxSubarraySum(intArrayOf(5,8,3)))
+        assertEquals(-1, maxSubarraySum(intArrayOf(-6, -1, -8)))
+        assertEquals(4, maxSubarraySum(intArrayOf(-5,1,-2,3,-1,2,-2)))
+    }
+
 }
 
 

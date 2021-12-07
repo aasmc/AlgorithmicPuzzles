@@ -422,7 +422,18 @@ fun maxConsecutiveOnes(arr: IntArray): Int {
     return res
 }
 
-
+fun maxSubarraySum(arr: IntArray): Int {
+    if (arr.isEmpty()) {
+        throw IllegalArgumentException("The array is empty")
+    }
+    var maxEnding = arr[0]
+    var res = arr[0]
+    for (i in 1 until arr.size) {
+        maxEnding = max(maxEnding + arr[i], arr[i])
+        res = max(res, maxEnding)
+    }
+    return res
+}
 
 
 
