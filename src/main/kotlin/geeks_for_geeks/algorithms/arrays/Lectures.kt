@@ -404,7 +404,23 @@ fun tappingWaterEfficient(bars: IntArray): Int {
     return res
 }
 
-
+/**
+ * Given an array of zeroes and ones, find maximum number of
+ * consecutive ones in the array.
+ */
+fun maxConsecutiveOnes(arr: IntArray): Int {
+    var res = 0
+    var counter = 0
+    arr.forEach { elem ->
+        if (elem == 1) {
+            ++counter
+            res = max(res, counter)
+        } else {
+            counter = 0
+        }
+    }
+    return res
+}
 
 
 

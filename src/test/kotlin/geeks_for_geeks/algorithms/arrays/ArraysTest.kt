@@ -306,6 +306,13 @@ internal class ArraysTest {
         assertEquals(0, tappingWaterEfficient(intArrayOf(3,2,1)))
     }
 
+    @Test
+    fun maxConsecutiveOnes_correct() {
+        assertEquals(0, maxConsecutiveOnes( intArrayOf(0,0,0,0,0)))
+        assertEquals(5, maxConsecutiveOnes( intArrayOf(1,1,1,1,1)))
+        assertEquals(4, maxConsecutiveOnes( intArrayOf(1,1,0,0,1,1,1,1,0,0,1,1,0,1)))
+    }
+
 }
 
 
