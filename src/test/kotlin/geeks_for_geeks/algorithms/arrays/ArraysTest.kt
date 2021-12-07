@@ -286,6 +286,26 @@ internal class ArraysTest {
         assertEquals(13, maxStockPriceEfficient(intArrayOf(1,5,3,8,12)))
     }
 
+    @Test
+    fun tappingWaterNaive_correct() {
+        val input1 = intArrayOf(2,0,2)
+        assertEquals(2, tappingWaterNaive(input1))
+        val input2 = intArrayOf(3,0,1,2,5)
+        assertEquals(6, tappingWaterNaive(input2))
+        assertEquals(0, tappingWaterNaive(intArrayOf(1,2,3)))
+        assertEquals(0, tappingWaterNaive(intArrayOf(3,2,1)))
+    }
+
+    @Test
+    fun tappingWaterEfficient_correct() {
+        val input1 = intArrayOf(2,0,2)
+        assertEquals(2, tappingWaterEfficient(input1))
+        val input2 = intArrayOf(3,0,1,2,5)
+        assertEquals(6, tappingWaterEfficient(input2))
+        assertEquals(0, tappingWaterEfficient(intArrayOf(1,2,3)))
+        assertEquals(0, tappingWaterEfficient(intArrayOf(3,2,1)))
+    }
+
 }
 
 

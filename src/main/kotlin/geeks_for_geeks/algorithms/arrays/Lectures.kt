@@ -350,7 +350,59 @@ fun maxStockPriceEfficient(prices: IntArray): Int {
     return max
 }
 
+/**
+ * Tapping water problem.
+ * Given an array of non-negative integers that represent bars
+ * which serve as barriers for water, find out how many units of
+ * water can be contained between these bars.
+ *
+ * E.g.               input  2 0 2
+ * can be represented as     |  |
+ *                           |__|
+ * So, between these bars we can contain 2 units of water.
+ *
+ * Time Complexity O(N^2)
+ */
+fun tappingWaterNaive(bars: IntArray): Int {
+    var res = 0
+    for (i in 1 until bars.lastIndex) {
+        var leftMax = bars[i]
+        for (j in 0 until i) {
+            leftMax = max(leftMax, bars[j])
+        }
+        var rightMax = bars[i]
+        for (j in i + 1 until bars.size) {
+            rightMax = max(rightMax, bars[j])
+        }
+        res += (min(leftMax, rightMax) - bars[i])
+    }
+    return res
+}
 
+/**
+ * Time complexity O(N)
+ */
+fun tappingWaterEfficient(bars: IntArray): Int {
+    if (bars.isEmpty() || bars.size == 1 || bars.size == 2) {
+        return 0
+    }
+    // precompute leftMax and rightMax elements for every element in the array
+    val lMaxes = IntArray(bars.size)
+    val rMaxes = IntArray(bars.size)
+    lMaxes[0] = bars[0]
+    for (i in 1 until lMaxes.size) {
+        lMaxes[i] = max(bars[i], lMaxes[i - 1])
+    }
+    rMaxes[lMaxes.lastIndex] = bars[bars.lastIndex]
+    for (i in lMaxes.lastIndex - 1 downTo 0) {
+        rMaxes[i] = max(bars[i], rMaxes[i + 1])
+    }
+    var res = 0
+    for (i in 1 until bars.lastIndex) {
+        res += (min(lMaxes[i], rMaxes[i]) - bars[i])
+    }
+    return res
+}
 
 
 
