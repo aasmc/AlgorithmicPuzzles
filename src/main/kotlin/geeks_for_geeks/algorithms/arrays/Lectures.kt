@@ -474,6 +474,95 @@ fun maxLengthEvenOddSubarrayEfficient(arr: IntArray): Int {
     return res
 }
 
+fun maxSumOfCircularSubarrayNaive(arr: IntArray): Int {
+    var res = arr[0]
+    for (i in arr.indices) {
+        var currentMax = arr[i]
+        var currentSum = arr[i]
+        for (j in 1 until arr.size) {
+            val index = (i + j) % arr.size
+            currentSum += arr[index]
+            currentMax = max(currentMax, currentSum)
+        }
+        res = max(res, currentMax)
+    }
+    return res
+}
+
+/**
+ * The solution is based on the following idea:
+ *  Step 1. find the max sum of a normal subarray
+ *  Step 2. find the minimum sum subarray of the array.
+ *  Step 3. subtract the minimum sum subarray from the sum of entire array.
+ *          actually here we invert the array and add the sum of the entire
+ *          array to the max sum of the inverted array. That allows to reuse the
+ *          function for finding a max sum normal subarray.
+ *  Step 4. the result is the max from step 3 and step 1.
+ *
+ *  TimeComplexity O(N)
+ */
+fun maxSumOfCircularSubarrayEfficient(arr: IntArray) : Int {
+
+    val normalSum = maxNormalSubarray(arr)
+
+    // this is a critical part of the algorithm.
+    // if the normal sum subarray is negative it means,
+    // the entire array consist of negative numbers and this is actually
+    // the largest of them all, so we don't need to proceed any further.
+    // this is not only optimization, but a correct solution.
+    // Otherwise, there's a corner case, when the algorithm will not
+    // work correctly: [-5, -3]. normalSum = -3, arraySum = -8
+    // we invert the array and receive [5, 3], maxCircularSum = -8 + 8 = 0
+    // result = max(-3, 0) = 0 and this is incorrect!
+    if (normalSum < 0) {
+        return normalSum
+    }
+
+    var arrSum = 0
+    for (i in arr.indices) {
+        arrSum += arr[i]
+        arr[i] = -arr[i]
+    }
+    val maxCircular = arrSum + maxNormalSubarray(arr)
+
+    return max(normalSum, maxCircular)
+}
+
+private fun maxNormalSubarray(arr: IntArray) : Int {
+    var normalSum = arr[0]
+    var maxEnding = arr[0]
+    for (i in 1 until arr.size) {
+        maxEnding = max(arr[i], maxEnding + arr[i])
+        normalSum = max(normalSum, maxEnding)
+    }
+    return normalSum
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

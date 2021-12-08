@@ -334,6 +334,24 @@ internal class ArraysTest {
         assertEquals(4, maxLengthEvenOddSubarrayEfficient(intArrayOf(7, 10, 9, 14)))
         assertEquals(1, maxLengthEvenOddSubarrayEfficient(intArrayOf(10, 12, 8, 4)))
     }
+
+    @Test
+    fun maxSumOfCircularSubarray_correct() {
+        assertEquals(15, maxSumOfCircularSubarrayNaive(intArrayOf(10, 5, -5)))
+        assertEquals(12, maxSumOfCircularSubarrayNaive(intArrayOf(5, -2, 3, 4)))
+        assertEquals(5, maxSumOfCircularSubarrayNaive(intArrayOf(2, 3, -4)))
+        assertEquals(12, maxSumOfCircularSubarrayNaive(intArrayOf(8, -4, 3, -5, 4)))
+        assertEquals(10, maxSumOfCircularSubarrayNaive(intArrayOf(-3, 4, 6, -2)))
+    }
+
+    @Test
+    fun maxSumOfCircularSubarrayEfficient_correct() {
+        assertEquals(15, maxSumOfCircularSubarrayEfficient(intArrayOf(10, 5, -5)))
+        assertEquals(12, maxSumOfCircularSubarrayEfficient(intArrayOf(5, -2, 3, 4)))
+        assertEquals(5, maxSumOfCircularSubarrayEfficient(intArrayOf(2, 3, -4)))
+        assertEquals(12, maxSumOfCircularSubarrayEfficient(intArrayOf(8, -4, 3, -5, 4)))
+        assertEquals(10, maxSumOfCircularSubarrayEfficient(intArrayOf(-3, 4, 6, -2)))
+    }
 }
 
 
