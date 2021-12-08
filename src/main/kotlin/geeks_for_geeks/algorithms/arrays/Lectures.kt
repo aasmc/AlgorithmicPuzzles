@@ -538,7 +538,54 @@ private fun maxNormalSubarray(arr: IntArray) : Int {
     return normalSum
 }
 
+/**
+ * Given an array of integers find a majority element if it exists.
+ * A majority element is the one that appears more than arr.size / 2 times.
+ *
+ * @return any of the indices of the majority element or -1 if none found.
+ */
+fun majorityElementNaive(arr: IntArray): Int {
+    for (i in arr.indices) {
+        var count = 1
+        for (j in i + 1 until arr.size) {
+            if (arr[i] == arr[j]) {
+                ++count
+            }
+        }
+        if (count > arr.size / 2) {
+            return i
+        }
+    }
+    return -1
+}
 
+fun majorityElementEfficient(arr: IntArray) : Int {
+    // phase 1. Find the candidate.
+    var resIndex = 0
+    var count = 1
+    for (i in 1 until arr.size) {
+        if (arr[resIndex] == arr[i]) {
+            ++count
+        } else {
+            --count
+        }
+        if (count == 0) {
+            resIndex = i
+            count = 1
+        }
+    }
+    // phase 2. Check if the candidate is the majority element
+    count = 0
+    arr.forEach { element ->
+        if (arr[resIndex] == element) {
+            ++count
+        }
+    }
+    if (count > arr.size / 2) {
+        return resIndex
+    }
+    return -1
+}
 
 
 

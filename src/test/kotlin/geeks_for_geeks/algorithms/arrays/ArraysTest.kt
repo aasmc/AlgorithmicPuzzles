@@ -352,6 +352,25 @@ internal class ArraysTest {
         assertEquals(12, maxSumOfCircularSubarrayEfficient(intArrayOf(8, -4, 3, -5, 4)))
         assertEquals(10, maxSumOfCircularSubarrayEfficient(intArrayOf(-3, 4, 6, -2)))
     }
+
+    @Test
+    fun majorityElement_correct() {
+        val res = majorityElementNaive(intArrayOf(8,3,4,8,8))
+        val check = res == 0 || res == 3 || res == 4
+        assertTrue(check)
+
+        assertEquals(-1, majorityElementNaive(intArrayOf(1,2,3,4,7,7,5)))
+    }
+
+    @Test
+    fun majorityElementEfficient_correct() {
+        val res = majorityElementEfficient(intArrayOf(8,3,4,8,8))
+        val check = res == 0 || res == 3 || res == 4
+        assertTrue(check)
+
+        assertEquals(-1, majorityElementEfficient(intArrayOf(1,2,3,4,7,7,5)))
+    }
+
 }
 
 
