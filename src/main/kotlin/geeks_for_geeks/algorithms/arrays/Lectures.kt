@@ -587,9 +587,67 @@ fun majorityElementEfficient(arr: IntArray) : Int {
     return -1
 }
 
+/**
+ * Given a binary array (array consisting of either zeroes or ones)
+ * the task is to flip all elements to either one or to zero in
+ * the minimum number of flips.
+ *
+ * BUT! Consecutive flip of the numbers is considered as one flip.
+ */
+fun minFlipsNaive(arr: IntArray) : List<Int> {
+    var groupsOfZero = 0
+    var groupsOfOne = 0
+    arr.forEach { elem->
+        if (elem == 0) ++groupsOfZero
+        else ++groupsOfOne
+    }
+    val res = mutableListOf<Int>()
+    if (groupsOfOne < groupsOfZero) {
+        arr.forEachIndexed { index, elem ->
+            if (elem == 1) {
+                res.add(index)
+            }
+        }
+    } else {
+        arr.forEachIndexed { index, elem ->
+            if (elem == 0) {
+                res.add(index)
+            }
+        }
+    }
+    return res
+}
 
+/**
+ * The efficient solution is based on the idea that
+ * the difference between the count of zero groups and
+ * one groups is always either 1 or 0 since we are traversing
+ * a binary array.
+ *
+ * E.g. 1100110011
+ * If the array starts with group of 1 and ends with group of 1 then
+ * the number of groups of 0 will be less by 1.
+ *
+ * If the array starts with 1 and ends with 0 then there's an
+ * equal number of groups.
+ *
+ * The conclusion is -> flip only those groups that you meet second
+ * in the array.
+ */
+fun minFlipsEfficient(arr: IntArray) : List<Int> {
+    val check = if (arr[0] == 1) 0 else 1
+    val res = mutableListOf<Int>()
+    calculateFlip(res, arr, check)
+    return res
+}
 
-
+private fun calculateFlip(res: MutableList<Int>, arr: IntArray, check: Int) {
+    arr.forEachIndexed { index, elem ->
+        if (elem == check) {
+            res.add(index)
+        }
+    }
+}
 
 
 

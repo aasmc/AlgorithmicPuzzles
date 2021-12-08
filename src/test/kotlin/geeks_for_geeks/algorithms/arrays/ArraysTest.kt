@@ -371,6 +371,36 @@ internal class ArraysTest {
         assertEquals(-1, majorityElementEfficient(intArrayOf(1,2,3,4,7,7,5)))
     }
 
+    @Test
+    fun minFlipsNaive_correct() {
+        val res1 = minFlipsNaive(intArrayOf(1,1,0,0,0,1))
+        assertEquals(2, res1[0])
+        assertEquals(3, res1[1])
+        assertEquals(4, res1[2])
+
+        val res2 = minFlipsNaive(intArrayOf(1,0,0,0,1,0,0,1,1,1,1))
+        assertEquals(1, res2[0])
+        assertEquals(2, res2[1])
+        assertEquals(3, res2[2])
+        assertEquals(5, res2[3])
+        assertEquals(6, res2[4])
+    }
+
+    @Test
+    fun minFlipsEfficient_correct() {
+        val res1 = minFlipsEfficient(intArrayOf(1,1,0,0,0,1))
+        assertEquals(2, res1[0])
+        assertEquals(3, res1[1])
+        assertEquals(4, res1[2])
+
+        val res2 = minFlipsEfficient(intArrayOf(1,0,0,0,1,0,0,1,1,1,1))
+        assertEquals(1, res2[0])
+        assertEquals(2, res2[1])
+        assertEquals(3, res2[2])
+        assertEquals(5, res2[3])
+        assertEquals(6, res2[4])
+    }
+
 }
 
 
