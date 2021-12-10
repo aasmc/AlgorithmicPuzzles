@@ -750,13 +750,71 @@ fun nBonacciNumbers(n: Int, m: Int): List<Int> {
 }
 
 
+/**
+ * Given a fixed size array of integers, find the most efficient
+ * way to handle queries of type getSum(0, 2), getSum(3, 6), where
+ * integers in the queried indicate start and end indices (inclusive)
+ * in the array.
+ *
+ * Requirements - every query must run in O(1), a preprocessing
+ * is allowed and it must run in O(N) time.
+ */
+val array = IntArray(100) { it }
+fun prefixSum(arr: IntArray): IntArray {
+    val newArray = IntArray(arr.size)
+    newArray[0] = arr[0]
+    for (i in 1 until arr.size) {
+        newArray[i] = newArray[i - 1] + arr[i]
+    }
+    return newArray
+}
 
+fun getSum(prefixSum: IntArray, start: Int, end: Int): Int {
+    return if (start != 0) {
+        prefixSum[end] - prefixSum[start - 1]
+    } else {
+        prefixSum[end]
+    }
+}
 
+/**
+ * Given an array of integers, find if it has an equilibrium point,
+ * i.e. the element in the array such that the sum of elements before it
+ * is equal to the sum of elements after it.
+ *
+ * @return index of the equilibrium point or -1 if there's none.
+ */
+fun indexOfEquilibriumPoint(arr: IntArray) : Int {
+    var totalSum = arr.sum()
+    var leftSum = 0
+    for (i in arr.indices) {
+        if (leftSum == totalSum - arr[i]) {
+            return i
+        }
+        leftSum += arr[i]
+        totalSum -= arr[i]
+    }
+    return -1
+}
 
+/**
+ * Given N number of ranges, find the most frequent element in the
+ * ranges. The ranges' start and end elements are stored in two
+ * arrays of integers at correspoining indices. E.g.
+ * left = [1,2,5,15]
+ * right = [5,8,7,18]
+ *
+ * The ranges are:
+ *                  1-5 {1,2,3,4,5}
+ *                  2-8 {2,3,4,5,6,7,8}
+ *                  5-7 {5,6,7}
+ *                  15-18 {15,16,17,18}
+ * We may assume that left[i] <= right[i]
+ * The output here is 5.
+ */
+fun mostFrequentInRanges(left: IntArray, right: IntArray) : Int {
 
-
-
-
+}
 
 
 

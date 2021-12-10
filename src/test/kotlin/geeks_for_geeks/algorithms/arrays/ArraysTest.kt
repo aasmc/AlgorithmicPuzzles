@@ -435,6 +435,25 @@ internal class ArraysTest {
         }
     }
 
+    @Test
+    fun indexOfEquilibriumPoint_correct() {
+        assertEquals(4, indexOfEquilibriumPoint(intArrayOf(3,4,8,-9,20, 6)))
+        assertEquals(0, indexOfEquilibriumPoint(intArrayOf(4,2,-2)))
+        assertEquals(2, indexOfEquilibriumPoint(intArrayOf(2,-2, 4)))
+        assertEquals(-1, indexOfEquilibriumPoint(intArrayOf(2,2, 4)))
+    }
+
+    @Test
+    fun mostFrequentInRanges_correct() {
+        assertEquals(
+            5,
+            mostFrequentInRanges(
+                intArrayOf(1,2,5,15),
+                intArrayOf(5,8,7,18)
+            )
+        )
+    }
+
 }
 
 
