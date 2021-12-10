@@ -464,7 +464,8 @@ fun maxLengthEvenOddSubarrayEfficient(arr: IntArray): Int {
     var current = 1
     for (i in 1 until arr.size) {
         if ((arr[i] % 2 == 0 && arr[i - 1] % 2 != 0) ||
-            (arr[i] % 2 != 0 && arr[i - 1] % 2 == 0)) {
+            (arr[i] % 2 != 0 && arr[i - 1] % 2 == 0)
+        ) {
             ++current
             res = max(res, current)
         } else {
@@ -501,7 +502,7 @@ fun maxSumOfCircularSubarrayNaive(arr: IntArray): Int {
  *
  *  TimeComplexity O(N)
  */
-fun maxSumOfCircularSubarrayEfficient(arr: IntArray) : Int {
+fun maxSumOfCircularSubarrayEfficient(arr: IntArray): Int {
 
     val normalSum = maxNormalSubarray(arr)
 
@@ -528,7 +529,7 @@ fun maxSumOfCircularSubarrayEfficient(arr: IntArray) : Int {
     return max(normalSum, maxCircular)
 }
 
-private fun maxNormalSubarray(arr: IntArray) : Int {
+private fun maxNormalSubarray(arr: IntArray): Int {
     var normalSum = arr[0]
     var maxEnding = arr[0]
     for (i in 1 until arr.size) {
@@ -559,7 +560,7 @@ fun majorityElementNaive(arr: IntArray): Int {
     return -1
 }
 
-fun majorityElementEfficient(arr: IntArray) : Int {
+fun majorityElementEfficient(arr: IntArray): Int {
     // phase 1. Find the candidate.
     var resIndex = 0
     var count = 1
@@ -594,10 +595,10 @@ fun majorityElementEfficient(arr: IntArray) : Int {
  *
  * BUT! Consecutive flip of the numbers is considered as one flip.
  */
-fun minFlipsNaive(arr: IntArray) : List<Int> {
+fun minFlipsNaive(arr: IntArray): List<Int> {
     var groupsOfZero = 0
     var groupsOfOne = 0
-    arr.forEach { elem->
+    arr.forEach { elem ->
         if (elem == 0) ++groupsOfZero
         else ++groupsOfOne
     }
@@ -634,7 +635,7 @@ fun minFlipsNaive(arr: IntArray) : List<Int> {
  * The conclusion is -> flip only those groups that you meet second
  * in the array.
  */
-fun minFlipsEfficient(arr: IntArray) : List<Int> {
+fun minFlipsEfficient(arr: IntArray): List<Int> {
     val check = if (arr[0] == 1) 0 else 1
     val res = mutableListOf<Int>()
     calculateFlip(res, arr, check)
@@ -649,16 +650,104 @@ private fun calculateFlip(res: MutableList<Int>, arr: IntArray, check: Int) {
     }
 }
 
+/**
+ * Given an array of integers and a number k,
+ * the task is to find the  maximum sum of k consecutive elemens in the
+ * array.
+ *
+ * Time complexity O(n-k)* k
+ */
+fun windowSlidingNaive(arr: IntArray, k: Int): Int {
+    var maxSum = Int.MIN_VALUE
+    var i = 0
+    while ((i + k - 1) < arr.size) {
+        var currentSum = 0
+        for (j in 0 until k) {
+            currentSum += arr[i + j]
+        }
+        maxSum = max(maxSum, currentSum)
+        ++i
+    }
+    return maxSum
+}
 
+/**
+ * Time complexity O(N)
+ */
+fun windowSlidingEfficient(arr: IntArray, k: Int): Int {
+    var currentSum = 0
+    for (i in 0 until k) {
+        currentSum += arr[i]
+    }
+    var maxSum = currentSum
+    for (j in k until arr.size) {
+        // subtract first element of the previous window
+        // add the next element
+        currentSum += (arr[j] - arr[j - k])
+        maxSum = max(maxSum, currentSum)
+    }
+    return maxSum
+}
 
+/**
+ * Given an array of integers, a sum and a number k,
+ * the task is to find if there's a subarray of size k, whose
+ * sum is equal to the given sum.
+ */
+fun windowSlidingGivenSum(arr: IntArray, k: Int, sum: Int): Boolean {
+    var currentSum = 0
+    for (i in 0 until k) {
+        currentSum += arr[i]
+    }
+    if (currentSum == sum) return true
+    for (j in k until arr.size) {
+        currentSum += (arr[j] - arr[j - k])
+        if (currentSum == sum) return true
+    }
+    return false
+}
 
+/**
+ * Given an unsorted array of non-negative integers find if there's
+ * a subarray with a given sum.
+ */
+fun givenSumSubarray(arr: IntArray, sum: Int): Boolean {
+    var currentSum = arr[0]
+    var start = 0
+    for (end in 1 until arr.size) {
+        while (currentSum > sum && start < end - 1) {
+            currentSum -= arr[start]
+            ++start
+        }
+        if (currentSum == sum) {
+            return true
+        }
+        currentSum += arr[end]
+    }
+    return currentSum == sum
+}
 
-
-
-
-
-
-
+/**
+ * Compute [m] numbers, where every number is the sum of previous [n]
+ * numbers.
+ *
+ * Time Complexity is O(N)
+ */
+fun nBonacciNumbers(n: Int, m: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    if (m < n) {
+        return result
+    }
+    for (i in 0 until n - 1) {
+        result.add(0)
+    }
+    result.add(n - 1, 1)
+    result.add(n, 1)
+    for (i in n + 1 until m) {
+        result.add(i, 2 * result[i - 1] - result[i - n - 1])
+    }
+    return result
+}
 
 
 

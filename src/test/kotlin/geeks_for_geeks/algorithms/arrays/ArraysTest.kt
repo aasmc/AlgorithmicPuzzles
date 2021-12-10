@@ -401,6 +401,40 @@ internal class ArraysTest {
         assertEquals(6, res2[4])
     }
 
+    @Test
+    fun windowSlidingNaive_correct() {
+        assertEquals(45, windowSlidingNaive(intArrayOf(1,8,30,-5,20,7), 3))
+        assertEquals(96, windowSlidingNaive(intArrayOf(-2, 4, 5, 6, 90, 3), 2))
+    }
+
+
+    @Test
+    fun windowSlidingEfficient_correct() {
+        assertEquals(45, windowSlidingEfficient(intArrayOf(1,8,30,-5,20,7), 3))
+        assertEquals(96, windowSlidingEfficient(intArrayOf(-2, 4, 5, 6, 90, 3), 2))
+    }
+
+    @Test
+    fun windowSlidingGivenSum_correct() {
+        assertTrue( windowSlidingGivenSum(intArrayOf(1,8,30,-5,20,7), 3, 45))
+        assertFalse(windowSlidingGivenSum(intArrayOf(-2, 4, 5, 6, 90, 3), 2, 195))
+    }
+
+    @Test
+    fun givenSumSubarray_correct() {
+        assertTrue( givenSumSubarray(intArrayOf(1,8,30,-5,20,7),  45))
+        assertFalse(givenSumSubarray(intArrayOf(-2, 4, 5, 6, 90, 3), 195))
+    }
+
+    @Test
+    fun nBonacciNumbers_correct() {
+        val expected = listOf<Int>(0,0,1,1,2,4,7,13)
+        val res = nBonacciNumbers(3, 8)
+        expected.forEachIndexed { index, elem ->
+            assertEquals(elem, res[index])
+        }
+    }
+
 }
 
 
