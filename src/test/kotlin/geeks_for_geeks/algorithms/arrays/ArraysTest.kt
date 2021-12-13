@@ -454,6 +454,41 @@ internal class ArraysTest {
         )
     }
 
+    @Test
+    fun mergeSortedArrays_correct() {
+        val left = intArrayOf(1,3,5,7)
+        val right = intArrayOf(2,4,6,8)
+        val res = mergeSortedArrays(left, right)
+        val expected = intArrayOf(1,2,3,4,5,6,7,8)
+        expected.forEachIndexed { index, i ->
+            kotlin.test.assertEquals(i, res[index])
+        }
+    }
+
+    @Test
+    fun meanOfArray_correct() {
+        val input = intArrayOf(1,2,19,28,5)
+        assertEquals(11, meanOfArray(input))
+        val input2 = intArrayOf(2,8,3,4)
+        assertEquals(4, meanOfArray(input2))
+    }
+
+    @Test
+    fun medianOfArray_correct() {
+        val input = intArrayOf(1,2,19,28,5)
+        assertEquals(5, medianOfArray(input))
+        val input2 = intArrayOf(2,8,3,4)
+        assertEquals(3, medianOfArray(input2))
+    }
+
+    @Test
+    fun largestAndSecondLargest_correct() {
+        val input = intArrayOf(2,1,2)
+        val res = largestAndSecondLargest(input)
+        assertEquals(2, res[0])
+        assertEquals(1, res[1])
+    }
+
 }
 
 

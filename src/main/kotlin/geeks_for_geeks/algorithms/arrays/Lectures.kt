@@ -744,6 +744,8 @@ fun nBonacciNumbers(n: Int, m: Int): List<Int> {
     result.add(n - 1, 1)
     result.add(n, 1)
     for (i in n + 1 until m) {
+        // here we get 2 * result[i-1], because we need to do the following:
+        // result[i-1] + result[i - 1] - result[i - n - 1]
         result.add(i, 2 * result[i - 1] - result[i - n - 1])
     }
     return result
@@ -834,12 +836,89 @@ fun mostFrequentInRanges(left: IntArray, right: IntArray): Int {
 }
 
 
+fun mergeSortedArrays(left: IntArray, right: IntArray) : IntArray {
+    var i = 0
+    var j = 0
+    var k = 0
+    val res = IntArray(left.size + right.size)
+    while (i < left.size && j < right.size) {
+        if (left[i] < right[j]) {
+            res[k++] = left[i++]
+        } else {
+            res[k++] = right[j++]
+        }
+    }
+    while (i < left.size) {
+        res[k++] = left[i++]
+    }
+    while (j < right.size) {
+        res[k++] = right[j++]
+    }
+    return res
+}
 
+/**
+ * Given an array a[ ] of size N. The task is to find the median
+ * and mean of the array elements. Mean is average of the numbers
+ * and median is the element which is smaller than half of the
+ * elements and greater than remaining half.  If there are odd
+ * elements, the median is simply the middle element in the sorted
+ * array. If there are even elements, then the median is floor of
+ * average of two middle numbers in the sorted array. If mean is
+ * floating point number, then we need to print floor of it.
+ *
+ * Example 1:
+ * Input:
+ * N = 5
+ * a[] = {1, 2, 19, 28, 5}
+ * Output: 11 5
+ * Explanation: For array of 5 elements,
+ * mean is (1 + 2 + 19  + 28  + 5)/5 = 11.
+ * Median is 5 (middle element after
+ * sorting)
+ *
+ * Example 2:
+ * N = 4
+ * a[] = {2, 8, 3, 4}
+ * Output: 4 3
+ * Explanation: For array of 4 elements,
+ * mean is floor((2 + 8 + 3 + 4)/4) = 4.
+ * Median is floor((4 + 3)/2) = 3
+ */
+fun meanOfArray(arr: IntArray): Int {
+    return arr.sum() / arr.size
+}
 
+fun medianOfArray(arr: IntArray) : Int {
+    arr.sort()
+    return if (arr.size % 2 == 0) {
+        val l = arr.size / 2 - 1
+        val r = arr.size / 2
+        (arr[l] + arr[r]) / 2
+    } else {
+        arr[arr.size / 2]
+    }
+}
 
-
-
-
+fun largestAndSecondLargest(arr: IntArray): List<Int> {
+    val result = mutableListOf<Int>()
+    var max = Int.MIN_VALUE
+    var secondMax = Int.MIN_VALUE
+    for (i in arr.indices) {
+        if (arr[i] > max) {
+            secondMax = max
+            max = arr[i]
+        } else if (arr[i] > secondMax && arr[i] != max) {
+            secondMax = arr[i]
+        }
+    }
+    if (max == secondMax) {
+        secondMax = -1
+    }
+    result.add(max)
+    result.add(secondMax)
+    return result
+}
 
 
 
