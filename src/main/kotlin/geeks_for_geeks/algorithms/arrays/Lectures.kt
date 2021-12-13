@@ -784,7 +784,7 @@ fun getSum(prefixSum: IntArray, start: Int, end: Int): Int {
  *
  * @return index of the equilibrium point or -1 if there's none.
  */
-fun indexOfEquilibriumPoint(arr: IntArray) : Int {
+fun indexOfEquilibriumPoint(arr: IntArray): Int {
     var totalSum = arr.sum()
     var leftSum = 0
     for (i in arr.indices) {
@@ -809,11 +809,28 @@ fun indexOfEquilibriumPoint(arr: IntArray) : Int {
  *                  2-8 {2,3,4,5,6,7,8}
  *                  5-7 {5,6,7}
  *                  15-18 {15,16,17,18}
- * We may assume that left[i] <= right[i]
+ * We may assume that left[i] <= right[i] and 0 <= left[i] || right[i] <1000
  * The output here is 5.
  */
-fun mostFrequentInRanges(left: IntArray, right: IntArray) : Int {
-
+fun mostFrequentInRanges(left: IntArray, right: IntArray): Int {
+    // stores beginning and end of all possible ranges
+    // from left and right arrays
+    val arr = IntArray(1000) { 0 }
+    for (i in left.indices) {
+        arr[left[i]]++
+        arr[right[i] + 1]--
+    }
+    var max = arr[0]
+    var res = 0
+    // compute frequencies of all elements in all ranges
+    for (i in 1 until 1000) {
+        arr[i] += arr[i - 1]
+        if (max < arr[i]) {
+            max = arr[i]
+            res = i
+        }
+    }
+    return res
 }
 
 
