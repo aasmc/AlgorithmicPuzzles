@@ -80,6 +80,23 @@ public class Solutions {
 
         return result;
     }
+
+    // Function to find maximum for every adjacent pairs in the array.
+    static void maximumAdjacent(int sizeOfArray, int arr[]){
+        if (sizeOfArray == 0) return;
+        if (sizeOfArray == 1) {
+            System.out.println(arr[0]);
+        }
+        int currentMax = arr[0];
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i < sizeOfArray; ++i) {
+            currentMax = Math.max(currentMax, arr[i]);
+            sb.append(currentMax);
+            sb.append(' ');
+            currentMax = arr[i];
+        }
+        System.out.print(sb);
+    }
 }
 
 

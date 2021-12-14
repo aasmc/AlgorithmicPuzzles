@@ -489,6 +489,31 @@ internal class ArraysTest {
         assertEquals(1, res[1])
     }
 
+    @Test
+    fun maximumAdjacent_correct() {
+        val expected1 = listOf(2,2,3,4,5)
+        val res1 = maximumAdjacent(intArrayOf(1,2,2,3,4,5))
+
+        expected1.forEachIndexed { index, elem ->
+            assertEquals(elem, res1[index])
+        }
+
+        val expected2 = listOf(5)
+        val res2 = maximumAdjacent(intArrayOf(5,5))
+
+        expected2.forEachIndexed { index, elem ->
+            assertEquals(elem, res2[index])
+        }
+
+        val expected3 = listOf(89,89)
+        val res3 = maximumAdjacent(intArrayOf(89, 89, 60))
+
+        expected3.forEachIndexed { index, elem ->
+            assertEquals(elem, res3[index])
+        }
+
+    }
+
 }
 
 
