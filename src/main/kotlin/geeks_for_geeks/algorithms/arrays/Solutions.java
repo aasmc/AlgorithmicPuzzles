@@ -1,7 +1,9 @@
 package geeks_for_geeks.algorithms.arrays;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Solutions {
     public void insertAtIndex(int arr[], int sizeOfArray, int index, int element) {
@@ -82,20 +84,40 @@ public class Solutions {
     }
 
     // Function to find maximum for every adjacent pairs in the array.
-    static void maximumAdjacent(int sizeOfArray, int arr[]){
+    static void maximumAdjacent(int sizeOfArray, int arr[]) {
         if (sizeOfArray == 0) return;
         if (sizeOfArray == 1) {
             System.out.println(arr[0]);
         }
         int currentMax = arr[0];
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < sizeOfArray; ++i) {
+        for (int i = 1; i < sizeOfArray; ++i) {
             currentMax = Math.max(currentMax, arr[i]);
             sb.append(currentMax);
             sb.append(' ');
             currentMax = arr[i];
         }
         System.out.print(sb);
+    }
+
+    //Function to reverse every sub-array group of size k.
+    void reverseInGroups(ArrayList<Integer> arr, int n, int k) {
+
+        if (k == 1)
+            return;
+        for (int i = 0; i < n; i += k) {
+            int start = i;
+            int end = Math.min(start + k - 1, n - 1);
+            reverse(arr, start, end);
+        }
+    }
+
+    private void reverse(ArrayList<Integer> arr, int start, int end) {
+        while (start < end) {
+            Collections.swap(arr, start, end);
+            ++start;
+            --end;
+        }
     }
 }
 

@@ -836,7 +836,7 @@ fun mostFrequentInRanges(left: IntArray, right: IntArray): Int {
 }
 
 
-fun mergeSortedArrays(left: IntArray, right: IntArray) : IntArray {
+fun mergeSortedArrays(left: IntArray, right: IntArray): IntArray {
     var i = 0
     var j = 0
     var k = 0
@@ -889,7 +889,7 @@ fun meanOfArray(arr: IntArray): Int {
     return arr.sum() / arr.size
 }
 
-fun medianOfArray(arr: IntArray) : Int {
+fun medianOfArray(arr: IntArray): Int {
     arr.sort()
     return if (arr.size % 2 == 0) {
         val l = arr.size / 2 - 1
@@ -942,7 +942,7 @@ fun largestAndSecondLargest(arr: IntArray): List<Int> {
  * Explanation: We only have two elements
  * so max of 5 and 5 is 5 only.
  */
-fun maximumAdjacent(arr: IntArray) : List<Int>{
+fun maximumAdjacent(arr: IntArray): List<Int> {
     if (arr.isEmpty()) return emptyList()
     if (arr.size == 1) return listOf(arr[0])
     var currentMax = arr[0]
@@ -955,8 +955,42 @@ fun maximumAdjacent(arr: IntArray) : List<Int>{
     return res
 }
 
-
-
+/**
+ * Given an array arr[] of positive integers of size N.
+ * Reverse every sub-array group of size K.
+ *
+ * Example 1:
+ * Input:
+ * N = 5, K = 3
+ * arr[] = {1,2,3,4,5}
+ * Output: 3 2 1 5 4
+ * Explanation: First group consists of elements
+ * 1, 2, 3. Second group consists of 4,5.
+ *
+ * Example 2:
+ * Input:
+ * N = 4, K = 3
+ * arr[] = {5,6,8,9}
+ * Output: 8 6 5 9
+ */
+fun reverseInGroups(arr: IntArray, k: Int) {
+    var start = 0
+    var end = k - 1
+    for (i in arr.indices step k) {
+        while (start <= end) {
+            val tmp = arr[start]
+            arr[start] = arr[end]
+            arr[end] = tmp
+            ++start
+            --end
+        }
+        start = i + k
+        end = start + k - 1
+        if (end >= arr.size) {
+            end = arr.size - 1
+        }
+    }
+}
 
 
 

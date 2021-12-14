@@ -514,6 +514,23 @@ internal class ArraysTest {
 
     }
 
+    @Test
+    fun reverseInGroups_correct() {
+        val input = intArrayOf(1,2,3,4,5)
+        reverseInGroups(input, 3)
+        val expected = intArrayOf(3,2,1,5,4)
+        expected.forEachIndexed { index, elem ->
+            assertEquals(elem, input[index])
+        }
+
+        val input2 = intArrayOf(5,6,8,9)
+        reverseInGroups(input2, 3)
+        val expected2 = intArrayOf(8,6,5,9)
+        expected2.forEachIndexed { index, elem ->
+            assertEquals(elem, input2[index])
+        }
+    }
+
 }
 
 
