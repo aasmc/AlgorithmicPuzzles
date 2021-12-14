@@ -119,6 +119,42 @@ public class Solutions {
             --end;
         }
     }
+
+    //Function to rotate an array by d elements in counter-clockwise direction.
+    static void rotateArr(int arr[], int d, int n) {
+        if (arr.length == d) return;
+        d = d % n;
+        reverseArray(arr, 0, d - 1);
+        reverseArray(arr, d, n - 1);
+        reverseArray(arr, 0, n - 1);
+    }
+
+    private static void reverseArray(int[] arr, int start, int end) {
+        while (start < end) {
+            int tmp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = tmp;
+            ++start;
+            --end;
+        }
+    }
+
+    //Function to find minimum adjacent difference in a circular array.
+    // arr[]: input array
+    // n: size of array
+    public static int minAdjDiff(int arr[], int n) {
+
+        // Your code here
+        if (n == 1) return arr[0];
+        int min = Math.abs(arr[0] - arr[1]);
+        for (int i = 2; i < n; ++i) {
+            int currentMin = Math.abs(arr[i-1] - arr[i]);
+            min = Math.min(min, currentMin);
+        }
+        int lastMin = Math.abs(arr[n - 1] - arr[0]);
+        min = Math.min(min, lastMin);
+        return min;
+    }
 }
 
 

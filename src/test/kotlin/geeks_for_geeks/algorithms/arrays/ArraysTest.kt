@@ -531,6 +531,12 @@ internal class ArraysTest {
         }
     }
 
+    @Test
+    fun minAdjDiff_correct() {
+        assertEquals(4, minAdjDiff(intArrayOf(8, -8, 9, -9, 10, -11, 12)))
+        assertEquals(1, minAdjDiff(intArrayOf(10, -3, -4, 7, 6, 5, -4, -1)))
+    }
+
 }
 
 
