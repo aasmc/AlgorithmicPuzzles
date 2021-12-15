@@ -543,6 +543,26 @@ internal class ArraysTest {
         intArrayOf(15, 8, 5, 4), 15))
     }
 
+    @Test
+    fun convertToWave_correct() {
+        val input = intArrayOf(2,4,7,8,9,10)
+        convertToWave(input)
+        assertEquals(4, input[0])
+        assertEquals(2, input[1])
+        assertEquals(8, input[2])
+        assertEquals(7, input[3])
+        assertEquals(10, input[4])
+        assertEquals(9, input[5])
+
+        val input2 = intArrayOf(1,2,3,4,5)
+        convertToWave(input2)
+        assertEquals(2, input2[0])
+        assertEquals(1, input2[1])
+        assertEquals(4, input2[2])
+        assertEquals(3, input2[3])
+        assertEquals(5, input2[4])
+    }
+
 }
 
 

@@ -173,7 +173,65 @@ public class Solutions {
         }
         return res;
     }
+
+    // arr: input array
+    // n: size of the array
+    //Function to sort the array into a wave-like array.
+    public static void convertToWave(int arr[], int n) {
+
+        // Your code here
+        if (n == 1) return;
+        int left = 0;
+        int right = 1;
+        int index;
+        for (index = 2; index < n; index += 2) {
+            swap(arr, left, right);
+            left = index;
+            right = left + 1;
+        }
+        if (index == n) {
+            left = n - 2;
+            right = n - 1;
+            swap(arr, left, right);
+        }
+    }
+
+    private static void swap(int[] arr, int from, int to) {
+        int tmp = arr[from];
+        arr[from] = arr[to];
+        arr[to] = tmp;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

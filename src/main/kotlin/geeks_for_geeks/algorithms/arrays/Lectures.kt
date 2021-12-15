@@ -1090,7 +1090,7 @@ fun maxOccurred(left: IntArray, right: IntArray, ceiling: Int): Int {
     var max = prefixSum[0]
     var res = 0
     for (i in 1..ceiling) {
-        prefixSum[i] += prefixSum[i -1]
+        prefixSum[i] += prefixSum[i - 1]
         if (max < prefixSum[i]) {
             max = prefixSum[i]
             res = i
@@ -1099,9 +1099,61 @@ fun maxOccurred(left: IntArray, right: IntArray, ceiling: Int): Int {
     return res
 }
 
+/**
+ * Given a sorted array arr[] of distinct integers.
+ * Sort the array into a wave-like array and return it
+ * In other words, arrange the elements into a sequence
+ * such that arr[1] >= arr[2] <= arr[3] >= arr[4] <= arr[5].....
+ *
+ * Example 1:
+ * Input:
+ * n = 5
+ * arr[] = {1,2,3,4,5}
+ * Output: 2 1 4 3 5
+ * Explanation: Array elements after
+ * sorting it in wave form are
+ * 2 1 4 3 5.
+ *
+ * Example 2:
+ * Input:
+ * n = 6
+ * arr[] = {2,4,7,8,9,10}
+ * Output: 4 2 8 7 10 9
+ * Explanation: Array elements after
+ * sorting it in wave form are
+ * 4 2 8 7 10 9.
+ *
+ *
+ * Expected Time Complexity: O(n).
+ * Expected Auxiliary Space: O(1).
+ *
+ * Constraints:
+ * 1 ≤ n ≤ 106
+ * 0 ≤ arr[i] ≤107
+ */
+fun convertToWave(arr: IntArray) {
+    if (arr.size == 1) return
+    var left = 0
+    var right = 1
+    var index = 2
+    for (i in 2 until arr.size step 2) {
+        swapp(arr, left, right)
+        left = i
+        right = left + 1
+        index += 2
+    }
+    if (index == arr.size) {
+        left = arr.lastIndex - 1
+        right = arr.lastIndex
+        swapp(arr, left, right)
+    }
+}
 
-
-
+private fun swapp(arr: IntArray, from: Int, to: Int) {
+    val tmp = arr[from]
+    arr[from] = arr[to]
+    arr[to] = tmp
+}
 
 
 
