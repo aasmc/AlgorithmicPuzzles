@@ -148,12 +148,30 @@ public class Solutions {
         if (n == 1) return arr[0];
         int min = Math.abs(arr[0] - arr[1]);
         for (int i = 2; i < n; ++i) {
-            int currentMin = Math.abs(arr[i-1] - arr[i]);
+            int currentMin = Math.abs(arr[i - 1] - arr[i]);
             min = Math.min(min, currentMin);
         }
         int lastMin = Math.abs(arr[n - 1] - arr[0]);
         min = Math.min(min, lastMin);
         return min;
+    }
+
+    public static int maxOccured(int L[], int R[], int n, int maxx) {
+        int[] prefixSum = new int[maxx + 2];
+        for (int i = 0; i < n; ++i) {
+            prefixSum[L[i]]++;
+            prefixSum[R[i] + 1]--;
+        }
+        int max = prefixSum[0];
+        int res = 0;
+        for (int j = 1; j <= maxx; ++j) {
+            prefixSum[j] += prefixSum[j - 1];
+            if (prefixSum[j] > max) {
+                max = prefixSum[j];
+                res = j;
+            }
+        }
+        return res;
     }
 }
 

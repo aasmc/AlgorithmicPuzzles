@@ -537,6 +537,12 @@ internal class ArraysTest {
         assertEquals(1, minAdjDiff(intArrayOf(10, -3, -4, 7, 6, 5, -4, -1)))
     }
 
+    @Test
+    fun maxOccurred_correct() {
+        assertEquals(4, maxOccurred(intArrayOf(1,4,3,1),
+        intArrayOf(15, 8, 5, 4), 15))
+    }
+
 }
 
 
