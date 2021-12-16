@@ -563,6 +563,25 @@ internal class ArraysTest {
         assertEquals(5, input2[4])
     }
 
+    @Test
+    fun frequencyCount_correct() {
+        val input = intArrayOf(2,3,2,3,5)
+        frequencyCount(input)
+        assertEquals(0, input[0])
+        assertEquals(2, input[1])
+        assertEquals(2, input[2])
+        assertEquals(0, input[3])
+        assertEquals(1, input[4])
+
+        val input2 = intArrayOf(3,3,3,3)
+        frequencyCount(input2)
+        assertEquals(0, input2[0])
+        assertEquals(0, input2[1])
+        assertEquals(4, input2[2])
+        assertEquals(0, input2[3])
+
+    }
+
 }
 
 

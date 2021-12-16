@@ -201,6 +201,36 @@ public class Solutions {
         arr[from] = arr[to];
         arr[to] = tmp;
     }
+
+    //Function to count the frequency of all elements from 1 to N in the array.
+    public static void frequencyCount(int arr[], int N, int P) {
+        int i = 0;
+        while(i < N){
+            if(arr[i] <= 0){
+                ++i;
+                continue;
+            }
+            int idx = arr[i] - 1;
+
+            if(idx > N-1){
+                arr[i] = 0;
+                ++i;
+                continue;
+            }
+            if(arr[idx] > 0){
+                arr[i] = arr[idx];
+                arr[idx] = -1;
+            }
+            else{
+                arr[idx]--;
+                arr[i] = 0;
+                ++i;
+            }
+        }
+        for(i = 0; i < N; ++i){
+            arr[i] = arr[i] * -1;
+        }
+    }
 }
 
 
