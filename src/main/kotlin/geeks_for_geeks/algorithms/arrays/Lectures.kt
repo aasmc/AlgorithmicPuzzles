@@ -1212,14 +1212,14 @@ private fun swapp(arr: IntArray, from: Int, to: Int) {
  * element at array[a-1] is already negative, then it is already replaced
  * by a frequency so decrement array[a-1].
  */
-fun frequencyCount(arr: IntArray){
+fun frequencyCount(arr: IntArray) {
     val N = arr.size
     var i = 0
     // Traverse all array elements
     while (i < N) {
         // If this element is already processed,
         // then nothing to do
-        if (arr[i]<=0) {
+        if (arr[i] <= 0) {
             ++i
             continue
         }
@@ -1242,7 +1242,7 @@ fun frequencyCount(arr: IntArray){
             // After storing arr[elementIndex], change it
             // to store initial count of 'arr[i]'
             arr[elementIndex] = -1
-        }  else {
+        } else {
             // If this is NOT first occurrence of arr[i],
             // then decrement its count.
             arr[elementIndex]--
@@ -1252,15 +1252,84 @@ fun frequencyCount(arr: IntArray){
             ++i
         }
     }
-    for(j in arr.indices) {
+    for (j in arr.indices) {
         arr[j] = arr[j] * -1
     }
 }
 
+/**
+ * You are given an array arr[] of N integers including 0.
+ * The task is to find the smallest positive number missing from the array.
+ *
+ * Example 1:
+ * Input:
+ * N = 5
+ * arr[] = {1,2,3,4,5}
+ * Output: 6
+ * Explanation: Smallest positive missing
+ * number is 6.
+ *
+ * Example 2:
+ * Input:
+ * N = 5
+ * arr[] = {0,-10,1,3,-20}
+ * Output: 2
+ * Explanation: Smallest positive missing
+ * number is 2.
+ *
+ * To mark presence of an element x, we change the value at the index x to negative.
+ * But this approach doesn’t work if there are non-positive (-ve and 0) numbers.
+ * So we segregate positive from negative numbers as first step and then apply
+ * the approach.
+ *
+ * Following is the two step algorithm.
+ * 1) Segregate positive numbers from others i.e., move all non-positive numbers
+ * to left side. In the following code, segregate() function does this part.
+ *
+ * 2) Now we can ignore non-positive elements and consider only the part of
+ * array which contains all positive elements. We traverse the array containing
+ * all positive numbers and to mark presence of an element x, we change the sign
+ * of value at index x to negative. We traverse the array again and print the
+ * first index which has positive value. In the following code,
+ * findMissingPositive() function does this part. Note that in findMissingPositive,
+ * we have subtracted 1 from the values as indexes start from 0.
+ */
+fun smallestPositiveMissingNumber(arr: IntArray): Int {
+    return findMissingPositive(arr, segregate(arr))
+}
 
+/**
+ * Puts all negative elements and zeroes in the array to the left
+ * side of the array and returns the number of such elements.
+ */
+private fun segregate(arr: IntArray): Int {
+    var result = 0
+    for (i in arr.indices) {
+        if (arr[i] <= 0) {
+            val tmp = arr[i]
+            arr[i] = arr[result]
+            arr[result] = tmp
+            ++result
+        }
+    }
+    return result
+}
 
-
-
+private fun findMissingPositive(arr: IntArray, startOfPositive: Int): Int {
+    val size = arr.size - startOfPositive
+    for (i in startOfPositive until arr.size) {
+        val x = abs(arr[i])
+        if (x - 1 < size && arr[x + startOfPositive -1] > 0) {
+            arr[x + startOfPositive - 1] = -arr[x + startOfPositive - 1]
+        }
+    }
+    for (i in startOfPositive until arr.size) {
+        if (arr[i] > 0) {
+            return i - startOfPositive + 1
+        }
+    }
+    return size + 1
+}
 
 
 

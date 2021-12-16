@@ -582,6 +582,12 @@ internal class ArraysTest {
 
     }
 
+    @Test
+    fun smallestPositiveMissingNumber_correct() {
+        assertEquals(6, smallestPositiveMissingNumber(intArrayOf(1,2,3,4,5)))
+        assertEquals(2, smallestPositiveMissingNumber(intArrayOf(0, -10, 1, 3, -20)))
+    }
+
 }
 
 

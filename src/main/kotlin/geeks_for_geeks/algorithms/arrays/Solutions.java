@@ -1,9 +1,11 @@
 package geeks_for_geeks.algorithms.arrays;
 
 import java.lang.reflect.Array;
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Solutions {
     public void insertAtIndex(int arr[], int sizeOfArray, int index, int element) {
@@ -205,31 +207,103 @@ public class Solutions {
     //Function to count the frequency of all elements from 1 to N in the array.
     public static void frequencyCount(int arr[], int N, int P) {
         int i = 0;
-        while(i < N){
-            if(arr[i] <= 0){
+        while (i < N) {
+            if (arr[i] <= 0) {
                 ++i;
                 continue;
             }
             int idx = arr[i] - 1;
 
-            if(idx > N-1){
+            if (idx > N - 1) {
                 arr[i] = 0;
                 ++i;
                 continue;
             }
-            if(arr[idx] > 0){
+            if (arr[idx] > 0) {
                 arr[i] = arr[idx];
                 arr[idx] = -1;
-            }
-            else{
+            } else {
                 arr[idx]--;
                 arr[i] = 0;
                 ++i;
             }
         }
-        for(i = 0; i < N; ++i){
+        for (i = 0; i < N; ++i) {
             arr[i] = arr[i] * -1;
         }
+    }
+
+    // a: input array
+    // n: size of array
+    // Function to find equilibrium point in the array.
+    public static int equilibriumPoint(long arr[], int n) {
+        long totalSum = 0;
+        for (int i = 0; i < n; i++) {
+            totalSum += arr[i];
+        }
+        long leftSum = 0;
+        int index = -1;
+        for (int j = 0; j < n; ++j) {
+            if (leftSum == totalSum - arr[j]) {
+                index = j;
+                break;
+            }
+            leftSum += arr[j];
+            totalSum -= arr[j];
+        }
+        return index;
+    }
+
+    //Function to find the leaders in the array.
+    static ArrayList<Integer> leaders(int arr[], int n) {
+        // Your code here
+        ArrayList<Integer> result = new ArrayList<>();
+        int currentLeader = arr[n - 1];
+        result.add(currentLeader);
+        for (int i = n - 2; i >= 0; --i) {
+            if (arr[i] >= currentLeader) {
+                currentLeader = arr[i];
+                result.add(currentLeader);
+            }
+        }
+        result.sort(Comparator.reverseOrder());
+        return result;
+    }
+
+    //Function to find the smallest positive number missing from the array.
+    static int missingNumber(int arr[], int size) {
+        return findMissingInSegregatedArray(arr, size, segregate(arr, size));
+    }
+
+    private static int segregate(int[] arr, int size) {
+        int result = 0;
+        for (int i = 0; i < size; ++i) {
+            if (arr[i] <= 0) {
+                if (i != result) {
+                    int tmp = arr[i];
+                    arr[i] = arr[result];
+                    arr[result] = tmp;
+                }
+                ++result;
+            }
+        }
+        return result;
+    }
+
+    private static int findMissingInSegregatedArray(int[] arr, int size, int startOfPositive) {
+        int diff = size - startOfPositive;
+        for (int i = startOfPositive; i < size; ++i) {
+            int x = Math.abs(arr[i]);
+            if (x - 1 < diff && arr[x + startOfPositive - 1] > 0) {
+                arr[x + startOfPositive - 1] = -arr[x + startOfPositive - 1];
+            }
+        }
+        for (int i = startOfPositive; i < size; i++) {
+            if (arr[i] > 0) {
+                return i - startOfPositive + 1;
+            }
+        }
+        return diff + 1;
     }
 }
 
