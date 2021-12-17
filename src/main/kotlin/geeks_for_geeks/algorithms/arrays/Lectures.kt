@@ -1331,6 +1331,58 @@ private fun findMissingPositive(arr: IntArray, startOfPositive: Int): Int {
     return size + 1
 }
 
+/**
+ * Given a sorted array of positive integers.
+ * Your task is to rearrange  the array elements alternatively i.e first
+ * element should be max value, second should be min value, third should
+ * be second max, fourth should be second min and so on.
+ *
+ * Example 1:
+ * Input:
+ * N = 6
+ * arr[] = {1,2,3,4,5,6}
+ * Output: 6 1 5 2 4 3
+ * Explanation: Max element = 6, min = 1,
+ * second max = 5, second min = 2, and
+ * so on... Modified array is : 6 1 5 2 4 3.
+ *
+ * Example 2:
+ * Input:
+ * N = 11
+ * arr[]={10,20,30,40,50,60,70,80,90,100,110}
+ * Output:110 10 100 20 90 30 80 40 70 50 60
+ * Explanation: Max element = 110, min = 10,
+ * second max = 100, second min = 20, and
+ * so on... Modified array is :
+ * 110 10 100 20 90 30 80 40 70 50 60.
+ *
+ * Expected Time Complexity: O(N).
+ * Expected Auxiliary Space: O(1).
+ *
+ * The idea is to use multiplication and modular trick to store two elements at an index.
+ * How does expression “arr[i] += arr[max_index] % max_element * max_element” work ?
+ * The purpose of this expression is to store two elements at index arr[i]. arr[max_index]
+ * is stored as multiplier and “arr[i]” is stored as remainder. For example in {1 2 3 4 5 6 7 8 9},
+ * max_element is 10 and we store 91 at index 0. With 91, we can get original element as 91%10 and
+ * new element as 91/10.
+ */
+fun rearrangeAlternately(arr: IntArray) {
+    var minIndex = 0
+    var maxIndex = arr.lastIndex
+    val maxElem = arr.last() + 1
+    for (i in arr.indices) {
+        if (i and 1 == 0) { // even
+            arr[i] += (arr[maxIndex] % maxElem) * maxElem
+            maxIndex--
+        } else { // odd
+            arr[i] += (arr[minIndex] % maxElem) * maxElem
+            minIndex++
+        }
+    }
+    for (i in arr.indices) {
+        arr[i] = arr[i] / maxElem
+    }
+}
 
 
 

@@ -588,6 +588,18 @@ internal class ArraysTest {
         assertEquals(2, smallestPositiveMissingNumber(intArrayOf(0, -10, 1, 3, -20)))
     }
 
+    @Test
+    fun rearrangeAlternately_correct() {
+        val input = intArrayOf(1,2,3,4,5,6)
+        rearrangeAlternately(input)
+        assertEquals(6, input[0])
+        assertEquals(1, input[1])
+        assertEquals(5, input[2])
+        assertEquals(2, input[3])
+        assertEquals(4, input[4])
+        assertEquals(3, input[5])
+    }
+
 }
 
 

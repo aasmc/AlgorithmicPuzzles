@@ -305,6 +305,25 @@ public class Solutions {
         }
         return diff + 1;
     }
+
+    // temp: input array
+    // n: size of array
+    //Function to rearrange  the array elements alternately.
+    public static void rearrange(int arr[], int n) {
+        int maxIndex = n - 1;
+        int minIndex = 0;
+        int maxElem = arr[maxIndex] + 1;
+        for (int i = 0; i < n; ++i) {
+            if ((i & 1) == 0) { // even
+                arr[i] += (arr[maxIndex--] % maxElem) * maxElem;
+            } else { // odd
+                arr[i] += (arr[minIndex++] % maxElem) * maxElem;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            arr[i] = arr[i] / maxElem;
+        }
+    }
 }
 
 
