@@ -600,6 +600,22 @@ internal class ArraysTest {
         assertEquals(3, input[5])
     }
 
+    @Test
+    fun arrange_correct() {
+        val first = intArrayOf(1, 0)
+        arrange(first)
+        assertEquals(0, first[0])
+        assertEquals(1, first[1])
+
+        val second = intArrayOf(4,0,2,1,3)
+        arrange(second)
+        assertEquals(3, second[0])
+        assertEquals(4, second[1])
+        assertEquals(2, second[2])
+        assertEquals(0, second[3])
+        assertEquals(1, second[4])
+    }
+
 }
 
 
