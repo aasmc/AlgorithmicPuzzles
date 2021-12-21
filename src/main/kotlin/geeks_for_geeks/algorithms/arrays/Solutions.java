@@ -361,6 +361,55 @@ public class Solutions {
         }
         return maxDiff;
     }
+
+    // arr: input array
+    // n: size of array
+    // Function to find the trapped water between the blocks.
+    static long trappingWater(int arr[], int n) {
+        if (arr.length == 0 || arr.length == 1 || arr.length == 2) {
+            return 0;
+        }
+        // Your code here
+        int[] leftMax = new int[n];
+        int[] rightMax = new int[n];
+        leftMax[0] = arr[0];
+        for (int i = 1; i < n; i++) {
+            leftMax[i] = Math.max(leftMax[i - 1], arr[i]);
+        }
+        rightMax[n - 1] = arr[n - 1];
+        for (int j = n - 2; j >= 0; --j) {
+            rightMax[j] = Math.max(rightMax[j + 1], arr[j]);
+        }
+        long res = 0;
+        for (int k = 0; k < n; ++k) {
+            res += (Math.min(leftMax[k], rightMax[k]) - arr[k]);
+        }
+        return res;
+    }
+
+    //Function to find the days of buying and selling stock for max profit.
+    ArrayList<ArrayList<Integer>> stockBuySell(int A[], int n) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+
+        for(int i  = 1; i < n; i++){
+            ArrayList<Integer> temp = new ArrayList();
+            if(A[i - 1] < A[i]){
+                temp.add(i - 1);
+                ++i;
+                while (i < n) {
+                    if (A[i - 1] <= A[i]) {
+                        ++i;
+                    } else {
+                        break;
+                    }
+                }
+                temp.add(i - 1);
+                ans.add(temp);
+            }
+        }
+
+        return ans;
+    }
 }
 
 

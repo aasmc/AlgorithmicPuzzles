@@ -628,6 +628,12 @@ internal class ArraysTest {
         assertEquals(6, maxIndexDiffEfficient(intArrayOf(34, 8, 10, 3, 2, 80, 30, 33, 1)))
     }
 
+    @Test
+    fun stockBuyAndSell_correct() {
+        val res = stockBuyAndSell(intArrayOf(100,180,260,310,40,535,695))
+        val first = res[0]
+    }
+
 }
 
 
