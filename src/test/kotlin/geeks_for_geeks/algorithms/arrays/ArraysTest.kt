@@ -616,6 +616,18 @@ internal class ArraysTest {
         assertEquals(1, second[4])
     }
 
+    @Test
+    fun maxIndexDiffNaive_correct() {
+        assertEquals(1, maxIndexDiffNaive(intArrayOf(1, 10)))
+        assertEquals(6, maxIndexDiffNaive(intArrayOf(34, 8, 10, 3, 2, 80, 30, 33, 1)))
+    }
+
+    @Test
+    fun maxIndexDiffEfficient_correct() {
+        assertEquals(1, maxIndexDiffEfficient(intArrayOf(1, 10)))
+        assertEquals(6, maxIndexDiffEfficient(intArrayOf(34, 8, 10, 3, 2, 80, 30, 33, 1)))
+    }
+
 }
 
 
