@@ -391,9 +391,9 @@ public class Solutions {
     ArrayList<ArrayList<Integer>> stockBuySell(int A[], int n) {
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
 
-        for(int i  = 1; i < n; i++){
-            ArrayList<Integer> temp = new ArrayList();
-            if(A[i - 1] < A[i]){
+        for (int i = 1; i < n; i++) {
+            ArrayList<Integer> temp = new ArrayList<>();
+            if (A[i - 1] < A[i]) {
                 temp.add(i - 1);
                 ++i;
                 while (i < n) {
@@ -409,6 +409,86 @@ public class Solutions {
         }
 
         return ans;
+    }
+
+    // arr[]: input array
+    // num: size of array
+    // Function to check if array is sorted and rotated
+    public static boolean checkRotatedAndSorted(int arr[], int n) {
+        if (n == 0 || n == 1 || n == 2) {
+            return false;
+        }
+
+        int x = 0, y = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (arr[i] < arr[i + 1])
+                x++;
+            else
+                y++;
+        }
+        if (x == 1 || y == 1) {
+            if (arr[n - 1] < arr[0])
+                x++;
+            else
+                y++;
+
+            if (x == 1 || y == 1)
+                return true;
+        }
+        return false;
+    }
+
+    long maxSubarraySum(int arr[], int n) {
+        int maxEnding = arr[0];
+        long res = arr[0];
+        for (int i = 1; i < n; ++i) {
+            maxEnding = Math.max(maxEnding + arr[i], arr[i]);
+            res = Math.max(maxEnding, res);
+        }
+        return res;
+    }
+
+    public static int maxEvenOdd(int arr[], int n) {
+        int res = 1;
+        int current = 1;
+        for (int i = 1; i < n; ++i) {
+            if (    // current - even, prev - odd
+                    (arr[i] % 2 == 0 && arr[i - 1] % 2 != 0)
+                            // current - odd, prev - even
+                            || (arr[i] % 2 != 0 && arr[i - 1] % 2 == 0)
+            ) {
+                ++current;
+                res = Math.max(res, current);
+            } else {
+                current = 1;
+            }
+        }
+        return res;
+    }
+
+    static int circularSubarraySum(int a[], int n) {
+        int normalSum = maxNormalSum(a, n);
+        if (normalSum < 0) {
+            return normalSum;
+        }
+        int arrSum = 0;
+        for (int i = 0; i < n; i++) {
+            arrSum += a[i];
+            a[i] = -a[i];
+        }
+        int maxCircular = arrSum + maxNormalSum(a, n);
+        return Math.max(normalSum, maxCircular);
+    }
+
+    static int maxNormalSum(int[] arr, int n) {
+        int res = arr[0];
+        int maxEnding = arr[0];
+        for (int i = 1; i < n; ++i) {
+            maxEnding = Math.max(maxEnding + arr[i], arr[i]);
+            res = Math.max(maxEnding, res);
+        }
+        return res;
     }
 }
 

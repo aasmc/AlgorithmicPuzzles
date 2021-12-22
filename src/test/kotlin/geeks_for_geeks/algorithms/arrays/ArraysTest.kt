@@ -634,6 +634,16 @@ internal class ArraysTest {
         val first = res[0]
     }
 
+    @Test
+    fun checkRotatedAndSorted_correct() {
+        assertTrue(checkRotatedAndSorted(intArrayOf(3,4,5,6,7,8,1,2)))
+        assertTrue(checkRotatedAndSorted(intArrayOf(40, 42, 44, 46, 16, 21, 22, 27, 29, 34, 38)))
+        assertFalse(checkRotatedAndSorted(intArrayOf(1,2,3,4,5,6)))
+        assertFalse(checkRotatedAndSorted(intArrayOf(6,5,4,3,2,1)))
+        assertFalse(checkRotatedAndSorted(intArrayOf(30, 20, 10, 50, 25)))
+        assertTrue(checkRotatedAndSorted(intArrayOf(37, 13, 15, 17, 23, 27)))
+    }
+
 }
 
 

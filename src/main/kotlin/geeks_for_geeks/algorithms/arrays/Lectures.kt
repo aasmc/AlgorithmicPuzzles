@@ -424,6 +424,11 @@ fun maxConsecutiveOnes(arr: IntArray): Int {
     return res
 }
 
+/**
+ * For every element in the array we find the max sum
+ * of a subarray that ends with this element.
+ * The largest sum will be the result.
+ */
 fun maxSubarraySum(arr: IntArray): Int {
     if (arr.isEmpty()) {
         throw IllegalArgumentException("The array is empty")
@@ -1578,16 +1583,16 @@ fun stockBuyAndSell(arr: IntArray): List<List<Int>> {
     // traverse the entire array starting from 1
     while (i < arr.size) {
         val days = mutableListOf<Int>()
-        // if element at index 0 (on the first traversal)
+        // if element at index i - 1 (on the first traversal the index = 0)
         // is less than current element
         if (arr[i - 1] < arr[i]) {
             // add this index as the day of buying a stock
             days.add(i - 1)
         }
+        // move to the next day
         ++i
-        // go in the right direction and search for the
-        // first element less than the previous one. at the same time
-        // increment the index
+        // while we see that the price is lower than on the previous day
+        // we go on
         while (i < arr.size) {
             if (arr[i - 1] <= arr[i]) {
                 ++i
@@ -1596,7 +1601,8 @@ fun stockBuyAndSell(arr: IntArray): List<List<Int>> {
                 break
             }
         }
-        // add previous element as the day to sell stocks
+        // add previous element as the day to sell stocks, since
+            // the price is highest
         days.add(i - 1)
         // add the days to the result
         result.add(days)
@@ -1605,8 +1611,78 @@ fun stockBuyAndSell(arr: IntArray): List<List<Int>> {
     return result
 }
 
+/**
+ * Given an array arr[] of N distinct integers, check if this array
+ * is Sorted (non-increasing or non-decreasing) and Rotated counter-clockwise.
+ * Note that input array may be sorted in either increasing or decreasing order, then rotated.
+ * A sorted array is not considered as sorted and rotated, i.e.,
+ * there should be at least one rotation.
+ *
+ * Example 1:
+ * Input:
+ * N = 4
+ * arr[] = {3,4,1,2}
+ * Output: Yes
+ * Explanation: The array is sorted
+ * (1, 2, 3, 4) and rotated twice
+ * (3, 4, 1, 2).
+ *
+ * Example 2:
+ * Input:
+ * N = 3
+ * arr[] = {1,2,3}
+ * Output: No
+ * Explanation: The array is sorted
+ * (1, 2, 3) is not rotated.
+ *
+ * The idea is simple. If array is sorted and rotated , elements are either
+ * increasing or decreasing, but with one exception. So we count how many
+ * times the element is greater then its previous element, and how many times
+ * the element is smaller then its previous element.
+ *
+ * The special case is when array is sorted but not rotated. for this check
+ * last element with first element specially.
+ *
+ * - Take two variable say x and y, initialized as 0.
+ * - Now traverse array.
+ * - If we find previous element is smaller then current, we increase x by one.
+ * - Else If we find previous element is greater then current we increase y by one.
+ * - After traversal if any of x and y is not equals to 1, return false.
+ * - If any of x or y is 1, then compare last element with first element
+ *   (0th element as current, and last element as previous.) i.e. if
+ *   last element is greater increase y by one else increase x by one.
+ * - Again check for x and y if any one is equals to one return true. i.e.
+ *   Array is sorted and rotated. Else return false.
+ */
+fun checkRotatedAndSorted(arr: IntArray): Boolean {
+    if (arr.isEmpty() || arr.size == 1 || arr.size == 2) {
+        return false
+    }
 
-
+    var x = 0
+    var y = 0
+    for (i in 0 until arr.size - 1) {
+        if (arr[i] < arr[i + 1]) {
+            ++x
+        } else {
+            ++y
+        }
+    }
+    // If till now either x or y is greater than 1 means
+    // array is not sorted. If either x or y is zero
+    // means array is not rotated.
+    if (y == 1 || x == 1) {
+        if (arr[arr.lastIndex] < arr[0]) {
+            ++x
+        } else {
+            ++y
+        }
+        if (x == 1 || y ==1) {
+            return true
+        }
+    }
+    return false
+}
 
 
 
