@@ -47,6 +47,36 @@ internal class LecturesKtTest {
         res = lastOccurrenceInSortedArray(input, 8)
         assertEquals(input.lastIndex - 2, res)
     }
+
+    @Test
+    fun countOccurrencesInSortedArray_correct() {
+        val input = intArrayOf(1,1,1,2,2,2,2,2,3,3,3,4,4,5,6,7,8,9,9)
+        var res = countOccurrencesInSortedArray(input, -1)
+        assertEquals(0, res)
+        res = countOccurrencesInSortedArray(input, 1)
+        assertEquals(3, res)
+        res = countOccurrencesInSortedArray(input, 2)
+        assertEquals(5, res)
+        res = countOccurrencesInSortedArray(input, 8)
+        assertEquals(1, res)
+        res = countOccurrencesInSortedArray(input, 9)
+        assertEquals(2, res)
+    }
+
+    @Test
+    fun countOccurrencesInSortedArrayEfficient_correct() {
+        val input = intArrayOf(1,1,1,2,2,2,2,2,3,3,3,4,4,5,6,7,8,9,9)
+        var res = countOccurrencesInSortedArrayEfficient(input, -1)
+        assertEquals(0, res)
+        res = countOccurrencesInSortedArrayEfficient(input, 1)
+        assertEquals(3, res)
+        res = countOccurrencesInSortedArrayEfficient(input, 2)
+        assertEquals(5, res)
+        res = countOccurrencesInSortedArrayEfficient(input, 8)
+        assertEquals(1, res)
+        res = countOccurrencesInSortedArrayEfficient(input, 9)
+        assertEquals(2, res)
+    }
 }
 
 

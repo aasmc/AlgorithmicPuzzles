@@ -48,7 +48,7 @@ fun firstOccurrenceInSortedArray(arr: IntArray, target: Int): Int {
             } else {
                 return mid
             }
-        }
+        } else
         if (arr[mid] < target) {
             start = mid + 1
         } else {
@@ -58,7 +58,7 @@ fun firstOccurrenceInSortedArray(arr: IntArray, target: Int): Int {
     return -1
 }
 
-fun lastOccurrenceInSortedArray(arr: IntArray, target: Int) : Int {
+fun lastOccurrenceInSortedArray(arr: IntArray, target: Int): Int {
     var start = 0
     var end = arr.lastIndex
     while (start <= end) {
@@ -69,6 +69,39 @@ fun lastOccurrenceInSortedArray(arr: IntArray, target: Int) : Int {
             } else {
                 return mid
             }
+        } else
+            if (arr[mid] < target) {
+                start = mid + 1
+            } else {
+                end = mid - 1
+            }
+    }
+    return -1
+}
+
+/**
+ * Time complexity is O(logN + k) where k is the number of occurrences of
+ * [target]. In the worst case it is = O(N) when the number of occurrences of
+ * [target] == arr.size.
+ */
+fun countOccurrencesInSortedArray(arr: IntArray, target: Int): Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == target) {
+            var result = 1
+            var toLeft = mid - 1
+            while (toLeft >= 0 && arr[toLeft] == target) {
+                ++result
+                --toLeft
+            }
+            var toRight = mid + 1
+            while (toRight <= arr.lastIndex && arr[toRight] == target) {
+                ++result
+                ++toRight
+            }
+            return result
         }
         if (arr[mid] < target) {
             start = mid + 1
@@ -76,12 +109,17 @@ fun lastOccurrenceInSortedArray(arr: IntArray, target: Int) : Int {
             end = mid - 1
         }
     }
-    return -1
+    return 0
 }
 
-
-
-
+fun countOccurrencesInSortedArrayEfficient(arr: IntArray, target: Int): Int {
+    val first = firstOccurrenceInSortedArray(arr, target)
+    if (first == -1) {
+        return 0
+    }
+    val last = lastOccurrenceInSortedArray(arr, target)
+    return (last - first + 1)
+}
 
 
 
