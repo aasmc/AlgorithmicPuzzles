@@ -37,8 +37,47 @@ private fun binarySearchRecursiveHelper(arr: IntArray, target: Int, start: Int, 
     }
 }
 
+fun firstOccurrenceInSortedArray(arr: IntArray, target: Int): Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == target) {
+            if (mid > 0 && arr[mid - 1] == target) {
+                end = mid
+            } else {
+                return mid
+            }
+        }
+        if (arr[mid] < target) {
+            start = mid + 1
+        } else {
+            end = mid - 1
+        }
+    }
+    return -1
+}
 
-
+fun lastOccurrenceInSortedArray(arr: IntArray, target: Int) : Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == target) {
+            if (mid < arr.lastIndex && arr[mid + 1] == target) {
+                start = mid + 1
+            } else {
+                return mid
+            }
+        }
+        if (arr[mid] < target) {
+            start = mid + 1
+        } else {
+            end = mid - 1
+        }
+    }
+    return -1
+}
 
 
 

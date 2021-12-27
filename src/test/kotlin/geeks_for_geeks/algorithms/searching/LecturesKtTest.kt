@@ -22,4 +22,54 @@ internal class LecturesKtTest {
         val res = binarySearchRecursive(intArrayOf(10, 10), 10)
         assertTrue(res == 0 || res == 1)
     }
+
+    @Test
+    fun firstOccurrenceInSortedArray_correct() {
+        val input = intArrayOf(10, 10, 10, 20, 30, 40, 40, 40, 50)
+        var res = firstOccurrenceInSortedArray(input, 40)
+        assertEquals(5, res)
+        res = firstOccurrenceInSortedArray(input, 5)
+        assertEquals(-1, res)
+        res = firstOccurrenceInSortedArray(input, 10)
+        assertEquals(0, res)
+        assertEquals(0, firstOccurrenceInSortedArray(intArrayOf(5,5,5,5,5,5,5,5), 5))
+    }
+
+    @Test
+    fun lastOccurrenceInSortedArray_correct() {
+        val input = intArrayOf(1,1,1,1,1,1,3,3,3,3,3,4,4,4,4,6,6,6,6,7,8,9,10)
+        var res = lastOccurrenceInSortedArray(input, 1)
+        assertEquals(5, res)
+        res = lastOccurrenceInSortedArray(input, 10)
+        assertEquals(input.lastIndex, res)
+        res = lastOccurrenceInSortedArray(input, -1)
+        assertEquals(-1, res)
+        res = lastOccurrenceInSortedArray(input, 8)
+        assertEquals(input.lastIndex - 2, res)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
