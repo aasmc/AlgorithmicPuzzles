@@ -500,7 +500,9 @@ fun maxSumOfCircularSubarrayNaive(arr: IntArray): Int {
 /**
  * The solution is based on the following idea:
  *  Step 1. find the max sum of a normal subarray
- *  Step 2. find the minimum sum subarray of the array.
+ *  Step 2. find the minimum sum subarray of the array. (this is actually
+ *          the difference between the total sum of the array and the minimum
+ *          sum subarray)
  *  Step 3. subtract the minimum sum subarray from the sum of entire array.
  *          actually here we invert the array and add the sum of the entire
  *          array to the max sum of the inverted array. That allows to reuse the
