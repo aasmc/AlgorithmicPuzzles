@@ -85,6 +85,22 @@ internal class LecturesKtTest {
         val input2 = intArrayOf(0,0,0,0,0)
         assertEquals(0, countOnesInBinarySortedArray(input2))
     }
+
+    @Test
+    fun squareRootFloorNaive_corect() {
+        assertEquals(2, squareRootFloorNaive(4))
+        assertEquals(3, squareRootFloorNaive(9))
+        assertEquals(3, squareRootFloorNaive(14))
+        assertEquals(5, squareRootFloorNaive(25))
+    }
+
+    @Test
+    fun squareRootFloorEfficient_squareRootFloorEfficient() {
+        assertEquals(2, squareRootFloorEfficient(4))
+        assertEquals(3, squareRootFloorEfficient(9))
+        assertEquals(3, squareRootFloorEfficient(14))
+        assertEquals(5, squareRootFloorEfficient(25))
+    }
 }
 
 

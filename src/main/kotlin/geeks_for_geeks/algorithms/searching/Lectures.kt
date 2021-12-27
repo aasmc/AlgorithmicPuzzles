@@ -129,8 +129,39 @@ fun countOnesInBinarySortedArray(arr: IntArray): Int {
     return arr.size - first
 }
 
+/**
+ * Time complexity O(sqrt(N))
+ */
+fun squareRootFloorNaive(num: Int) : Int {
+    var i = 1
+    while (i * i <= num) {
+        ++i
+    }
+    return i - 1
+}
 
-
+/**
+ * Time complexity O(logN)
+ */
+fun squareRootFloorEfficient(num: Int) : Int {
+    var start = 1
+    var end = num
+    var answer = -1
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        val midSquare = mid * mid
+        if (midSquare == num) {
+            return mid
+        }
+        if (midSquare < num) {
+            answer = mid
+            start = mid + 1
+        } else {
+            end = mid - 1
+        }
+    }
+    return answer
+}
 
 
 
