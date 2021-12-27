@@ -49,11 +49,11 @@ fun firstOccurrenceInSortedArray(arr: IntArray, target: Int): Int {
                 return mid
             }
         } else
-        if (arr[mid] < target) {
-            start = mid + 1
-        } else {
-            end = mid - 1
-        }
+            if (arr[mid] < target) {
+                start = mid + 1
+            } else {
+                end = mid - 1
+            }
     }
     return -1
 }
@@ -121,6 +121,13 @@ fun countOccurrencesInSortedArrayEfficient(arr: IntArray, target: Int): Int {
     return (last - first + 1)
 }
 
+fun countOnesInBinarySortedArray(arr: IntArray): Int {
+    val first = firstOccurrenceInSortedArray(arr, 1)
+    if (first == -1) {
+        return 0
+    }
+    return arr.size - first
+}
 
 
 

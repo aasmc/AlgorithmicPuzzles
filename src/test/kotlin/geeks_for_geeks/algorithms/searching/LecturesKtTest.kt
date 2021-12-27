@@ -77,6 +77,14 @@ internal class LecturesKtTest {
         res = countOccurrencesInSortedArrayEfficient(input, 9)
         assertEquals(2, res)
     }
+
+    @Test
+    fun countOnesInBinarySortedArray_correct() {
+        val input = intArrayOf(0,0,0,0,0,0,1,1,1,1,1,1)
+        assertEquals(6, countOnesInBinarySortedArray(input))
+        val input2 = intArrayOf(0,0,0,0,0)
+        assertEquals(0, countOnesInBinarySortedArray(input2))
+    }
 }
 
 
