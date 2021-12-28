@@ -163,6 +163,9 @@ fun squareRootFloorEfficient(num: Int) : Int {
     return answer
 }
 
+/**
+ * Unbounded binary search algorithm.
+ */
 fun searchInInfiniteArray(arr: IntArray, target: Int): Int {
     if (arr[0] == target) return 0
     var i = 1
@@ -186,6 +189,50 @@ fun searchInInfiniteArray(arr: IntArray, target: Int): Int {
     }
     return -1
 }
+
+fun searchInSortedRotatedArray(array: IntArray, target: Int) : Int {
+    var start = 0
+    var end = array.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (array[mid] == target) return mid
+        if (array[start] < array[mid]) { // left half is sorted
+            if (target >= array[start] && target < array[mid]) { // target is in this range start..mid
+                end = mid - 1
+            } else { // target is not in the range start..mid
+                start = mid + 1
+            }
+        } else { // right half is sorted
+            if (target > array[mid] && target <= array[end]) { // target is in range mid..end
+                start = mid + 1
+            } else { // target is not in range mid..end
+                end = mid - 1
+            }
+        }
+    }
+    return -1
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

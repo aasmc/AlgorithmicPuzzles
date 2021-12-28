@@ -112,6 +112,19 @@ internal class LecturesKtTest {
         target = 10
         assertEquals(5, searchInInfiniteArray(input, target))
     }
+
+    @Test
+    fun searchInSortedRotatedArray_correct(){
+        val input = intArrayOf(30, 40, 50, 60, 70, 80, 10, 20)
+        var target = 100
+        assertEquals(-1, searchInSortedRotatedArray(input, target))
+        target = 30
+        assertEquals(0, searchInSortedRotatedArray(input, target))
+        target = 20
+        assertEquals(input.lastIndex, searchInSortedRotatedArray(input, target))
+        target = 10
+        assertEquals(input.lastIndex - 1, searchInSortedRotatedArray(input, target))
+    }
 }
 
 
