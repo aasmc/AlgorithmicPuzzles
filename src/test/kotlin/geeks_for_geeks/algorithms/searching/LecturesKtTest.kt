@@ -101,6 +101,17 @@ internal class LecturesKtTest {
         assertEquals(3, squareRootFloorEfficient(14))
         assertEquals(5, squareRootFloorEfficient(25))
     }
+
+    @Test
+    fun searchInInfiniteArray_correct() {
+        val input = intArrayOf(1,2,3,4,5,10,20,30,40,100,200,300,400,500)
+        var target = 2
+        assertEquals(1, searchInInfiniteArray(input, target))
+        target = 700
+        assertEquals(-1, searchInInfiniteArray(input, target))
+        target = 10
+        assertEquals(5, searchInInfiniteArray(input, target))
+    }
 }
 
 

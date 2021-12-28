@@ -163,7 +163,29 @@ fun squareRootFloorEfficient(num: Int) : Int {
     return answer
 }
 
-
+fun searchInInfiniteArray(arr: IntArray, target: Int): Int {
+    if (arr[0] == target) return 0
+    var i = 1
+    // still need to check for array bounds, because arrays are
+    // finite in kotlin
+    while (i < arr.size && arr[i] < target) {
+        i *= 2
+    }
+    if(i >= arr.size) return -1
+    if (arr[i] == target) return i
+    var start = i / 2 + 1
+    var end = i - 1
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == target) return mid
+        if (arr[mid] < target) {
+            start = mid + 1
+        } else {
+            end = mid - 1
+        }
+    }
+    return -1
+}
 
 
 
