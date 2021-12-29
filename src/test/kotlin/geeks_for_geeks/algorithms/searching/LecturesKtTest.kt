@@ -165,6 +165,15 @@ internal class LecturesKtTest {
         assertEquals(-1, res.first)
         assertEquals(-1, res.second)
     }
+
+    @Test
+    fun findTripleWithSumSortedArray_correct() {
+        val input = intArrayOf(2,3,4,8,9,20,40)
+        val res = findTripletWithSumInSortedArray(input, 32)
+        assertEquals(1, res.first)
+        assertEquals(4, res.second)
+        assertEquals(5, res.third)
+    }
 }
 
 

@@ -305,8 +305,38 @@ fun findPairWithSumEqualToXInSortedArray(arr: IntArray, x: Int) : Pair<Int, Int>
     return -1 to -1
 }
 
+/**
+ * Given a sorted array of integers and number x, find if there's a
+ * triplet with sum = x.
+ *
+ * @return first triplet in the array whose sum = x or triplet of -1, -1, -1
+ */
+fun findTripletWithSumInSortedArray(arr: IntArray, x: Int) : Triple<Int, Int, Int> {
+    for (i in arr.indices) {
+        val pair = findPairSum(arr, x - arr[i], i + 1, arr.lastIndex)
+        if (pair.first != -1) {
+            return Triple(i, pair.first, pair.second)
+        }
+    }
+    return Triple(-1, -1, -1)
+}
 
-
+private fun findPairSum(arr: IntArray, x: Int, from: Int, to: Int): Pair<Int, Int> {
+    var left = from
+    var right = to
+    while (left < right) {
+        val sum = arr[left] + arr[right]
+        if (sum == x) {
+            return left to right
+        }
+        if (sum > x) {
+            --right
+        } else {
+            ++left
+        }
+    }
+    return -1 to -1
+}
 
 
 
