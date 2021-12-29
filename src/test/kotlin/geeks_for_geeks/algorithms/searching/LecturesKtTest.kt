@@ -125,6 +125,46 @@ internal class LecturesKtTest {
         target = 10
         assertEquals(input.lastIndex - 1, searchInSortedRotatedArray(input, target))
     }
+
+    @Test
+    fun findPeakElementInArray_correct() {
+        val middlePeak = intArrayOf(5, 10, 20, 15, 7)
+        val out = findPeakElementInArray(middlePeak)
+        assertEquals(20, out)
+
+        val severalPeakElements = intArrayOf(10, 20, 15, 7, 35, 18)
+        val res = findPeakElementInArray(severalPeakElements)
+        assertTrue(res == 20 || res == 35)
+
+
+        val firstPeak = intArrayOf(80, 70, 60)
+        val firstPeakRes = findPeakElementInArray(firstPeak)
+        assertEquals(80, firstPeakRes)
+    }
+
+    @Test
+    fun findPairWithSumEqualToX_correct() {
+        val input1 = intArrayOf(3,5,9,2,8,10,11)
+        var res = findPairWithSumEqualToXInUnsortedArray(input1, 17)
+        assertTrue(res.first == 2 || res.second == 2)
+        assertTrue(res.second == 4 || res.first == 4)
+        val input2 = intArrayOf(8,4,6)
+        res = findPairWithSumEqualToXInUnsortedArray(input2, 11)
+        assertEquals(-1, res.first)
+        assertEquals(-1, res.second)
+    }
+
+    @Test
+    fun findPairWithSumEqualToXSortedArray_correct() {
+        val input1 = intArrayOf(2,5,8,12,30)
+        var res = findPairWithSumEqualToXInSortedArray(input1, 17)
+        assertTrue(res.first == 1 || res.second == 1)
+        assertTrue(res.second == 3 || res.first == 3)
+        val input2 = intArrayOf(4, 6, 8)
+        res = findPairWithSumEqualToXInSortedArray(input2, 11)
+        assertEquals(-1, res.first)
+        assertEquals(-1, res.second)
+    }
 }
 
 

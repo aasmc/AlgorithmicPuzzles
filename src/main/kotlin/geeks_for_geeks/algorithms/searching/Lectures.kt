@@ -196,6 +196,7 @@ fun searchInSortedRotatedArray(array: IntArray, target: Int) : Int {
     while (start <= end) {
         val mid = start + (end - start) / 2
         if (array[mid] == target) return mid
+        // determine which half of the array is sorted
         if (array[start] < array[mid]) { // left half is sorted
             if (target >= array[start] && target < array[mid]) { // target is in this range start..mid
                 end = mid - 1
@@ -213,10 +214,96 @@ fun searchInSortedRotatedArray(array: IntArray, target: Int) : Int {
     return -1
 }
 
+/**
+ * An element is called a peak element if it is not smaller than
+ * its neighbours.
+ *
+ * Here we can apply a binary search, because the condition states,
+ * that a peak element is greater than or equal to its neighbours.
+ * It means that after finding the middle element in the array - step 1
+ * in binary search, we can determine if it is peak or not, and if not
+ * then we can find an element that is greater than middle element.
+ * That element will be either to the left or to the right of the middle
+ * element. And therefore we can safely say that there will be a peak
+ * element on the side that contains an element that is greater than the middle one.
+ */
+fun findPeakElementInArray(arr: IntArray): Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start <= end) {
+        val middle = start + (end - start) / 2
+        if ((middle == 0 || arr[middle - 1] <= arr[middle]) &&
+            (middle == arr.lastIndex || arr[middle + 1] <= arr[middle])) {
+            return arr[middle]
+        }
+        if (middle > 0 && arr[middle - 1] >= arr[middle]) {
+            end = middle - 1
+        } else {
+            start = middle + 1
+        }
+    }
+    // unreachable
+    throw IllegalStateException("This should never happen. " +
+            "There's always a peak element in an array of integers")
+}
 
+/**
+ * Given an unsorted array of integers and a number x, find if there's
+ * a pair of elements in the array whose sum is equal to x.
+ * @return a pair of indices, pointing to the numbers, whose sum == x.
+ *         if there's no such elements, return a pair containing -1, -1.
+ */
+fun findPairWithSumEqualToXInUnsortedArray(arr: IntArray, x: Int): Pair<Int, Int> {
+    val map = hashMapOf<Int, Pair<Int, Int>>()
+    for (i in arr.indices) {
+        map[x - arr[i]] = i to arr[i]
+    }
+    var first = -1
+    var second = -1
+    var firstFound = false
+    var secondFound = false
+    for (i in arr.indices) {
+        val pair = map[arr[i]]
+        if (pair != null) {
+            if (!firstFound) {
+                firstFound = true
+                first = pair.first
+            } else if (!secondFound) {
+                secondFound = true
+                second = pair.first
+            }
+        }
+        if (firstFound && secondFound) break
+    }
+    if (firstFound && secondFound) {
+        return first to second
+    }
+    return -1 to -1
+}
 
-
-
+/**
+ * Use two pointers: left and right.
+ * Step 1. Compare the sum of elements at indices left and right.
+ *   - if equal to x, then return pair of left to right
+ *   - if greater than x, then move pointer that points to the greater of the elements
+ *   - if smaller than x, then move pointer that points to the smaller of the elements
+ */
+fun findPairWithSumEqualToXInSortedArray(arr: IntArray, x: Int) : Pair<Int, Int> {
+    var left = 0
+    var right = arr.lastIndex
+    while (left < right) {
+        val sum = arr[left] + arr[right]
+        if (sum == x) {
+            return left to right
+        }
+        if (sum > x) {
+            --right
+        } else {
+            ++left
+        }
+    }
+    return -1 to -1
+}
 
 
 
