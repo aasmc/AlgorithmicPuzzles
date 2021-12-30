@@ -350,16 +350,39 @@ private fun findPairSum(arr: IntArray, x: Int, from: Int, to: Int): Pair<Int, In
  *
  * Partition the arrays into two parts, so that the number of elements in first parts of
  * the arrays is equal to the number of elements in the second parts of the arrays.
- * to do this we use binary search for the lesser array to find the middle point,
+ * To do this we use binary search for the lesser array to find the middle point,
  * and use formula (first.size + second.size + 1) /  2 - firstMiddle to find
  * partition point for the larger array. If the number of elements in both
  * arrays is even, then we have equal number in both parts, else the left part
  * will be larger by one element.
- * start of right part in the second array
- * check if the last element in the left part of the first array is smaller than
+ * Our goal is to partition the arrays so that all the elements in left parts are smaller
+ * than all the elements in the right parts.
+ *
+ * To do this we:
+ * a) Check if the last element in the left part of the first array is smaller than
  * the first element in the right part of the second array and the last element in
  * the first part of the second array is smaller than the first element in the
- * right part of the first array
+ * right part of the first array. If that is true, then we can pick our median:
+ * if the size of combined arrays is odd, then we pick the maximum element between
+ * the last element in the left part of the first array and the last element in
+ * the left part of the second array. If the size of combined arrays is even,
+ * then we calculate median according to the following logic:
+ *  1. pick maximum from: max element from the left part of the first array and
+ *                        max element from the left part of the second array
+ *  2. pick minimum from: min element from the right part of the first array
+ *                        min element from the right part of the second array
+ *  3. sum the results from steps 1 and 2 and divide by 2.
+ *
+ *  In case the check a) is false we follow the logic
+ *  1. if the max element from the left part of the first array is greater
+ *     than the min element from the right part of the second array, then
+ *     we continue binary search in the left part of the first array.
+ *  2. if the max element from the left part of the second array is greater than
+ *     the min element from the right part of the first array then we continue
+ *     binary search in the right part of the first array.
+ *
+ *  We also need to take into account corner cases when we reach either the start or the end of
+ *  any of the arrays.
  */
 fun findMedianOfTwoSortedArrays(first: IntArray, second: IntArray): Double {
     return if (first.size <= second.size) {
