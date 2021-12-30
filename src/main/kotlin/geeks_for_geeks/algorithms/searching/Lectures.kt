@@ -1,5 +1,9 @@
 package geeks_for_geeks.algorithms.searching
 
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+
 /**
  * Searches for a [target] in an array sorted in increasing order.
  *
@@ -132,7 +136,7 @@ fun countOnesInBinarySortedArray(arr: IntArray): Int {
 /**
  * Time complexity O(sqrt(N))
  */
-fun squareRootFloorNaive(num: Int) : Int {
+fun squareRootFloorNaive(num: Int): Int {
     var i = 1
     while (i * i <= num) {
         ++i
@@ -143,7 +147,7 @@ fun squareRootFloorNaive(num: Int) : Int {
 /**
  * Time complexity O(logN)
  */
-fun squareRootFloorEfficient(num: Int) : Int {
+fun squareRootFloorEfficient(num: Int): Int {
     var start = 1
     var end = num
     var answer = -1
@@ -174,7 +178,7 @@ fun searchInInfiniteArray(arr: IntArray, target: Int): Int {
     while (i < arr.size && arr[i] < target) {
         i *= 2
     }
-    if(i >= arr.size) return -1
+    if (i >= arr.size) return -1
     if (arr[i] == target) return i
     var start = i / 2 + 1
     var end = i - 1
@@ -190,7 +194,7 @@ fun searchInInfiniteArray(arr: IntArray, target: Int): Int {
     return -1
 }
 
-fun searchInSortedRotatedArray(array: IntArray, target: Int) : Int {
+fun searchInSortedRotatedArray(array: IntArray, target: Int): Int {
     var start = 0
     var end = array.lastIndex
     while (start <= end) {
@@ -233,7 +237,8 @@ fun findPeakElementInArray(arr: IntArray): Int {
     while (start <= end) {
         val middle = start + (end - start) / 2
         if ((middle == 0 || arr[middle - 1] <= arr[middle]) &&
-            (middle == arr.lastIndex || arr[middle + 1] <= arr[middle])) {
+            (middle == arr.lastIndex || arr[middle + 1] <= arr[middle])
+        ) {
             return arr[middle]
         }
         if (middle > 0 && arr[middle - 1] >= arr[middle]) {
@@ -243,8 +248,10 @@ fun findPeakElementInArray(arr: IntArray): Int {
         }
     }
     // unreachable
-    throw IllegalStateException("This should never happen. " +
-            "There's always a peak element in an array of integers")
+    throw IllegalStateException(
+        "This should never happen. " +
+                "There's always a peak element in an array of integers"
+    )
 }
 
 /**
@@ -288,7 +295,7 @@ fun findPairWithSumEqualToXInUnsortedArray(arr: IntArray, x: Int): Pair<Int, Int
  *   - if greater than x, then move pointer that points to the greater of the elements
  *   - if smaller than x, then move pointer that points to the smaller of the elements
  */
-fun findPairWithSumEqualToXInSortedArray(arr: IntArray, x: Int) : Pair<Int, Int> {
+fun findPairWithSumEqualToXInSortedArray(arr: IntArray, x: Int): Pair<Int, Int> {
     var left = 0
     var right = arr.lastIndex
     while (left < right) {
@@ -311,7 +318,7 @@ fun findPairWithSumEqualToXInSortedArray(arr: IntArray, x: Int) : Pair<Int, Int>
  *
  * @return first triplet in the array whose sum = x or triplet of -1, -1, -1
  */
-fun findTripletWithSumInSortedArray(arr: IntArray, x: Int) : Triple<Int, Int, Int> {
+fun findTripletWithSumInSortedArray(arr: IntArray, x: Int): Triple<Int, Int, Int> {
     for (i in arr.indices) {
         val pair = findPairSum(arr, x - arr[i], i + 1, arr.lastIndex)
         if (pair.first != -1) {
@@ -338,12 +345,70 @@ private fun findPairSum(arr: IntArray, x: Int, from: Int, to: Int): Pair<Int, In
     return -1 to -1
 }
 
+/**
+ * Given two sorted arrays, find the median of them.
+ *
+ * Partition the arrays into two parts, so that the number of elements in first parts of
+ * the arrays is equal to the number of elements in the second parts of the arrays.
+ * to do this we use binary search for the lesser array to find the middle point,
+ * and use formula (first.size + second.size + 1) /  2 - firstMiddle to find
+ * partition point for the larger array. If the number of elements in both
+ * arrays is even, then we have equal number in both parts, else the left part
+ * will be larger by one element.
+ * start of right part in the second array
+ * check if the last element in the left part of the first array is smaller than
+ * the first element in the right part of the second array and the last element in
+ * the first part of the second array is smaller than the first element in the
+ * right part of the first array
+ */
+fun findMedianOfTwoSortedArrays(first: IntArray, second: IntArray): Double {
+    return if (first.size <= second.size) {
+        findMedianHelper(first, second)
+    } else {
+        findMedianHelper(second, first)
+    }
+}
 
+private fun findMedianHelper(first: IntArray, second: IntArray): Double {
+    val n1 = first.size
+    val n2 = second.size
+    var start = 0
+    var end = n1
 
+    while (start <= end) {
+        val partitionFirst = start + (end - start ) /2
+        val partitionSecond = ((n1 + n2 + 1) / 2) - partitionFirst
 
+        val minFirst = if (partitionFirst == n1) Int.MAX_VALUE else first[partitionFirst]
+        val maxFirst = if (partitionFirst == 0) Int.MIN_VALUE else first[partitionFirst - 1]
+        val minSecond = if (partitionSecond == n2) Int.MAX_VALUE else second[partitionSecond]
+        val maxSecond = if (partitionSecond == 0) Int.MIN_VALUE else second[partitionSecond - 1]
+        if (maxFirst <= minSecond && maxSecond <= minFirst) {
+            if (!odd(first, second)) {
+                return (max(maxFirst, maxSecond) + min(minFirst, minSecond)) / 2.0
+            } else {
+                return max(maxFirst, maxSecond).toDouble()
+            }
+        }
+        else if (maxFirst > minSecond) {
+            end = partitionFirst - 1
+        } else {
+            start = partitionFirst + 1
+        }
+    }
+   // unreachable
+    throw IllegalStateException("There's always a median in two sorted arrays!")
+}
 
+private fun odd(first: IntArray, second: IntArray): Boolean {
+    return (first.size + second.size) and 1 != 0
+}
 
-
+/**
+ * Function to compare doubles.
+ */
+fun Double.equalsDelta(other: Double) =
+    abs(this - other) < max(Math.ulp(this), Math.ulp(other)) * 2
 
 
 

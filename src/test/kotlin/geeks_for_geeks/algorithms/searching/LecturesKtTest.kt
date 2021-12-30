@@ -174,6 +174,24 @@ internal class LecturesKtTest {
         assertEquals(4, res.second)
         assertEquals(5, res.third)
     }
+
+    @Test
+    fun findMedianOfTwoSortedArrays_correct() {
+        var first = intArrayOf(10, 20, 30, 40, 50)
+        var second = intArrayOf(5, 15, 25, 35, 45)
+        var result = findMedianOfTwoSortedArrays(first, second)
+        assertTrue(result.equalsDelta(27.5))
+
+        first = intArrayOf(1,2,3,4,5,6)
+        second = intArrayOf(10, 20, 30, 40, 50)
+        result = findMedianOfTwoSortedArrays(first, second)
+        assertTrue(result.equalsDelta(6.0))
+
+        first = intArrayOf(10, 20, 30, 40, 50, 60)
+        second = intArrayOf(1,2,3,4,5)
+        result = findMedianOfTwoSortedArrays(first, second)
+        assertTrue(result.equalsDelta(10.0))
+    }
 }
 
 
