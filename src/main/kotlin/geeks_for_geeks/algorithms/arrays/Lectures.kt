@@ -1709,7 +1709,3 @@ fun checkRotatedAndSorted(arr: IntArray): Boolean {
 
 
 
-
-
-
-

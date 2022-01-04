@@ -1,11 +1,10 @@
 package geeks_for_geeks.algorithms.arrays;
 
+import kotlin.contracts.Returns;
+
 import java.lang.reflect.Array;
 import java.security.cert.CollectionCertStoreParameters;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class Solutions {
     public void insertAtIndex(int arr[], int sizeOfArray, int index, int element) {
@@ -490,12 +489,54 @@ public class Solutions {
         }
         return res;
     }
+
+    static long nearestPerfectSquare(long n) {
+
+        long rootBelow = (long) Math.floor(Math.sqrt(n - 1));
+        long rootAbove = (long) Math.ceil(Math.sqrt(n + 1));
+        long above = rootAbove * rootAbove;
+        long below = rootBelow * rootBelow;
+
+        if (n - below > above - n) {
+            return above;
+        } else if (n - below < above - n) {
+            return below;
+        } else {
+            return Math.max(above, below);
+        }
+    }
+
+    static ArrayList<Integer> missingAndRepeating(int[] arr, int n) {
+        ArrayList<Integer> res = new ArrayList<>(2);
+        for (int i = 0; i < n; i++) {
+            int newIndex = Math.abs(arr[i]);
+            if (arr[newIndex - 1] > 0) {
+                arr[newIndex - 1] = -arr[newIndex - 1];
+            } else {
+                res.add(newIndex);
+            }
+        }
+        for (int j = 0; j < n; ++j) {
+            if (arr[j] > 0) {
+                res.add(j + 1);
+                break;
+            }
+        }
+        return res;
+    }
+
+    static int countNumberOfConversions(int n) {
+        if (n == 1) return 0;
+        if ((n & 1) == 0) {
+            return 1 + countNumberOfConversions(n / 2);
+        } else {
+            return 1 + Math.min(
+                    countNumberOfConversions(n - 1),
+                    countNumberOfConversions(n + 1)
+            );
+        }
+    }
 }
-
-
-
-
-
 
 
 
