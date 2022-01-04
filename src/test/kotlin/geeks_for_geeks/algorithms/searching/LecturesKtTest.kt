@@ -203,6 +203,38 @@ internal class LecturesKtTest {
         res = findRepeatingElement(input)
         assertEquals(0, res)
     }
+
+    @Test
+    fun allocateMinimumPagesRecursive_correct() {
+        var books = intArrayOf(10, 20, 30, 40)
+        var students = 2
+        var res = allocateMinimumNumberOfPagesRecursive(books, students)
+        assertEquals(60, res)
+        books = intArrayOf(10, 20, 30)
+        students = 1
+        res = allocateMinimumNumberOfPagesRecursive(books, students)
+        assertEquals(60, res)
+        books = intArrayOf(10, 5, 30, 1, 2, 5, 10, 10)
+        students = 3
+        res = allocateMinimumNumberOfPagesRecursive(books, students)
+        assertEquals(30, res)
+    }
+    @Test
+    fun allocateMinimumPages_correct() {
+        var books = intArrayOf(10, 20, 30, 40)
+        var students = 2
+        var res = allocateMinimumNumberOfPages(books, students)
+        assertEquals(60, res)
+        books = intArrayOf(10, 20, 30)
+        students = 1
+        res = allocateMinimumNumberOfPages(books, students)
+        assertEquals(60, res)
+        books = intArrayOf(10, 5, 30, 1, 2, 5, 10, 10)
+        students = 3
+        res = allocateMinimumNumberOfPages(books, students)
+        assertEquals(30, res)
+    }
+
 }
 
 

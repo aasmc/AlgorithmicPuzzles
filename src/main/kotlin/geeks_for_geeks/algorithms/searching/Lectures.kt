@@ -489,12 +489,134 @@ fun findRepeatingElement(arr: IntArray): Int {
     return slow - 1
 }
 
+/**
+ * Given an array of N integers, representing an array of N books with
+ * number of pages in each book represented as the element in the array and
+ * k number of students who have to read all the books, minimize the maximum number
+ * of pages a student has to read, taking into account the following rule:
+ * - a student can read only contiguous books, i.e. a student can read books
+ * number 0, 1, 2 ets, but he can't read books 0, 2, 5
+ *
+ * E.g. 1.
+ * books:    [10, 20, 30, 40]
+ * students: 2
+ * Optimal division: student 1 -> 10, 20, 30
+ *                   student 2 -> 40
+ * I.e. the maximum number of pages a student has to
+ * read with this division of books is 60.
+ *
+ * E.g. 2.
+ * books:    [10, 20, 30]
+ * students: 1
+ * Optimal division: student 1 -> 10, 20, 30
+ *
+ * I.e. the maximum number of pages a student has to
+ * read with this division of books is 60.
+ *
+ * E.g. 3.
+ * books:    [10, 5, 30, 1, 2, 5, 10, 10]
+ * students: 3
+ * Optimal division: student 1 -> 10, 5 = 25
+ *                   student 2 -> 30
+ *                   student 3 -> 1, 2, 5, 10, 10 = 28
+ *
+ * I.e. the maximum number of pages a student has to
+ * read with this division of books is 30.
+ *
+ */
+fun allocateMinimumNumberOfPagesRecursive(books: IntArray, students: Int): Int {
+    return allocatePagesRecursiveHelper(books, students, books.size)
+}
 
+private fun allocatePagesRecursiveHelper(books: IntArray, students: Int, size: Int): Int {
+    // if there's only one book then all we need is to return the number of pages in it
+    if (size == 1) {
+        return books[0]
+    }
+    // if there's only one student then all we need is to return the sum of
+    // all pages in the books
+    if (students == 1) {
+        return arrSum(books, 0, size)
+    }
+    var result = Int.MAX_VALUE
+    for (i in 1 until size) {
+        // traverse the array and make recursive calls on each iteration
+        result = min( // compare the result with the recursive call and select min
+            result,
+            // select max between the two calculations
+            max(
+                // calculate the number of pages for students - 1
+                allocatePagesRecursiveHelper(books, students - 1, i),
+                // calculate the number of pages for current student
+                arrSum(books, i, size)
+            )
+        )
+    }
+    return result
+}
 
+private fun arrSum(arr: IntArray, from: Int, to: Int): Int {
+    var sum = 0
+    for (i in from until to) {
+        sum += arr[i]
+    }
+    return sum
+}
 
+/**
+ * The solution is based on the idea that the answer lies in the range between
+ * the maximum number of pages a single book has and the sum of all pages in all the books.
+ *
+ */
+fun allocateMinimumNumberOfPages(books: IntArray, students: Int): Int {
+    var sum = 0
+    var max = Int.MIN_VALUE
+    // compute the sum of all books and find the max number of pages in the books.
+    for (i in books.indices) {
+        sum += books[i]
+        max = max(max, books[i])
+    }
+    var low = max
+    var high = sum
+    var result = 0
+    while (low <= high) {
+        val mid = low + (high - low) / 2
+        if (isFeasible(books, students, mid)) {
+            // if this number of students can divide the books among themselves to
+            // read no greater than the mid number of pages, then the answer is feasible.
+            // so save the result and check the left part of the range, since we want
+            // to find the smallest possible answer
+            result = mid
+            high = mid - 1
+        } else {
+            // else check the right part of the range
+            low = mid + 1
+        }
+    }
+    return result
+}
 
-
-
+/**
+ * Function that checks if the [books] can be divided between the [students]
+ * so that each student reads less than or equal to the [answer] number of
+ * pages.
+ */
+private fun isFeasible(books: IntArray, students: Int, answer: Int): Boolean {
+    var sum = 0
+    var studentsRequiredToRead = 1
+    for (i in books.indices) {
+        // if the previously computed sum and the number of pages in the current book
+        // is greater than the answer, then start with another student (sum = books[i]) and increment
+        // the number of students required to read
+        if (sum + books[i] > answer) {
+            sum = books[i]
+            ++studentsRequiredToRead
+        } else {
+            sum += books[i]
+        }
+    }
+    return studentsRequiredToRead <= students
+}
 
 
 
