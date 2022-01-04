@@ -192,6 +192,17 @@ internal class LecturesKtTest {
         result = findMedianOfTwoSortedArrays(first, second)
         assertTrue(result.equalsDelta(10.0))
     }
+
+    @Test
+    fun findRepeatingElement_correct() {
+        var input = intArrayOf(0, 3, 2, 4, 5, 2, 2, 6, 1)
+        var res = findRepeatingElement(input)
+        assertEquals(2, res)
+
+        input = intArrayOf(0, 0)
+        res = findRepeatingElement(input)
+        assertEquals(0, res)
+    }
 }
 
 

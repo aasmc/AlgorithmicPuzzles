@@ -399,7 +399,7 @@ private fun findMedianHelper(first: IntArray, second: IntArray): Double {
     var end = n1
 
     while (start <= end) {
-        val partitionFirst = start + (end - start ) /2
+        val partitionFirst = start + (end - start) / 2
         val partitionSecond = ((n1 + n2 + 1) / 2) - partitionFirst
 
         val minFirst = if (partitionFirst == n1) Int.MAX_VALUE else first[partitionFirst]
@@ -412,14 +412,13 @@ private fun findMedianHelper(first: IntArray, second: IntArray): Double {
             } else {
                 return max(maxFirst, maxSecond).toDouble()
             }
-        }
-        else if (maxFirst > minSecond) {
+        } else if (maxFirst > minSecond) {
             end = partitionFirst - 1
         } else {
             start = partitionFirst + 1
         }
     }
-   // unreachable
+    // unreachable
     throw IllegalStateException("There's always a median in two sorted arrays!")
 }
 
@@ -433,7 +432,62 @@ private fun odd(first: IntArray, second: IntArray): Boolean {
 fun Double.equalsDelta(other: Double) =
     abs(this - other) < max(Math.ulp(this), Math.ulp(other)) * 2
 
-
+/**
+ * Given an array of integers in range from 0 until size of the array - 1,
+ * find the repeating element in the array.
+ *
+ * Assume that only one element is repeating.
+ *
+ * The solution is based on the idea of traversing the array elements as
+ * a linked list where each element points to the next node.
+ *
+ * We divide the algorithm in two phases:
+ * 1. We use two pointers: slow and fast.
+ * The slow pointer goes one step at a time, while the fast pointer goes two steps
+ * at a time. We know that the array contains a cycle, because one element is repeating.
+ * Therefore, fast pointer will enter the cycle faster than the slow pointer (if the cycle
+ * doesn't start at the beginning of the array). Fast pointer may be cycling in the cycle
+ * or simply going to the end of the cycle at double speed, and it will eventually meet
+ * the slow pointer. At this point we move the slow pointer to the beginning of the array
+ * and start phase 2.
+ * 2. We move both pointers one step at a time and they will meet at the begining of the
+ * cycle, our repeating element.
+ *
+ * E.g. [1, 3, 2, 4, 6, 5, 7, 3]
+ *       0  1  2  3  4  5  6  7
+ * Linked list traversal (by indices): 0 -> 1 -> 3 -> 4 -> 6 -> 7 -> 3 (cycle detected!)
+ *
+ * slow   fast   arr[slow] arr[arr[fast]]
+ *  1      1        3         4
+ *  3      4        4         7
+ *  4      7        6         4
+ *  6      4        7         7
+ *  7      7
+ *
+ *  Move slow to index 0
+ *  slow   fast   arr[slow] arr[arr[fast]]
+ *   1      7        3           3
+ *   3      3
+ *
+ *   Detected repeating element!
+ *
+ * But to account for zeroes in the array we need to always add 1 to slow and fast.
+ * And we also need to subtract 1 from the result (either final slow or fast).
+ */
+fun findRepeatingElement(arr: IntArray): Int {
+    var slow = arr[0] + 1
+    var fast = arr[0] + 1
+    do {
+        slow = arr[slow] + 1
+        fast = arr[arr[fast] + 1] + 1
+    } while (slow != fast)
+    slow = arr[0] + 1
+    while (slow != fast) {
+        slow = arr[slow] + 1
+        fast = arr[fast] + 1
+    }
+    return slow - 1
+}
 
 
 
