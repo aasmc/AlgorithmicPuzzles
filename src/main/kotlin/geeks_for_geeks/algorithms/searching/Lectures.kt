@@ -620,14 +620,14 @@ private fun isFeasible(books: IntArray, students: Int, answer: Int): Boolean {
 
 /**
  * A similar task from leetcode.
- * A conveyor belt has packages that must be shipped from one port to another within days days.
+ * A conveyor belt has packages that must be shipped from one port to another within [days].
  *
  * The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship
  * with packages on the conveyor belt (in the order given by weights). We may not load more
  * weight than the maximum weight capacity of the ship.
  *
  * Return the least weight capacity of the ship that will result in all the packages on the
- * conveyor belt being shipped within days days.
+ * conveyor belt being shipped within [days].
  */
 fun shipWithinDays(weights: IntArray, days: Int): Int {
     var sum = 0
@@ -665,7 +665,27 @@ fun isWeightAllowed(weights: IntArray, days: Int, answer: Int): Boolean {
     return daysNeeded <= days
 }
 
-
+fun findLastOccurrenceInArraySortedDecreasing(array: IntArray, target: Int) : Int {
+    var start = 0
+    var end = array.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (array[mid] == target) {
+            if (mid < array.lastIndex && array[mid + 1] == target) {
+                start = mid + 1
+            } else {
+                return mid
+            }
+        } else {
+            if (array[mid] < target) {
+                end = mid - 1
+            } else {
+                start = mid + 1
+            }
+        }
+    }
+    return -1
+}
 
 
 

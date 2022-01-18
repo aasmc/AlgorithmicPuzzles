@@ -235,6 +235,16 @@ internal class LecturesKtTest {
         assertEquals(30, res)
     }
 
+    @Test
+    fun findLastOccurrenceInArraySortedDecreasing_correct() {
+        var arr = intArrayOf(1,1,1,1,1,0,0,0)
+        assertEquals(4, findLastOccurrenceInArraySortedDecreasing(arr, 1))
+        arr = intArrayOf(1,1,1,0,0,0,0,)
+        assertEquals(2, findLastOccurrenceInArraySortedDecreasing(arr, 1))
+        arr = intArrayOf(1,1,1)
+        assertEquals(2, findLastOccurrenceInArraySortedDecreasing(arr, 1))
+    }
+
 }
 
 
