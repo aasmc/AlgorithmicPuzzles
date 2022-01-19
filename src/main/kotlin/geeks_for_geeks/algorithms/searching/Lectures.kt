@@ -665,7 +665,7 @@ fun isWeightAllowed(weights: IntArray, days: Int, answer: Int): Boolean {
     return daysNeeded <= days
 }
 
-fun findLastOccurrenceInArraySortedDecreasing(array: IntArray, target: Int) : Int {
+fun findLastOccurrenceInArraySortedDecreasing(array: IntArray, target: Int): Int {
     var start = 0
     var end = array.lastIndex
     while (start <= end) {
@@ -687,6 +687,41 @@ fun findLastOccurrenceInArraySortedDecreasing(array: IntArray, target: Int) : In
     return -1
 }
 
+fun findFloor(arr: IntArray, x: Int): Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start <= end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == x) {
+            return mid
+        } else if (arr[mid] > x) {
+            end = mid - 1
+        } else {
+            if (arr[mid + 1] <= x) {
+                start = mid + 1
+            } else {
+                return mid
+            }
+        }
+    }
+    return -1
+}
+
+fun minNumber(arr: IntArray): Int {
+    var start = 0
+    var end = arr.lastIndex
+    while (start < end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] == arr[end]) {
+            --end
+        } else if (arr[mid] > arr[end]) {
+            start = mid + 1
+        } else {
+            end = mid
+        }
+    }
+    return arr[end]
+}
 
 
 
