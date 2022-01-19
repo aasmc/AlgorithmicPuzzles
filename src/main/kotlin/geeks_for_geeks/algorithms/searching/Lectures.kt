@@ -708,19 +708,29 @@ fun findFloor(arr: IntArray, x: Int): Int {
 }
 
 fun minNumber(arr: IntArray): Int {
+    if (arr.size == 1) {
+        return arr[0]
+    }
     var start = 0
     var end = arr.lastIndex
+    if (arr[start] < arr[end]) {
+        return arr[start]
+    }
     while (start < end) {
         val mid = start + (end - start) / 2
-        if (arr[mid] == arr[end]) {
-            --end
-        } else if (arr[mid] > arr[end]) {
+        if (arr[mid] > arr[mid + 1]) {
+            return arr[mid + 1]
+        }
+        if (arr[mid - 1] > arr[mid]) {
+            return arr[mid]
+        }
+        if (arr[mid] > arr[0]) {
             start = mid + 1
         } else {
-            end = mid
+            end = mid - 1
         }
     }
-    return arr[end]
+    return -1
 }
 
 
