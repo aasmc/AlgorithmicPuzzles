@@ -707,31 +707,86 @@ fun findFloor(arr: IntArray, x: Int): Int {
     return -1
 }
 
+/**
+ * Finds the minimum number in a sorted and rotated array.
+ */
 fun minNumber(arr: IntArray): Int {
     if (arr.size == 1) {
         return arr[0]
     }
     var start = 0
     var end = arr.lastIndex
+    // if array is not rotated, then return the first element
     if (arr[start] < arr[end]) {
         return arr[start]
     }
     while (start < end) {
         val mid = start + (end - start) / 2
+        // if the next element is less than current element
+        // then the next element is the minimum element
         if (arr[mid] > arr[mid + 1]) {
             return arr[mid + 1]
         }
+        // if previous element is greater than current element
+        // then current element is the min element
         if (arr[mid - 1] > arr[mid]) {
             return arr[mid]
         }
+        // if current mid element is greater than the first element,
+        // than left part of the array is sorted, and the point
+        // where one element is greater than the next element is
+        // in the right part of the array, so move start to mid + 1
         if (arr[mid] > arr[0]) {
             start = mid + 1
-        } else {
+        } else { // move end to mid - 1
             end = mid - 1
         }
     }
     return -1
 }
+
+/**
+ * You are given an array of N+2 integer elements. All elements of the
+ * array are in range 1 to N. Also, all elements occur once except
+ * two numbers which occur twice. Find the two repeating numbers.
+ */
+fun findTwoRepeatedElements(arr: IntArray) : Pair<Int, Int> {
+    var first = Int.MAX_VALUE
+    var second = Int.MAX_VALUE
+    var firstFound = false
+    for (i in arr.indices) {
+        if (arr[abs(arr[i]) - 1] < 0) {
+            if (firstFound) {
+                second = arr[i]
+            } else {
+                firstFound = true
+                first = arr[i]
+            }
+        } else {
+            arr[abs(arr[i]) - 1] = -arr[abs(arr[i]) - 1]
+        }
+    }
+    return abs(first) to abs(second)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

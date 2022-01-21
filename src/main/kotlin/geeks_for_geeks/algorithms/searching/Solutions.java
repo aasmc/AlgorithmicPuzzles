@@ -195,13 +195,12 @@ public class Solutions {
 
     //Function to find the minimum element in sorted and rotated array.
     static int minNumber(int arr[], int low, int high) {
-        while(low < high)
-        {
+        while (low < high) {
             int mid = low + (high - low) / 2;
             if (arr[mid] == arr[high])
                 high--;
 
-            else if(arr[mid] > arr[high])
+            else if (arr[mid] > arr[high])
                 low = mid + 1;
             else
                 high = mid;
@@ -253,6 +252,30 @@ public class Solutions {
             }
         }
         return -1;
+    }
+
+    /**
+     * You are given an array of N+2 integer elements. All elements of the
+     * array are in range 1 to N. Also, all elements occur once except
+     * two numbers which occur twice. Find the two repeating numbers.
+     */
+    public int[] twoRepeated(int arr[], int N) {
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+        boolean firstFound = false;
+        for (int i = 0; i < arr.length; ++i) {
+            if (arr[Math.abs(arr[i]) - 1] < 0) {
+                if (firstFound) {
+                    second = arr[i];
+                } else {
+                    firstFound = true;
+                    first = arr[i];
+                }
+            } else {
+                arr[Math.abs(arr[i]) -1] = -arr[Math.abs(arr[i]) -1];
+            }
+        }
+        return new int[]{Math.abs(first), Math.abs(second)};
     }
 }
 

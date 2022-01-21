@@ -269,6 +269,14 @@ internal class LecturesKtTest {
         assertEquals(6, minNumber(input))
     }
 
+    @Test
+    fun findTwoRepeatedElements_correct() {
+        val input = intArrayOf(1, 2 ,6 ,3 ,4 ,5 ,6 ,4)
+        val res = findTwoRepeatedElements(input)
+        assertTrue(res.first == 6 || res.first == 4)
+        assertTrue(res.second == 6 || res.second == 4)
+    }
+
 }
 
 
