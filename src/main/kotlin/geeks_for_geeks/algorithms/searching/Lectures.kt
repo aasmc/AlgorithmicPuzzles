@@ -750,7 +750,7 @@ fun minNumber(arr: IntArray): Int {
  * array are in range 1 to N. Also, all elements occur once except
  * two numbers which occur twice. Find the two repeating numbers.
  */
-fun findTwoRepeatedElements(arr: IntArray) : Pair<Int, Int> {
+fun findTwoRepeatedElements(arr: IntArray): Pair<Int, Int> {
     var first = Int.MAX_VALUE
     var second = Int.MAX_VALUE
     var firstFound = false
@@ -769,6 +769,131 @@ fun findTwoRepeatedElements(arr: IntArray) : Pair<Int, Int> {
     return abs(first) to abs(second)
 }
 
+
+fun maxStep(arr: IntArray): Int {
+    if (arr.size == 1) {
+        return 0
+    }
+    var result = 0
+    var currentStep = 0
+    for (i in 1 until arr.size) {
+        if (arr[i] > arr[i - 1]) {
+            currentStep++
+        } else {
+            result = max(result, currentStep)
+            currentStep = 0
+        }
+    }
+    result = max(result, currentStep)
+    return result
+}
+
+/**
+ * Given an integer array representing the heights of N buildings, the
+ * task is to delete N-2 buildings such that the water that can be trapped
+ * between the remaining two building is maximum.
+ * Note: The total water trapped between two buildings is gap
+ * between them (number of buildings removed) multiplied by height of the
+ * smaller building.
+ *
+ * Example 1:
+ * Input:
+ * N = 6
+ * height[] = {2,1,3,4,6,5}
+ * Output: 8
+ * Explanation: The heights are 2 1 3 4 6 5.
+ * So we choose the following buildings
+ * 2,5  and remove others. Now gap between
+ * two buildings is equal to 4, and the
+ * height of smaller one is 2. So answer is
+ * 2 * gap = 2*4 = 8. There is
+ * no answer greater than this.
+ *
+ * Example 2:
+ * Input:
+ * N = 2
+ * height[] = {2,1}
+ * Output: 0
+ * Explanation: The heights are 2 1.
+ * But there is no other buildings to be
+ * removed so total removed= 0.
+ * Now the height of smaller one is 2.
+ * So answer is 2 * removed buildings = 2*0
+ */
+fun maxWater(heights: IntArray): Int {
+    if (heights.size <= 2) {
+        return 0
+    }
+    var maxRes = 0
+    var start = 0
+    var end = heights.lastIndex
+    while (start < end) {
+        if (heights[start] < heights[end]) {
+            maxRes = max(maxRes, heights[start] * (end - start - 1))
+            ++start
+        } else if (heights[start] > heights[end]) {
+            maxRes = max(maxRes, heights[end] * (end - start - 1))
+            --end
+        } else {
+            maxRes = max(maxRes, heights[start] * (end - start - 1))
+            --end
+            ++start
+        }
+    }
+    return maxRes
+}
+
+/**
+ * Given an array arr[] of N positive integers, where elements are consecutive
+ * (sorted). Also, there is a single element which is repeating X (any variable)
+ * number of times. Now, the task is to find the element which is repeated and
+ * number of times it is repeated.
+ * Note: If there's no repeating element, Return {-1,-1}.
+ *
+ * To solve the problem we need to find two numbers:
+ *  1. Count of the times, an element is repeating. To find the count we have
+ *  to take into account the following factors:
+ *    - the array consists of sorted consecutive numbers (except the repeating number),
+ *    therefore the difference between two consecutive elements must always be 1 if they
+ *    are not repeating.
+ *    - the numbers are in the range between arr[0] .. arr[lastIndex].
+ *    - to find the number of repeating elements we need to use the following formula:
+ *     count = sizeOfArray - (lastElement - firstElement)
+ *    - if the count == 1, then there are no repeating elements.
+ *  2. Find the repeating element itself. To do this in O(logN) time we
+ *     can use binary search, since the array is sorted. First we find the mid element.
+ *     Then we calculate the distance between the 0-th element and the mid index.
+ *     If the distance is less than the element at mid index, then we know that
+ *     the repeating element is somewhere between start index and mid index,
+ *     otherwise the repeating element is somewhere between mid + 1 index and end index.
+ *     So we continue our binary search.
+ *
+ */
+fun findRepeatingAndCount(arr: IntArray): Pair<Int, Int> {
+    var repeating = -1
+    var count = -1
+    if (arr.size <= 1) {
+        return repeating to count
+    }
+    val last = arr.last()
+    val first = arr.first()
+    if (arr.size - (last - first) == 1) {
+        return repeating to count
+    }
+    var start = 0
+    var end = arr.lastIndex
+    while (start < end) {
+        val mid = start + (end - start) / 2
+        if (arr[mid] >= mid + arr[0]) {
+            start = mid + 1
+        } else {
+            end = mid
+        }
+    }
+    count = arr.size - (arr[arr.lastIndex] - arr[0])
+    repeating = arr[start]
+    return repeating to count
+}
 
 
 

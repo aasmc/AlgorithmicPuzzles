@@ -277,6 +277,43 @@ internal class LecturesKtTest {
         assertTrue(res.second == 6 || res.second == 4)
     }
 
+    @Test
+    fun maxStep_correct() {
+        var input = intArrayOf(1,2,2,3,2)
+        assertEquals(1, maxStep(input))
+        input = intArrayOf(1,2,3,4)
+        assertEquals(3, maxStep(input))
+    }
+
+    @Test
+    fun maxWater_correct() {
+        var input = intArrayOf(2,1,3,4,6,5)
+        var res = maxWater(input)
+        assertEquals(8,res)
+
+        input = intArrayOf(2, 1)
+        res = maxWater(input)
+        assertEquals(0, res)
+    }
+
+    @Test
+    fun findRepeatingAndCount_correct() {
+        var input = intArrayOf(1,2,3,3,4)
+        var res = findRepeatingAndCount(input)
+        assertEquals(3, res.first)
+        assertEquals(2, res.second)
+
+        input = intArrayOf(2,3,4,5,5)
+        res = findRepeatingAndCount(input)
+        assertEquals(5, res.first)
+        assertEquals(2, res.second)
+
+        input = intArrayOf(1,2,3)
+        res = findRepeatingAndCount(input)
+        assertEquals(-1, res.first)
+        assertEquals(-1, res.second)
+    }
+
 }
 
 

@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.searching;
 
+import java.awt.*;
 import java.lang.reflect.GenericDeclaration;
 
 public class Solutions {
@@ -272,10 +273,97 @@ public class Solutions {
                     first = arr[i];
                 }
             } else {
-                arr[Math.abs(arr[i]) -1] = -arr[Math.abs(arr[i]) -1];
+                arr[Math.abs(arr[i]) - 1] = -arr[Math.abs(arr[i]) - 1];
             }
         }
         return new int[]{Math.abs(first), Math.abs(second)};
+    }
+
+    /**
+     * You are given heights of consecutive buildings. You can move from the
+     * roof of a building to the roof of next adjacent building. You need
+     * to find the maximum number of consecutive steps you can put forward such
+     * that you gain an increase in altitude with each step.
+     */
+    static int maxStep(int A[], int N) {
+        if (A.length == 1) {
+            return 0;
+        }
+        int result = 0;
+        int currentSteps = 0;
+        for (int i = 1; i < N; ++i) {
+            if (A[i] > A[i - 1]) {
+                currentSteps++;
+            } else {
+                result = Math.max(result, currentSteps);
+                currentSteps = 0;
+            }
+        }
+        result = Math.max(result, currentSteps);
+        return result;
+    }
+
+    /**
+     * Given an integer array representing the heights of N buildings, the
+     * task is to delete N-2 buildings such that the water that can be trapped
+     * between the remaining two building is maximum.
+     * Note: The total water trapped between two buildings is gap
+     * between them (number of buildings removed) multiplied by height of the
+     * smaller building.
+     */
+    static int maxWater(int height[], int n) {
+        if (height.length <= 2) {
+            return 0;
+        }
+
+        int maxRes = 0;
+        int start = 0;
+        int end = n - 1;
+        while (start < end) {
+            if (height[start] < height[end]) {
+                maxRes = Math.max(maxRes, height[start] * (end - start - 1));
+                ++start;
+            } else if (height[start] > height[end]) {
+                maxRes = Math.max(maxRes, height[end] * (end - start - 1));
+                --end;
+            } else {
+                maxRes = Math.max(maxRes, height[start] * (end - start - 1));
+                --end;
+                ++start;
+            }
+        }
+        return maxRes;
+    }
+
+    /**
+     * Given an array arr[] of N positive integers, where elements are consecutive
+     * (sorted). Also, there is a single element which is repeating X (any variable)
+     * number of times. Now, the task is to find the element which is repeated and
+     * number of times it is repeated.
+     * Note: If there's no repeating element, Return {-1,-1}.
+     */
+    public static Point findRepeating(Integer arr[], int n) {
+        int repeating = -1;
+        int count = -1;
+        if (arr.length <= 1) {
+            return new Point(repeating, count);
+        }
+        if (n - (arr[n - 1] - arr[0]) == 1) {
+            return new Point(repeating, count);
+        }
+        int start = 0;
+        int end = n - 1;
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] >= mid + arr[0]) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+        count = n - (arr[n - 1] - arr[0]);
+        repeating = arr[start];
+        return new Point(repeating, count);
     }
 }
 
