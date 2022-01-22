@@ -1,4 +1,4 @@
-package advent_of_code.day7
+package advent_of_code.year_2020.day7
 
 import java.io.File
 

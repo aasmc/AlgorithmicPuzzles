@@ -1,4 +1,4 @@
-package advent_of_code.day2
+package advent_of_code.year_2020.day2
 
 import advent_of_code.readLinesFromFile
 

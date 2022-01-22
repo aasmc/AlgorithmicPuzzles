@@ -1,4 +1,4 @@
-package advent_of_code.day8
+package advent_of_code.year_2020.day8
 
 import advent_of_code.readLinesFromFile
 import kotlin.time.ExperimentalTime
