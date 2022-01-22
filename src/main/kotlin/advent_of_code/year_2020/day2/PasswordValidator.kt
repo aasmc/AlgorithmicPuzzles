@@ -3,7 +3,7 @@ package advent_of_code.year_2020.day2
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val passwords = readLinesFromFile("day2", "input.txt")
+    val passwords = readLinesFromFile("year_2020/day2", "input.txt")
         .map(PasswordWithPolicy::parse)
 
     println(passwords.count { it.validatePartOne() })

@@ -5,7 +5,7 @@ import advent_of_code.readLinesFromFile
 const val INITIAL_JOLTAGE = 0
 
 fun getAdaptersFromInput(fileName: String = "input.txt"): List<JoltageAdapter> {
-    return readLinesFromFile("day10", fileName)
+    return readLinesFromFile("year_2020/day10", fileName)
         .map(JoltageAdapter::from)
 }
 

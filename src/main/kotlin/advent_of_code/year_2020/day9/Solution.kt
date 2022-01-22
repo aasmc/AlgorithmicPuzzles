@@ -3,7 +3,7 @@ package advent_of_code.year_2020.day9
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val numbers = readLinesFromFile("day9")
+    val numbers = readLinesFromFile("year_2020/day9")
         .map { it.toLong() }
 
     val invalidNumber = numbers.findInvalidNumberV4() ?: error("All numbers are valid!")

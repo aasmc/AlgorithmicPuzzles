@@ -3,7 +3,7 @@ package advent_of_code.year_2020.day1
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val numbers = readLinesFromFile("day1", "input.txt")
+    val numbers = readLinesFromFile("year_2020/day1", "input.txt")
         .map(String::toInt)
 
     // List<T>.associate - specify keys and values to create a map

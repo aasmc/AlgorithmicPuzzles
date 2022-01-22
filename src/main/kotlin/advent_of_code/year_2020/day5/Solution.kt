@@ -3,7 +3,7 @@ package advent_of_code.year_2020.day5
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val seatIds = readLinesFromFile("day5")
+    val seatIds = readLinesFromFile("year_2020/day5")
         .map(String::toSeatId)
     val maxId = seatIds.maxOf { it }
     println(maxId)

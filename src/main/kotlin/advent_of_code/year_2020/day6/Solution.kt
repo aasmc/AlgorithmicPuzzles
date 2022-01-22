@@ -5,7 +5,7 @@ import advent_of_code.readTextFromFile
 val nl = System.lineSeparator()
 
 fun main() {
-    val groups = readTextFromFile("day6")
+    val groups = readTextFromFile("year_2020/day6")
         .trim()
         .split("$nl$nl") // to split the given text by a blank line we need to use 2 new line separators
 

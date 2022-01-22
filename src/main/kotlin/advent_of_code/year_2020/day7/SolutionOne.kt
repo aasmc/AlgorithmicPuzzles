@@ -33,7 +33,7 @@ fun findContainersDFS(rules: Map<Color, Rule>): Set<Color> {
  */
 fun buildBagTree(): Map<Color, Set<String>> {
     val rules = hashMapOf<Color, Rule>()
-    File("src/main/kotlin/advent_of_code/day7/input.txt")
+    File("src/main/kotlin/advent_of_code/year_2020/day7/input.txt")
         .forEachLine { line ->
             val (parent, allChildren) = line
                 .replace(Regex("\\d+"), "")// remove all digits

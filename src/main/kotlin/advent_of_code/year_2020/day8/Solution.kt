@@ -79,7 +79,7 @@ fun generateAllMutations(instructions: List<Instruction>): Sequence<List<Instruc
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    val instructions = readLinesFromFile("day8")
+    val instructions = readLinesFromFile("year_2020/day8")
         .map { Instruction(it) }
 
     println(

@@ -3,7 +3,7 @@ package advent_of_code.year_2020.day3
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val field = readLinesFromFile("day3", "input.txt")
+    val field = readLinesFromFile("year_2020/day3", "input.txt")
 
     val treeCount = solve(field, 3 to 1)
     println(treeCount)
