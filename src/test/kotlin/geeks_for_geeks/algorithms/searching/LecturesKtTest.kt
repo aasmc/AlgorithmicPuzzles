@@ -191,6 +191,11 @@ internal class LecturesKtTest {
         second = intArrayOf(1,2,3,4,5)
         result = findMedianOfTwoSortedArrays(first, second)
         assertTrue(result.equalsDelta(10.0))
+
+        first = intArrayOf(1,2,3,4,5)
+        second = intArrayOf(3,4,5,6,7,8)
+        result = findMedianOfTwoSortedArrays(first, second)
+        assertTrue(result.equalsDelta(4.0))
     }
 
     @Test

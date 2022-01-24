@@ -2,7 +2,11 @@ package geeks_for_geeks.algorithms.searching;
 
 import java.awt.*;
 import java.lang.reflect.GenericDeclaration;
+import java.sql.PseudoColumnUsage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Solutions {
 
@@ -406,6 +410,91 @@ public class Solutions {
             }
         }
         return count;
+    }
+
+    public static int findPages(int[] A, int N, int M) {
+        int high = 0;
+        int low = Integer.MIN_VALUE;
+        for (int j : A) {
+            high += j;
+            low = Math.max(low, j);
+        }
+        int result = -1;
+        while (low <= high) {
+            int mid = high + (low - high) / 2;
+            if (isBookAllowed(A, M, mid)) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return result;
+    }
+
+    private static boolean isBookAllowed(int[] books, int students, int answer) {
+        int sum = 0;
+        int requiredStudents = 1;
+        for (int pages : books) {
+            if (sum + pages > answer) {
+                sum = pages;
+                ++requiredStudents;
+            } else {
+                sum += pages;
+            }
+        }
+        return requiredStudents <= students;
+    }
+
+    static ArrayList<Integer> subarraySum(int[] arr, int n, int s) {
+        int start = 0;
+        int sum = 0;
+        for (int i = 0; i < n; ++i) {
+            sum += arr[i];
+            while (sum >= s) {
+                if (sum == s) {
+                    return new ArrayList<>(List.of(start + 1, i + 1));
+                }
+                sum -= arr[start];
+                ++start;
+            }
+        }
+        return new ArrayList<>(List.of(-1));
+    }
+
+    public static int findMedian(int arr[], int n, int brr[], int m) {
+        if (n <= m) {
+            return findMedianHelper(arr, n, brr, m);
+        } else {
+            return findMedianHelper(brr, m, arr, n);
+        }
+    }
+
+    private static int findMedianHelper(int[] arr, int n, int[] brr, int m) {
+        int start = 0;
+        int end = n - 1;
+        while (start <= end) {
+            int partitionFirst = start + (end - start) / 2;
+            int partitionSecond = ((n + m + 1) / 2) - partitionFirst;
+
+            int minFirst = (partitionFirst == n) ? Integer.MAX_VALUE : arr[partitionFirst];
+            int maxFirst = (partitionFirst == 0) ? Integer.MIN_VALUE : arr[partitionFirst - 1];
+            int minSecond = (partitionSecond == m) ? Integer.MAX_VALUE : brr[partitionSecond];
+            int maxSecond = (partitionSecond == 0) ? Integer.MIN_VALUE : brr[partitionSecond - 1];
+
+            if (maxFirst <= minSecond && maxSecond <= minFirst) {
+                if ((n + m) % 2 == 0) {
+                    return (Math.max(maxFirst, maxSecond) + Math.min(minFirst, minSecond)) / 2;
+                } else {
+                    return Math.max(maxFirst, maxSecond);
+                }
+            } else if (maxFirst > minSecond) {
+                end = partitionFirst - 1;
+            } else {
+                start = partitionFirst + 1;
+            }
+        }
+        return -1;
     }
 }
 
