@@ -895,6 +895,49 @@ fun findRepeatingAndCount(arr: IntArray): Pair<Int, Int> {
     return repeating to count
 }
 
+/**
+ * Given an array arr[] of size N and an element k.
+ * The task is to find all elements in array that appear
+ * more than n/k times.
+ *
+ * Example 1:
+ * Input:
+ * N = 8
+ * arr[] = {3,1,2,2,1,2,3,3}
+ * k = 4
+ * Output: 2
+ * Explanation: In the given array, 3 and
+ *  2 are the only elements that appears
+ * more than n/k times.
+ *
+ * Example 2:
+ * Input:
+ * N = 4
+ * arr[] = {2,3,3,2}
+ * k = 3
+ * Output: 2
+ * Explanation: In the given array, 3 and 2
+ * are the only elements that appears more
+ * than n/k times. So the count of elements
+ * are 2.
+ */
+fun countOccurrence(arr: IntArray, k: Int): Int {
+    val map = hashMapOf<Int, Int>()
+    for (num in arr) {
+        map.compute(num) { key, value ->
+            if (value == null) 1
+            else value + 1
+        }
+    }
+    val border = arr.size / k
+    var count = 0
+    map.forEach { (_, value) ->
+        if (value > border) {
+            ++count
+        }
+    }
+    return count
+}
 
 
 

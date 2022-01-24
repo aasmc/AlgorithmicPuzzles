@@ -2,6 +2,7 @@ package geeks_for_geeks.algorithms.searching;
 
 import java.awt.*;
 import java.lang.reflect.GenericDeclaration;
+import java.util.HashMap;
 
 public class Solutions {
 
@@ -364,6 +365,47 @@ public class Solutions {
         count = n - (arr[n - 1] - arr[0]);
         repeating = arr[start];
         return new Point(repeating, count);
+    }
+
+    /**
+     * Given an array arr[] of size N and an element k.
+     * The task is to find all elements in array that appear
+     * more than n/k times.
+     * <p>
+     * Example 1:
+     * Input:
+     * N = 8
+     * arr[] = {3,1,2,2,1,2,3,3}
+     * k = 4
+     * Output: 2
+     * Explanation: In the given array, 3 and
+     * 2 are the only elements that appears
+     * more than n/k times.
+     * <p>
+     * Example 2:
+     * Input:
+     * N = 4
+     * arr[] = {2,3,3,2}
+     * k = 3
+     * Output: 2
+     * Explanation: In the given array, 3 and 2
+     * are the only elements that appears more
+     * than n/k times. So the count of elements
+     * are 2.
+     */
+    public int countOccurence(int[] arr, int n, int k) {
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>(n);
+        for (int num : arr) {
+            map.compute(num, (key, v) -> v == null ? 1 : v + 1);
+        }
+        int border = n / k;
+        int count = 0;
+        for (int num : map.values()) {
+            if (num > border) {
+                ++count;
+            }
+        }
+        return count;
     }
 }
 

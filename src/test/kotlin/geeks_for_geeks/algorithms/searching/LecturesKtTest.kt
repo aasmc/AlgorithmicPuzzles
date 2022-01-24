@@ -314,6 +314,17 @@ internal class LecturesKtTest {
         assertEquals(-1, res.second)
     }
 
+    @Test
+    fun countOccurrence_correct() {
+        var input = intArrayOf(3,1,2,2,1,2,3,3)
+        var res = countOccurrence(input, 4)
+        assertEquals(2, res)
+
+        input = intArrayOf(2,3,3,2)
+        res = countOccurrence(input, 3)
+        assertEquals(2, res)
+    }
+
 }
 
 
