@@ -6,6 +6,12 @@ private fun swap(arr: IntArray, from: Int, to: Int) {
     arr[to] = tmp
 }
 
+/**
+ * Sorts a given array of integers in place.
+ * Stable sort.
+ * Time complexity: O(n^2)
+ * This algorithm is optimized for arrays that are sorted or partially sorted.
+ */
 fun bubbleSort(arr: IntArray) {
     for (i in arr.indices) {
         // optimization for the case when the entire array or part of the array is sorted
