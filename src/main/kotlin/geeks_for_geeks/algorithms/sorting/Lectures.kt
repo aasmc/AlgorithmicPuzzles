@@ -22,8 +22,65 @@ fun bubbleSort(arr: IntArray) {
                 swapped = true
             }
         }
-        if(!swapped) {
+        if (!swapped) {
             break
         }
     }
 }
+
+/**
+ * Sorts a given array of integers in place.
+ * Unstable sort.
+ * Time complexity: O(n^2)
+ */
+fun selectionSort(arr: IntArray) {
+    for (i in 0 until arr.lastIndex) {
+        var minIndex = i
+        for (j in i + 1 until arr.size) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j
+            }
+        }
+        swap(arr, minIndex, i)
+    }
+}
+
+/**
+ * Sorts a given array of integers in place.
+ * Stable sort.
+ * Time complexity: O(n^2)
+ */
+fun insertionSort(arr: IntArray) {
+    for (i in 1..arr.lastIndex) {
+        val key = arr[i]
+        var sortedIndex = i - 1
+        while (sortedIndex >= 0 && arr[sortedIndex] > key) {
+            arr[sortedIndex + 1] = arr[sortedIndex]
+            --sortedIndex
+        }
+        arr[sortedIndex + 1] = key
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
