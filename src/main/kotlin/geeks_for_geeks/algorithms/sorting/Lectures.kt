@@ -163,6 +163,61 @@ fun intersectionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> 
     return result
 }
 
+/**
+ * Finds a union of two sorted arrays.
+ * @return list of all elements that are present in the arrays without duplicates
+ *          and in sorted order.
+ */
+fun unionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> {
+    var firstIdx = 0
+    var secondIdx = 0
+    val result = mutableListOf<Int>()
+    while (firstIdx < first.size && secondIdx < second.size) {
+        if (firstIdx > 0 && first[firstIdx] == first[firstIdx - 1]) {
+            ++firstIdx
+            continue
+        }
+        if (secondIdx > 0 && second[secondIdx] == second[secondIdx - 1]) {
+            ++secondIdx
+            continue
+        }
+        if (first[firstIdx] < second[secondIdx]) {
+            result.add(first[firstIdx++])
+        } else if (first[firstIdx] > second[secondIdx]) {
+            result.add(second[secondIdx++])
+        } else {
+            result.add(first[firstIdx++])
+            ++secondIdx
+        }
+    }
+    while (firstIdx < first.size) {
+        if (firstIdx > 0 && first[firstIdx] != first[firstIdx - 1]) {
+            result.add(first[firstIdx++])
+        }
+    }
+
+    while (secondIdx < second.size) {
+        if (secondIdx > 0 && second[secondIdx] != second[secondIdx - 1]) {
+            result.add(second[secondIdx++])
+        }
+    }
+    return result
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

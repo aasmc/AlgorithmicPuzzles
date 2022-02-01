@@ -63,20 +63,31 @@ internal class GFGSortingTest {
 
     @Test
     fun intersectionOfTwoSortedArrays_correct() {
-        var first = intArrayOf(3,5,10,10,10,15,15,20)
-        var second = intArrayOf(5,10,10,15,25)
+        var first = intArrayOf(3, 5, 10, 10, 10, 15, 15, 20)
+        var second = intArrayOf(5, 10, 10, 15, 25)
         var res = intersectionOfTwoSortedArrays(first, second)
         assertEquals(3, res.size)
         assertEquals(5, res[0])
         assertEquals(10, res[1])
         assertEquals(15, res[2])
 
-        first = intArrayOf(1,1,3,3,3,3)
-        second = intArrayOf(1,1,1,1,1,1,1,3,5,7)
+        first = intArrayOf(1, 1, 3, 3, 3, 3)
+        second = intArrayOf(1, 1, 1, 1, 1, 1, 1, 3, 5, 7)
         res = intersectionOfTwoSortedArrays(first, second)
         assertEquals(2, res.size)
         assertEquals(1, res[0])
         assertEquals(3, res[1])
+    }
+
+    @Test
+    fun unionOfTwoSortedArrays_correct() {
+        val first = intArrayOf(2,3,3,3,4,4,4,5)
+        val second = intArrayOf(3,3,3,3,3,4,4,4,4)
+        val result = unionOfTwoSortedArrays(first, second)
+        assertEquals(4, result.size)
+        for (i in 0 until result.lastIndex) {
+            assertTrue(result[i] < result[i + 1])
+        }
     }
 }
 
