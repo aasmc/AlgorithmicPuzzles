@@ -60,4 +60,44 @@ internal class GFGSortingTest {
             assertTrue(arr[i] <= arr[i + 1])
         }
     }
+
+    @Test
+    fun intersectionOfTwoSortedArrays_correct() {
+        var first = intArrayOf(3,5,10,10,10,15,15,20)
+        var second = intArrayOf(5,10,10,15,25)
+        var res = intersectionOfTwoSortedArrays(first, second)
+        assertEquals(3, res.size)
+        assertEquals(5, res[0])
+        assertEquals(10, res[1])
+        assertEquals(15, res[2])
+
+        first = intArrayOf(1,1,3,3,3,3)
+        second = intArrayOf(1,1,1,1,1,1,1,3,5,7)
+        res = intersectionOfTwoSortedArrays(first, second)
+        assertEquals(2, res.size)
+        assertEquals(1, res[0])
+        assertEquals(3, res[1])
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

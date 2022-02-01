@@ -132,7 +132,36 @@ private fun mergeSortHelper(arr: IntArray, low: Int, high: Int) {
     }
 }
 
+/**
+ * Finds intersection of two sorted arrays.
+ * @return list of common elements in the input arrays. the list has no duplicates.
+ *          if the arrays have no common elements, it returns an empty list.
+ */
+fun intersectionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> {
+    val result = mutableListOf<Int>()
+    var firstIdx = 0
+    var secondIdx = 0
+    while (firstIdx < first.size && secondIdx < second.size) {
+        // don't process duplicates
+        if (firstIdx > 0 && first[firstIdx] == first[firstIdx - 1]) {
+            ++firstIdx
+            continue
+        }
 
+        if (first[firstIdx] == second[secondIdx]) {
+            result.add(first[firstIdx])
+            firstIdx++
+            secondIdx++
+        }
+
+        if (first[firstIdx] < second[secondIdx]) {
+            firstIdx++
+        } else if (first[firstIdx] > second[secondIdx]) {
+            secondIdx++
+        }
+    }
+    return result
+}
 
 
 
