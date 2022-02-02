@@ -282,7 +282,7 @@ fun countAndMerge(arr: IntArray, left: Int, mid: Int, right: Int): Int {
  *
  * @return index of the pivot element after partitioning.
  */
-fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int) : Int {
+fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int): Int {
     val tmp = IntArray(end - start + 1)
     var tmpIdx = 0
     for (i in start..end) {
@@ -309,10 +309,53 @@ fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int) : Int {
     return res
 }
 
+/**
+ * Performs unstable partition of the part of the array [arr] from [start] to [end] indices,
+ * so that all elements less than or equal to the element at [pivotIdx] index are to the left of the [pivotIdx],
+ * and all other elements are to the right of the [pivotIdx].
+ *
+ * Time complexity O(N)
+ * Space complexity O(1)
+ *
+ * @param arr array to be partitioned
+ * @param start index of the first element that is subject to partitioning
+ * @param end index of the last element that is subject to partitioning
+ * @param pivotIdx index of the pivot element around which the partitioning is performed.
+ *
+ * @return index of the pivot element after partitioning.
+ */
+fun lomutoPartition(arr: IntArray, start: Int, end: Int, pivotIdx: Int): Int {
+    swap(arr, pivotIdx, end)
+    val pivot = arr[arr.lastIndex]
+    var smallerIdx = start - 1
+    for (currIdx in start until end) {
+        if (arr[currIdx] <= pivot) {
+            ++smallerIdx
+            swap(arr, smallerIdx, currIdx)
+        }
+    }
+    swap(arr, smallerIdx + 1, arr.lastIndex)
+    return smallerIdx + 1
+}
 
-
-
-
+fun hoarePartition(arr: IntArray, start: Int, end: Int, pivotIdx: Int): Int {
+    swap(arr, start, pivotIdx)
+    val pivot = arr[start]
+    var i = start - 1
+    var j = end + 1
+    while (true) {
+        do {
+            ++i
+        } while (arr[i] < pivot)
+        do {
+            --j
+        } while (arr[j] > pivot)
+        if (j <= i) {
+            return j
+        }
+        swap(arr, i, j)
+    }
+}
 
 
 

@@ -110,6 +110,23 @@ internal class GFGSortingTest {
         val pivotIdx = 4
         assertEquals(2, partitionStable(input, 0, 4, 4))
     }
+
+    @Test
+    fun lomutoPartition_correct() {
+        val input = intArrayOf(5,3,12,8,5)
+        assertEquals(2, lomutoPartition(input, 0, 4, 0))
+    }
+
+    @Test
+    fun hoarePartition_correct() {
+        val input = intArrayOf(5,3,12,8,5)
+        val pivotIdx = 4
+        val pivot = input[pivotIdx]
+        val res =  hoarePartition(input, 0, 4, pivotIdx)
+        for (i in 0 until res) {
+            assertTrue(input[i] <= pivot)
+        }
+    }
 }
 
 
