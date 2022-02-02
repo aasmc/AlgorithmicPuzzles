@@ -265,6 +265,50 @@ fun countAndMerge(arr: IntArray, left: Int, mid: Int, right: Int): Int {
     return res
 }
 
+/**
+ * Performs stable partition of the part of the array [arr] from [start] to [end] indices,
+ * so that all elements less than or equal to the element at [pivot] index are to the left of the [pivot],
+ * and all other elements are to the right of the [pivot].
+ *
+ * Time complexity O(N)
+ * Space complexity O(N)
+ *
+ * This is an inefficient partition algo, but it is stable - the order of equal elements doesn't change.
+ *
+ * @param arr array to be partitioned
+ * @param start index of the first element that is subject to partitioning
+ * @param end index of the last element that is subject to partitioning
+ * @param pivot index of the pivot element around which the partitioning is performed.
+ *
+ * @return index of the pivot element after partitioning.
+ */
+fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int) : Int {
+    val tmp = IntArray(end - start + 1)
+    var tmpIdx = 0
+    for (i in start..end) {
+        if (arr[i] < arr[pivot]) {
+            tmp[tmpIdx++] = arr[i]
+        }
+    }
+
+    for (i in start..end) {
+        if (arr[i] == arr[pivot]) {
+            tmp[tmpIdx++] = arr[i]
+        }
+    }
+    // compute the index of the pivot element after partitioning
+    val res = start + tmpIdx - 1
+    for (i in start..end) {
+        if (arr[i] > arr[pivot]) {
+            tmp[tmpIdx++] = arr[i]
+        }
+    }
+    for (i in start..end) {
+        arr[i] = tmp[i - start]
+    }
+    return res
+}
+
 
 
 

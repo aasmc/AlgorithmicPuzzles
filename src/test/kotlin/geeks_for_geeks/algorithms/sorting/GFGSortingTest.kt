@@ -103,6 +103,13 @@ internal class GFGSortingTest {
         val rand = intArrayOf(3,2,5,1,6,4,3,8)
         assertEquals(9, countInversions(rand))
     }
+
+    @Test
+    fun partitionStable_correct() {
+        val input = intArrayOf(5,3,12,8,5)
+        val pivotIdx = 4
+        assertEquals(2, partitionStable(input, 0, 4, 4))
+    }
 }
 
 
