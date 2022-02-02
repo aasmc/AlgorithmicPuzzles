@@ -81,13 +81,27 @@ internal class GFGSortingTest {
 
     @Test
     fun unionOfTwoSortedArrays_correct() {
-        val first = intArrayOf(2,3,3,3,4,4,4,5)
-        val second = intArrayOf(3,3,3,3,3,4,4,4,4)
+        val first = intArrayOf(2, 3, 3, 3, 4, 4, 4, 5)
+        val second = intArrayOf(3, 3, 3, 3, 3, 4, 4, 4, 4)
         val result = unionOfTwoSortedArrays(first, second)
         assertEquals(4, result.size)
         for (i in 0 until result.lastIndex) {
             assertTrue(result[i] < result[i + 1])
         }
+    }
+
+    @Test
+    fun countInversions_correct() {
+        val sorted = intArrayOf(1, 2, 3, 4, 5, 6)
+        assertEquals(0, countInversions(sorted))
+        val sortedDecreasing = intArrayOf(6, 5, 4, 3, 2, 1)
+        assertEquals(
+            sortedDecreasing.size * (sortedDecreasing.size - 1) / 2,
+            countInversions(sortedDecreasing)
+        )
+
+        val rand = intArrayOf(3,2,5,1,6,4,3,8)
+        assertEquals(9, countInversions(rand))
     }
 }
 

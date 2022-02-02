@@ -173,10 +173,12 @@ fun unionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> {
     var secondIdx = 0
     val result = mutableListOf<Int>()
     while (firstIdx < first.size && secondIdx < second.size) {
+        // handle duplicates in first array
         if (firstIdx > 0 && first[firstIdx] == first[firstIdx - 1]) {
             ++firstIdx
             continue
         }
+        // handle duplicates in second array
         if (secondIdx > 0 && second[secondIdx] == second[secondIdx - 1]) {
             ++secondIdx
             continue
@@ -205,6 +207,63 @@ fun unionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> {
 }
 
 
+/**
+ * Counts the number of inversions in an array.
+ * An inversion is when index i < index j, but
+ * arr[i] > arr[j].
+ *
+ * This solution is based on merge sort. We count inversions during the merge part
+ * of the sort.
+ *
+ * Time complexity O(N * LogN)
+ */
+fun countInversions(arr: IntArray): Int {
+    return countInversionHelper(arr, 0, arr.lastIndex)
+}
+
+private fun countInversionHelper(arr: IntArray, left: Int, right: Int): Int {
+    var res = 0
+    if (left < right) {
+        val mid = left + (right - left) / 2
+        res += countInversionHelper(arr, left, mid)
+        res += countInversionHelper(arr, mid + 1, right)
+        res += countAndMerge(arr, left, mid, right)
+    }
+    return res
+}
+
+fun countAndMerge(arr: IntArray, left: Int, mid: Int, right: Int): Int {
+    val leftArr = IntArray(mid - left + 1) { index ->
+        arr[left + index]
+    }
+    val rightArr = IntArray(right - mid) { index ->
+        arr[mid + index + 1]
+    }
+    var lIdx = 0
+    var rIdx = 0
+    var curIdx = left
+    var res = 0
+    while (lIdx < leftArr.size && rIdx < rightArr.size) {
+        if (leftArr[lIdx] <= rightArr[rIdx]) {
+            arr[curIdx++] = leftArr[lIdx++]
+        } else {
+            arr[curIdx++] = rightArr[rIdx++]
+            // this is the key line of the counting part. We know that element at
+            // index lIdx in left array is greater than element at index rIdx in right array,
+            // this means that ALL elements in left array that go after lIdx are greater than
+            // element at index rIdx in right array. Therefore, we may count the number of
+            // inversions like that: sizeOfArray - indexOfGreaterElement
+            res += leftArr.size - lIdx
+        }
+    }
+    while (lIdx < leftArr.size) {
+        arr[curIdx++] = leftArr[lIdx++]
+    }
+    while (rIdx < rightArr.size) {
+        arr[curIdx++] = rightArr[rIdx++]
+    }
+    return res
+}
 
 
 
