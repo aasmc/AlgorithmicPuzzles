@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.sorting
 
+import kotlin.random.Random
+
 private fun swap(arr: IntArray, from: Int, to: Int) {
     val tmp = arr[from]
     arr[from] = arr[to]
@@ -326,7 +328,7 @@ fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int): Int {
  */
 fun lomutoPartition(arr: IntArray, start: Int, end: Int, pivotIdx: Int): Int {
     swap(arr, pivotIdx, end)
-    val pivot = arr[arr.lastIndex]
+    val pivot = arr[end]
     var smallerIdx = start - 1
     for (currIdx in start until end) {
         if (arr[currIdx] <= pivot) {
@@ -334,7 +336,7 @@ fun lomutoPartition(arr: IntArray, start: Int, end: Int, pivotIdx: Int): Int {
             swap(arr, smallerIdx, currIdx)
         }
     }
-    swap(arr, smallerIdx + 1, arr.lastIndex)
+    swap(arr, smallerIdx + 1, end)
     return smallerIdx + 1
 }
 
@@ -357,7 +359,18 @@ fun hoarePartition(arr: IntArray, start: Int, end: Int, pivotIdx: Int): Int {
     }
 }
 
+fun quickSortLomuto(arr: IntArray) {
+    quickSortLomutoRecursive(arr, 0, arr.lastIndex)
+}
 
+private fun quickSortLomutoRecursive(arr: IntArray, start: Int, end: Int) {
+    if (start < end) {
+        val currentPivot = Random.nextInt(start, end)
+        val newPivot = lomutoPartition(arr, start, end, currentPivot)
+        quickSortLomutoRecursive(arr, start, newPivot - 1)
+        quickSortLomutoRecursive(arr, newPivot + 1, end)
+    }
+}
 
 
 
