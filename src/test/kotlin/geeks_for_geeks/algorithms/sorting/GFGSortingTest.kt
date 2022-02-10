@@ -136,6 +136,15 @@ internal class GFGSortingTest {
             assertTrue(input[i] <= input[i + 1])
         }
     }
+
+    @Test
+    fun quickSortHoare_correct() {
+        val input = intArrayOf(3,2,14,56,73,12,809, 135, 665)
+        quickSortHoare(input)
+        for (i in 0 until input.lastIndex) {
+            assertTrue(input[i] <= input[i + 1])
+        }
+    }
 }
 
 

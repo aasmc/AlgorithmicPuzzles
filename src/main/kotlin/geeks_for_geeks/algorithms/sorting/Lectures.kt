@@ -372,6 +372,19 @@ private fun quickSortLomutoRecursive(arr: IntArray, start: Int, end: Int) {
     }
 }
 
+fun quickSortHoare(arr: IntArray) {
+    quickSortHoareRecursive(arr, 0, arr.lastIndex)
+}
+
+private fun quickSortHoareRecursive(arr: IntArray, start: Int, end: Int) {
+    if (start < end) {
+        val currentPivot = Random.nextInt(start, end)
+        val newPivot = hoarePartition(arr, start, end, currentPivot)
+        quickSortHoareRecursive(arr, start, newPivot)
+        quickSortHoareRecursive(arr, newPivot + 1, end)
+    }
+}
+
 
 
 
