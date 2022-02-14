@@ -145,6 +145,18 @@ internal class GFGSortingTest {
             assertTrue(input[i] <= input[i + 1])
         }
     }
+
+    @Test
+    fun kThSmallestElement_correct() {
+        var input = intArrayOf(10, 5, 30, 12)
+        var k = 2
+        var res = kThSmallestElement(input, k)
+        assertEquals(10, res)
+        input = intArrayOf(30, 20, 5, 10, 8)
+        k = 4
+        res = kThSmallestElement(input, k)
+        assertEquals(20, res)
+    }
 }
 
 

@@ -365,7 +365,7 @@ fun quickSortLomuto(arr: IntArray) {
 
 private fun quickSortLomutoRecursive(arr: IntArray, start: Int, end: Int) {
     if (start < end) {
-        val currentPivot = Random.nextInt(start, end)
+        val currentPivot = selectPivot(start, end)
         val newPivot = lomutoPartition(arr, start, end, currentPivot)
         quickSortLomutoRecursive(arr, start, newPivot - 1)
         quickSortLomutoRecursive(arr, newPivot + 1, end)
@@ -378,15 +378,42 @@ fun quickSortHoare(arr: IntArray) {
 
 private fun quickSortHoareRecursive(arr: IntArray, start: Int, end: Int) {
     if (start < end) {
-        val currentPivot = Random.nextInt(start, end)
+        val currentPivot = selectPivot(start, end)
         val newPivot = hoarePartition(arr, start, end, currentPivot)
         quickSortHoareRecursive(arr, start, newPivot)
         quickSortHoareRecursive(arr, newPivot + 1, end)
     }
 }
 
+private fun selectPivot(start: Int, end: Int): Int {
+    return Random.nextInt(start, end)
+}
 
-
+/**
+ * Returns the k-th smallest element in the given array of distinct integers.
+ * [k] must be within the range (0 until [arr.size]).
+ *
+ * This algorithm is called QuickSelect.
+ * On average its Time Complexity is O(n).
+ * Worst case Time Complexity is O(n^2).
+ * It modifies the array.
+ */
+fun kThSmallestElement(arr: IntArray, k: Int): Int {
+    var left = 0
+    var right = arr.lastIndex
+    while (left <= right) {
+        val curPivot = selectPivot(left, right)
+        val pivot = lomutoPartition(arr, left, right, curPivot)
+        if (pivot == k - 1) {
+            return arr[pivot]
+        } else if (pivot > k - 1) {
+            right = pivot - 1
+        } else {
+            left = pivot + 1
+        }
+    }
+    throw IllegalArgumentException("K should be within the range of the array")
+}
 
 
 
