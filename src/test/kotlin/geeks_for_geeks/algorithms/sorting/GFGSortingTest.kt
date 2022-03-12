@@ -100,29 +100,29 @@ internal class GFGSortingTest {
             countInversions(sortedDecreasing)
         )
 
-        val rand = intArrayOf(3,2,5,1,6,4,3,8)
+        val rand = intArrayOf(3, 2, 5, 1, 6, 4, 3, 8)
         assertEquals(9, countInversions(rand))
     }
 
     @Test
     fun partitionStable_correct() {
-        val input = intArrayOf(5,3,12,8,5)
+        val input = intArrayOf(5, 3, 12, 8, 5)
         val pivotIdx = 4
         assertEquals(2, partitionStable(input, 0, 4, 4))
     }
 
     @Test
     fun lomutoPartition_correct() {
-        val input = intArrayOf(5,3,12,8,5)
+        val input = intArrayOf(5, 3, 12, 8, 5)
         assertEquals(2, lomutoPartition(input, 0, 4, 0))
     }
 
     @Test
     fun hoarePartition_correct() {
-        val input = intArrayOf(5,3,12,8,5)
+        val input = intArrayOf(5, 3, 12, 8, 5)
         val pivotIdx = 4
         val pivot = input[pivotIdx]
-        val res =  hoarePartition(input, 0, 4, pivotIdx)
+        val res = hoarePartition(input, 0, 4, pivotIdx)
         for (i in 0 until res) {
             assertTrue(input[i] <= pivot)
         }
@@ -130,7 +130,7 @@ internal class GFGSortingTest {
 
     @Test
     fun quickSortLomuto_correct() {
-        val input = intArrayOf(3,2,14,56,73,12,809, 135, 665)
+        val input = intArrayOf(3, 2, 14, 56, 73, 12, 809, 135, 665)
         quickSortLomuto(input)
         for (i in 0 until input.lastIndex) {
             assertTrue(input[i] <= input[i + 1])
@@ -139,7 +139,7 @@ internal class GFGSortingTest {
 
     @Test
     fun quickSortHoare_correct() {
-        val input = intArrayOf(3,2,14,56,73,12,809, 135, 665)
+        val input = intArrayOf(3, 2, 14, 56, 73, 12, 809, 135, 665)
         quickSortHoare(input)
         for (i in 0 until input.lastIndex) {
             assertTrue(input[i] <= input[i + 1])
@@ -156,6 +156,43 @@ internal class GFGSortingTest {
         k = 4
         res = kThSmallestElement(input, k)
         assertEquals(20, res)
+    }
+
+    @Test
+    fun minimumDifference_correct() {
+        val input = intArrayOf(7, 3, 2, 4, 9, 12, 56)
+        val res = minimumDifference(input, 3)
+        assertEquals(2, res)
+    }
+
+    @Test
+    fun segregateArrayByPredicate_correct() {
+        val input = intArrayOf(-12, 18, -10, 15)
+        segregateArrayByPredicate(input) { elem ->
+            elem >= 0
+        }
+        assertTrue(input[0] < 0)
+        assertTrue(input[1] < 0)
+        assertTrue(input[2] >= 0)
+        assertTrue(input[3] >= 0)
+    }
+
+    @Test
+    fun segregateArrayByTwoPredicates_correct() {
+        val input = intArrayOf(0, 1, 2, 1, 1, 2)
+        val firstPredicate = { elem: Int ->
+            elem == 0
+        }
+        val secondPredicate = { elem: Int ->
+            elem == 2
+        }
+        segregateArrayByTwoPredicates(input, firstPredicate, secondPredicate)
+        assertTrue(input[0] == 0)
+        assertTrue(input[1] == 1)
+        assertTrue(input[2] == 1)
+        assertTrue(input[3] == 1)
+        assertTrue(input[4] == 2)
+        assertTrue(input[5] == 2)
     }
 }
 

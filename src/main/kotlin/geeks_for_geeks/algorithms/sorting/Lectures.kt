@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.sorting
 
+import kotlin.math.min
 import kotlin.random.Random
 
 private fun swap(arr: IntArray, from: Int, to: Int) {
@@ -415,10 +416,79 @@ fun kThSmallestElement(arr: IntArray, k: Int): Int {
     throw IllegalArgumentException("K should be within the range of the array")
 }
 
+/**
+ * Gets the minimum difference between a maximum and a minimum element
+ * in the subarray of [m] elements.
+ * If [m] is greater than the size of the array, return -1
+ *
+ * Time Complexity O(nLogn)
+ */
+fun minimumDifference(arr: IntArray, m: Int): Int {
+    if (m > arr.size) {
+        return -1
+    }
+    quickSortHoare(arr)
+    var res = arr[m - 1] - arr[0]
+    var i = 1
+    while ((i + m - 1) < arr.size) {
+        res = min(res, arr[i + m - 1] - arr[i])
+        ++i
+    }
+    return res
+}
 
+/**
+ * Segregates the array so that all elements that don't satisfy the predicate,
+ * go first, and then go elements that satisfy the predicate.
+ */
+fun segregateArrayByPredicate(array: IntArray, predicate: (Int) -> Boolean) {
+    var i = -1
+    var j = array.size
+    while (true) {
+        do {
+            ++i
+        } while (!predicate(array[i]))
+        do {
+            --j
+        } while (predicate(array[j]))
+        if (i >= j) {
+            return
+        }
+        swap(array, i, j)
+    }
+}
 
-
-
+/**
+ * Segregates the array so that all elements that satisfy the first predicate
+ * go first, all the elements that satisfy the second predicate go last,
+ * and elements that don't satisfy the predicates, go in between.
+ *
+ * E.g. input = [0, 1, 1, 2, 0, 1]
+ * firstPredicate = elem < 1
+ * secondPredicate = elem > 1
+ * result = [0, 0, 1, 1, 1, 2]
+ */
+fun segregateArrayByTwoPredicates(
+    arr: IntArray,
+    firstPredicate: (Int) -> Boolean,
+    secondPredicate: (Int) -> Boolean
+) {
+    var low = 0
+    var mid = 0
+    var high = arr.lastIndex
+    while (mid <= high) {
+        if (firstPredicate(arr[mid])) {
+            swap(arr, low, mid)
+            ++low
+            ++mid
+        } else if (!secondPredicate(arr[mid])) {
+            ++mid
+        } else {
+            swap(arr, mid, high)
+            --high
+        }
+    }
+}
 
 
 
