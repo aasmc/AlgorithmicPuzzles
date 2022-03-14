@@ -200,6 +200,22 @@ internal class GFGSortingTest {
         val input = intArrayOf(8, -1, 0, 3)
         assertEquals(1, minDiffInArray(input))
     }
+
+    @Test
+    fun mergeOverlappingIntervals_correct() {
+        val input = mutableListOf(
+            Interval(7, 9),
+            Interval(6, 10),
+            Interval(4, 5),
+            Interval(1, 3),
+            Interval(2, 4),
+        )
+        val res = listOf(
+            Interval(1, 5),
+            Interval(6, 10),
+        )
+        assertEquals(res, mergeOverlappingIntervals(input))
+    }
 }
 
 

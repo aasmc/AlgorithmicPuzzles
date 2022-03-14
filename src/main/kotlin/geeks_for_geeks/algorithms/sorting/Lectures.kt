@@ -1,6 +1,8 @@
 package geeks_for_geeks.algorithms.sorting
 
+import com.sun.jdi.IntegerValue
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 
@@ -500,8 +502,37 @@ fun minDiffInArray(arr: IntArray): Int {
     return res
 }
 
+data class Interval(val start: Int, val end: Int)
 
+fun mergeOverlappingIntervals(arr: MutableList<Interval>): List<Interval> {
+    // step 1. sort in increasing order by start time
+    arr.sortBy { it.start }
+    var idx = 0
+    for (i in 1 until arr.size) {
+        if (overlapIntervals(arr[idx], arr[i])) {
+            arr[idx] = mergeTwoIntervals(arr[idx], arr[i])
+        } else {
+            ++idx
+            arr[idx] = arr[i]
+        }
+    }
+    return arr.subList(0, idx + 1)
+}
 
+fun overlapIntervals(first: Interval, second: Interval): Boolean {
+    return if (first.start > second.start) {
+        first.start in second.start..second.end
+    } else {
+        second.start in first.start..first.end
+    }
+}
+
+fun mergeTwoIntervals(first: Interval, second: Interval): Interval {
+    return Interval(
+        start = min(first.start, second.start),
+        end = max(first.end, second.end)
+    )
+}
 
 
 
