@@ -194,6 +194,12 @@ internal class GFGSortingTest {
         assertTrue(input[4] == 2)
         assertTrue(input[5] == 2)
     }
+
+    @Test
+    fun minDiffInArray_correct() {
+        val input = intArrayOf(8, -1, 0, 3)
+        assertEquals(1, minDiffInArray(input))
+    }
 }
 
 

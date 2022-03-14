@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.sorting
 
+import kotlin.math.abs
 import kotlin.math.min
 import kotlin.random.Random
 
@@ -488,6 +489,15 @@ fun segregateArrayByTwoPredicates(
             --high
         }
     }
+}
+
+fun minDiffInArray(arr: IntArray): Int {
+    quickSortHoare(arr)
+    var res = Int.MAX_VALUE
+    for (i in 1 until arr.size) {
+        res = min(res, abs(arr[i] - arr[i - 1]))
+    }
+    return res
 }
 
 
