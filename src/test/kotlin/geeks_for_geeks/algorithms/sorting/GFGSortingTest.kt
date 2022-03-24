@@ -223,6 +223,15 @@ internal class GFGSortingTest {
         val departures = intArrayOf(1000, 800, 730)
         assertEquals(2, countMaxNumberOfGuests(arrivals, departures))
     }
+
+    @Test
+    fun cycleSortNoDuplicates_correct() {
+        val initial = intArrayOf(20, 40, 30, 70, 40, 50, 60)
+        cycleSortNoDuplicates(initial)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
 }
 
 

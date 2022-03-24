@@ -565,6 +565,50 @@ fun countMaxNumberOfGuests(arrivals: IntArray, departures: IntArray): Int {
 }
 
 
+/**
+ * In place sorting algorithm. Unstable.
+ * Efficient in terms of memory writes.
+ * Allows no duplicates in the array.
+ *
+ * Time Complexity O(N^2)
+ */
+fun cycleSortNoDuplicates(arr: IntArray) {
+    for (cycleStart in 0 until arr.lastIndex) {
+        var item = arr[cycleStart]
+        var position = cycleStart
+        for (i in cycleStart + 1 until arr.size) {
+            if (arr[i] < item) {
+                position++
+            }
+        }
+        var tmp = item
+        item = arr[position]
+        arr[position] = tmp
+        while (position != cycleStart) {
+            position = cycleStart
+            for (j in cycleStart + 1 until arr.size) {
+                if (arr[j] < item) {
+                    position++
+                }
+            }
+            tmp = item
+            item = arr[position]
+            arr[position] = tmp
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
