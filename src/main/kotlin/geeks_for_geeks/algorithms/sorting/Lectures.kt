@@ -1,6 +1,5 @@
 package geeks_for_geeks.algorithms.sorting
 
-import com.sun.jdi.IntegerValue
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -534,6 +533,36 @@ fun mergeTwoIntervals(first: Interval, second: Interval): Interval {
     )
 }
 
+/**
+ * Given two arrays with arrival times and departure times (from 0 to 2359
+ * aka minutes of the day), count the maximum number of people present at any
+ * moment in time.
+ *
+ * Time complexity O(N*Log(N))
+ */
+fun countMaxNumberOfGuests(arrivals: IntArray, departures: IntArray): Int {
+    arrivals.sort()
+    departures.sort()
+    // initial setup
+    // the first guest
+    var arrivalIdx = 1
+    // no one has left yet
+    var departureIdx = 0
+    // initially there's one guest
+    var maxGuests = 1
+    var currentGuests = 1
+    while (arrivalIdx < arrivals.size && departureIdx < departures.size) {
+        if (arrivals[arrivalIdx] <= departures[departureIdx]) {
+            ++currentGuests
+            ++arrivalIdx
+        } else {
+            --currentGuests
+            ++departureIdx
+        }
+        maxGuests = max(maxGuests, currentGuests)
+    }
+    return maxGuests
+}
 
 
 

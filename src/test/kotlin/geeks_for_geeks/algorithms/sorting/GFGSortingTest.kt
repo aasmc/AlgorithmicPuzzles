@@ -216,6 +216,13 @@ internal class GFGSortingTest {
         )
         assertEquals(res, mergeOverlappingIntervals(input))
     }
+
+    @Test
+    fun countMaxNumberOfGuests_correct() {
+        val arrivals = intArrayOf(900, 600, 700)
+        val departures = intArrayOf(1000, 800, 730)
+        assertEquals(2, countMaxNumberOfGuests(arrivals, departures))
+    }
 }
 
 
