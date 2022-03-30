@@ -598,7 +598,52 @@ fun cycleSortNoDuplicates(arr: IntArray) {
     }
 }
 
+/**
+ * Creates a max heap out of the given array.
+ *
+ * @param arr array to be heapified
+ * @param idx index of the element that will be the starting point of heapify algorithm.
+ * Time complexity O(n)
+ */
+fun heapify(arr: IntArray, idx: Int, size: Int) {
+    var largest = idx
+    val leftChild = 2 * idx + 1
+    val rightChild = 2 * idx + 2
+    // select the index of the largest of the three elements
+    if (leftChild < size && arr[leftChild] > arr[largest]) {
+        largest = leftChild
+    }
+    if (rightChild < size && arr[rightChild] > arr[largest]) {
+        largest = rightChild
+    }
+    // if heap changed
+    if (largest != idx) {
+        // swap the parent with the largest of the children
+        val swap = arr[idx]
+        arr[idx] = arr[largest]
+        arr[largest] = swap
+        // recursively call the heapify
+        heapify(arr, largest, size)
+    }
+}
 
+fun buildHeap(arr: IntArray) {
+    var parentIdx = arr.size / 2 - 1
+    while (parentIdx >= 0) {
+        heapify(arr, parentIdx, arr.size)
+        --parentIdx
+    }
+}
+
+fun heapSort(arr: IntArray) {
+    buildHeap(arr)
+    for (i in arr.size - 1 downTo 1) {
+        val tmp = arr[0]
+        arr[0] = arr[i]
+        arr[i] = tmp
+        heapify(arr, 0, i)
+    }
+}
 
 
 

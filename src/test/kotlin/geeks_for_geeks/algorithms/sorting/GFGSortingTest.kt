@@ -232,6 +232,15 @@ internal class GFGSortingTest {
             assertTrue(initial[i] <= initial[i + 1])
         }
     }
+
+    @Test
+    fun heapSort_correct() {
+        val initial = intArrayOf(20, 40, 30, 70, 40, 50, 60)
+        heapSort(initial)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
 }
 
 
