@@ -259,6 +259,15 @@ internal class GFGSortingTest {
             assertTrue(initial[i] <= initial[i + 1])
         }
     }
+
+    @Test
+    fun radixSort_correct() {
+        val initial = intArrayOf(319, 212, 6, 8, 100, 50)
+        radixSort(initial)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
 }
 
 

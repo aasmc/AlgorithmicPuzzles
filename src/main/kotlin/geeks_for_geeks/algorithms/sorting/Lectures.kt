@@ -698,7 +698,32 @@ fun countingSortEfficient(arr: IntArray, k: Int) {
     }
 }
 
+fun radixSort(arr: IntArray) {
+    val max = arr.maxOf { it }
+    var exp = 1
+    while (max / exp > 0) {
+        countingSort(arr = arr, base = 10, exp = exp)
+        exp *= 10
+    }
+}
 
+private fun countingSort(arr: IntArray, base: Int, exp: Int) {
+    val countArray = IntArray(base) { 0 }
+    for (i in arr.indices) {
+        countArray[(arr[i] / exp) % base]++
+    }
+    for (i in 1 until base) {
+        countArray[i] = countArray[i] + countArray[i - 1]
+    }
+    val output = IntArray(arr.size)
+    for (i in arr.size - 1 downTo 0) {
+        output[countArray[(arr[i] / exp) % base] - 1] = arr[i]
+        countArray[(arr[i] / exp) % base]--
+    }
+    for (i in arr.indices) {
+        arr[i] = output[i]
+    }
+}
 
 
 
