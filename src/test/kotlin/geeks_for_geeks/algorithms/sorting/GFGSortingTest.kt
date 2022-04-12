@@ -241,6 +241,24 @@ internal class GFGSortingTest {
             assertTrue(initial[i] <= initial[i + 1])
         }
     }
+
+    @Test
+    fun countingSortNaive_correct() {
+        val initial = intArrayOf(5, 4, 3, 2, 1)
+        countingSortNaive(initial, 6)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
+
+    @Test
+    fun countingSortEfficient_correct() {
+        val initial = intArrayOf(5, 4, 3, 2, 1)
+        countingSortEfficient(initial, 6)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
 }
 
 

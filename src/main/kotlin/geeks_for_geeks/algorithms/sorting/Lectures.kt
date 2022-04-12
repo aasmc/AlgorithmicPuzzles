@@ -641,7 +641,60 @@ fun heapSort(arr: IntArray) {
         val tmp = arr[0]
         arr[0] = arr[i]
         arr[i] = tmp
-        heapify(arr, 0, i)
+        heapify(
+            arr = arr,
+            idx = 0,
+            size = i
+        )
+    }
+}
+
+/**
+ * Sorts the given array of integers in O(n + k) times.
+ *  @param arr array to be sorted.
+ *  @param k the range of integers.
+ */
+fun countingSortNaive(arr: IntArray, k: Int) {
+    val countArray = IntArray(k) { 0 }
+    for (i in arr.indices) {
+        countArray[arr[i]]++
+    }
+    var index = 0
+    for (i in 0 until k) {
+        for (j in 0 until countArray[i]) {
+            arr[index] = i
+            index++
+        }
+    }
+}
+
+/**
+ * Sorts the given array  in O(n + k) times.
+ * It is a stable-sort algorithm.
+ * It is efficient only if k is linearly proportional to n.
+ * Requires O(n + k) extra space.
+ *  @param arr array to be sorted.
+ *  @param k the range of integers.
+ */
+fun countingSortEfficient(arr: IntArray, k: Int) {
+    val countArray = IntArray(k) { 0 }
+    for (i in arr.indices) {
+        countArray[arr[i]]++
+    }
+    // count how many elements are smaller or equal to element at
+    // index i, starting from 1.
+    for (i in 1 until countArray.size) {
+        countArray[i] = countArray[i] + countArray[i - 1]
+    }
+    val output = IntArray(arr.size)
+    for (i in arr.size - 1 downTo 0) {
+        val elem = arr[i]
+        val countSmallerElements = countArray[elem]
+        output[countSmallerElements - 1] = arr[i]
+        countArray[elem]--
+    }
+    for (i in arr.indices) {
+        arr[i] = output[i]
     }
 }
 
