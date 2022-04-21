@@ -726,6 +726,49 @@ private fun countingSort(arr: IntArray, base: Int, exp: Int) {
 }
 
 
+/**
+ * Given a uniformly distributed array of integers and a number
+ * of buckets used for sorting, sorts the array in ascending order.
+ *
+ * If the distribution is perfect, then time complexity of the algo
+ * is close to O(n), however in the worst case it is O(n^2) if we
+ * use insertion sort for sorting individual buckets, and O(logN) if
+ * we use quick sort for sorting individual buckets (but in this case,
+ * it is not a good idea, because if the numbers in the array are perfetcly
+ * distributed, then we lose time sorting them with this type of algo).
+ *
+ * Step 1. Find the max value in the array and increment it by 1 to
+ * allow for correct distribution across buckets.
+ *
+ * Step 2. Distribute all numbers across the buckets by the following
+ * formula to find out the index of the bucket:
+ *   bucketIdx =  number * [bucketsNum] / maxValue
+ *
+ * Step 3. Sort individual buckets.
+ *
+ * Step 4. Join the elements from the buckets.
+ */
+fun bucketSort(arr: IntArray, bucketsNum: Int) {
+    val maxValue = arr.maxOf { it } + 1
+    val buckets = Array(bucketsNum) {
+        ArrayList<Int>()
+    }
+    arr.forEach { num ->
+        val idx = num * bucketsNum / maxValue
+        buckets[idx].add(num)
+    }
+    buckets.forEach { bucket ->
+        bucket.sort()
+    }
+    var idx = 0
+    for (i in buckets.indices) {
+        for (j in buckets[i].indices) {
+            arr[idx++] = buckets[i][j]
+        }
+    }
+}
+
+
 
 
 

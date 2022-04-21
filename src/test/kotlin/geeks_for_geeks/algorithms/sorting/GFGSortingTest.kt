@@ -268,6 +268,17 @@ internal class GFGSortingTest {
             assertTrue(initial[i] <= initial[i + 1])
         }
     }
+
+
+    @Test
+    fun bucketSort_correct() {
+        val initial = intArrayOf(30,40,10,80,5,12,70)
+        val bucketsNum = 4
+        bucketSort(initial, bucketsNum)
+        for (i in 0 until initial.lastIndex) {
+            assertTrue(initial[i] <= initial[i + 1])
+        }
+    }
 }
 
 
