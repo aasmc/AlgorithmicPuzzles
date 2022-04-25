@@ -157,9 +157,7 @@ fun intersectionOfTwoSortedArrays(first: IntArray, second: IntArray): List<Int> 
             result.add(first[firstIdx])
             firstIdx++
             secondIdx++
-        }
-
-        if (first[firstIdx] < second[secondIdx]) {
+        } else if (first[firstIdx] < second[secondIdx]) {
             firstIdx++
         } else if (first[firstIdx] > second[secondIdx]) {
             secondIdx++
@@ -256,7 +254,8 @@ fun countAndMerge(arr: IntArray, left: Int, mid: Int, right: Int): Int {
             // this is the key line of the counting part. We know that element at
             // index lIdx in left array is greater than element at index rIdx in right array,
             // this means that ALL elements in left array that go after lIdx are greater than
-            // element at index rIdx in right array. Therefore, we may count the number of
+            // element at index rIdx in right array, this is so
+            // because the left and right sub arrays are sorted. Therefore, we may count the number of
             // inversions like that: sizeOfArray - indexOfGreaterElement
             res += leftArr.size - lIdx
         }
@@ -769,8 +768,61 @@ fun bucketSort(arr: IntArray, bucketsNum: Int) {
 }
 
 
-
-
+/**
+ * Given an unsorted array arr[] of n positive integers.
+ * Find the number of triangles that can be formed with three
+ * different array elements as lengths of three sides of triangles.
+ * We can form a triangle if and only if length of two sides is greater than
+ * the length of the third side.
+ * I.e. a + b > c
+ *      b + c > a
+ *      c + a > b
+ *
+ * Example 1:
+ * Input:
+ *      n = 3
+ *      arr[] = {3, 5, 4}
+ * Output:
+ *      1
+ * Explanation:
+ *      A triangle is possible
+ *      with all the elements 5, 3 and 4.
+ *
+ *  Example 2:
+ *  Input:
+ *      n = 5
+ *      arr[] = {6, 4, 9, 7, 8}
+ * Output:
+ *      10
+ * Explanation:
+ *      There are 10 triangles
+ *      possible  with the given elements like
+ *      (6,4,9), (6,7,8),...
+ *
+ * Expected Time Complexity: O(n^2).
+ * Expected Space Complexity: O(1).
+ */
+fun findNumberOfTriangles(arr: IntArray): Int {
+    // step 1. Sort the array in increasing order.
+    arr.sort()
+    var count = 0
+    // i is the first vertex of the triangle
+    for (i in arr.indices) {
+        // k is the third vertex of the triangle
+        var k = i + 2
+        // j is the second vertex of the triangle
+        for (j in i + 1 until arr.size) {
+            // while the condition holds, we can form a triangle out of the elements,
+            // so we increase k
+            while (k < arr.size && arr[k] < arr[i] + arr[j]) {
+                ++k
+            }
+            // how far from j we went is the number of triangles we can form
+            count += (k - (j + 1))
+        }
+    }
+    return count
+}
 
 
 

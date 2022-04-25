@@ -1,7 +1,6 @@
 package geeks_for_geeks.algorithms.sorting;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 public class Solutions {
 
@@ -72,4 +71,119 @@ public class Solutions {
     private static int selectPivot(int start, int end) {
         return (int) ((Math.random() * (end - start)) + start);
     }
+
+    //Function to sort the binary array.
+    static void binSort(int A[], int N) {
+        int toSwapIdx = 0;
+        for (int i = 0; i < N; i++) {
+            if (A[i] == 0) {
+                int tmp = A[i];
+                A[i] = A[toSwapIdx];
+                A[toSwapIdx++] = tmp;
+            }
+        }
+    }
+
+    // arr[]: Input Array
+    // N : Size of the Array arr[]
+    //Function to count inversions in the array.
+    static long inversionCount(long arr[], long N) {
+        // Your Code Here
+        return inversionCountRec(arr, 0, (int) N - 1);
+    }
+
+    private static long inversionCountRec(long[] arr, int left, int right) {
+        long res = 0;
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            res += inversionCountRec(arr, left, mid);
+            res += inversionCountRec(arr, mid + 1, right);
+            res += countAndMerge(arr, left, mid, right);
+        }
+        return res;
+    }
+
+    private static long countAndMerge(long[] arr, int left, int mid, int right) {
+        long[] leftArr = new long[mid - left + 1];
+        if (mid - left + 1 >= 0) System.arraycopy(arr, left, leftArr, 0, mid - left + 1);
+        long[] rightArr = new long[right - mid];
+        for (int i = 0; i < right - mid; i++) {
+            rightArr[i] = arr[mid + i + 1];
+        }
+        int lIdx = 0;
+        int rIdx = 0;
+        int curIdx = left;
+        long res = 0;
+        while (lIdx < leftArr.length && rIdx < rightArr.length) {
+            if (leftArr[lIdx] <= rightArr[rIdx]) {
+                arr[curIdx++] = leftArr[lIdx++];
+            } else {
+                arr[curIdx++] = rightArr[rIdx++];
+                res += leftArr.length - lIdx;
+            }
+        }
+        while (lIdx < leftArr.length) {
+            arr[curIdx++] = leftArr[lIdx++];
+        }
+        while (rIdx < rightArr.length) {
+            arr[curIdx++] = rightArr[rIdx++];
+        }
+        return res;
+    }
+
+    //Function to return a list containing the union of the two arrays.
+    public static ArrayList<Integer> findUnion(int arr1[], int arr2[], int n, int m) {
+        Set<Integer> noDuplicates = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            noDuplicates.add(arr1[i]);
+        }
+        for (int i = 0; i < m; i++) {
+            noDuplicates.add(arr2[i]);
+        }
+        ArrayList<Integer> result = new ArrayList<>(noDuplicates.size());
+        result.addAll(noDuplicates);
+        Collections.sort(result);
+        return result;
+    }
+
+    //Function to return a list containing the intersection of two arrays.
+    static ArrayList<Integer> printIntersection(int arr1[], int arr2[], int n, int m) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int firstIdx = 0;
+        int secondIdx = 0;
+        while (firstIdx < n && secondIdx < m) {
+            if (firstIdx > 0 && arr1[firstIdx] == arr1[firstIdx - 1]) {
+                ++firstIdx;
+                continue;
+            }
+            if (arr1[firstIdx] == arr2[secondIdx]) {
+                result.add(arr1[firstIdx]);
+                firstIdx++;
+                secondIdx++;
+            } else if (arr1[firstIdx] < arr2[secondIdx]) {
+                firstIdx++;
+            } else if (arr1[firstIdx] > arr2[secondIdx]) {
+                secondIdx++;
+            }
+        }
+        return result;
+    }
+
+    //Function to count the number of possible triangles.
+    static int findNumberOfTriangles(int arr[], int n)
+    {
+        Arrays.sort(arr);
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            int k = i + 2;
+            for (int j = i + 1; j < n; j++) {
+                while (k < n && arr[k] < arr[i] + arr[j]) {
+                    k++;
+                }
+                result += (k - (j + 1));
+            }
+        }
+        return result;
+    }
+
 }

@@ -279,6 +279,14 @@ internal class GFGSortingTest {
             assertTrue(initial[i] <= initial[i + 1])
         }
     }
+
+    @Test
+    fun findTriangles_correct() {
+        val i1 = intArrayOf(3,5,4)
+        assertEquals(1, findNumberOfTriangles(i1))
+        val i2 = intArrayOf(6, 4, 9, 7, 8)
+        assertEquals(10, findNumberOfTriangles(i2))
+    }
 }
 
 
