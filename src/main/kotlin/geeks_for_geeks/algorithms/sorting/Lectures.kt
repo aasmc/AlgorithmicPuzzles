@@ -824,7 +824,31 @@ fun findNumberOfTriangles(arr: IntArray): Int {
     return count
 }
 
+fun findTriplets(arr: IntArray): Boolean {
+    if (arr.size < 3) return false
+    for (e in arr) {
+        val p = findPairOfSum(-e, arr)
+        if (p != null) return true
+    }
+    return false
+}
 
+private fun findPairOfSum(sum: Int, arr: IntArray): Pair<Int, Int>? {
+    val complements = hashMapOf<Int, Int>()
+    for (e in arr) {
+        if (e != -sum) {
+            complements[sum - e] = e
+        }
+    }
+    for (e in arr) {
+        if (e == -sum) continue
+        val complement = complements[e]
+        if (complement != null && complement != e) {
+            return Pair(first = e, second = complements[e]!!)
+        }
+    }
+    return null
+}
 
 
 

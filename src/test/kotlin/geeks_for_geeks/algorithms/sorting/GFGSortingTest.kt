@@ -287,6 +287,12 @@ internal class GFGSortingTest {
         val i2 = intArrayOf(6, 4, 9, 7, 8)
         assertEquals(10, findNumberOfTriangles(i2))
     }
+
+    @Test
+    fun findTriplets_correct() {
+        val input = intArrayOf(4, -16, 43, 4, 7, -36, 18)
+        assertFalse(findTriplets(input))
+    }
 }
 
 

@@ -170,8 +170,7 @@ public class Solutions {
     }
 
     //Function to count the number of possible triangles.
-    static int findNumberOfTriangles(int arr[], int n)
-    {
+    static int findNumberOfTriangles(int arr[], int n) {
         Arrays.sort(arr);
         int result = 0;
         for (int i = 0; i < n; i++) {
@@ -184,6 +183,56 @@ public class Solutions {
             }
         }
         return result;
+    }
+
+    /**
+     * Given an array arr[] of n integers. Check whether it contains a
+     * triplet that sums up to zero.
+     * Expected Time Complexity: O(n2)
+     * Expected Auxiliary Space: O(1)
+     */
+    public boolean findTriplets(int arr[], int n) {
+        if (n < 3) return false;
+        for (int i = 0; i < n; i++) {
+            int elem = arr[i];
+            Pair p = findPairOfSum(-elem, arr);
+            if (p != null) return true;
+        }
+        return false;
+    }
+
+    private Pair findPairOfSum(int sum, int[] arr) {
+        Map<Integer, Integer> complements = new HashMap<>();
+        for (int j : arr) {
+            if (j == -sum) continue; // skip identity values
+            complements.put(sum - j, j);
+        }
+        for (int elem :
+                arr) {
+            if (elem == -sum) continue; // skip identity values
+            if (complements.containsKey(elem) && complements.get(elem) != elem) {
+                return new Pair(elem, complements.get(elem));
+            }
+        }
+        return null;
+    }
+
+    static class Pair {
+        private int first;
+        private int second;
+
+        public Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public int getFirst() {
+            return first;
+        }
+
+        public void setFirst(int first) {
+            this.first = first;
+        }
     }
 
 }
