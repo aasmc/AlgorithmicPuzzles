@@ -4,11 +4,6 @@ import java.util.*;
 
 public class Solutions {
 
-    private static void swap(int[] arr, int from, int to) {
-        int tmp = arr[from];
-        arr[from] = arr[to];
-        arr[to] = tmp;
-    }
 
     //Function to sort the array using bubble sort algorithm.
     public static void bubbleSort(int arr[], int n) {
@@ -233,6 +228,41 @@ public class Solutions {
         public void setFirst(int first) {
             this.first = first;
         }
+    }
+
+    /**
+     *
+     * Given an array of size n and a range [a, b]. The task is to partition the
+     * array around the range such that array is divided into three parts.
+     * 1) All elements smaller than a come first.
+     * 2) All elements in range a to b come next.
+     * 3) All elements greater than b appear in the end.
+     * The individual elements of three sets can appear in any order.
+     *
+     */
+    public void threeWayPartition(int array[], int a, int b)
+    {
+        int low = 0;
+        int mid = 0;
+        int high = array.length - 1;
+        while (mid <= high) {
+            if (array[mid] < a) {
+                swap(array, low, mid);
+                ++low;
+                ++mid;
+            } else if (array[mid] > b) {
+                swap(array, mid, high);
+                --high;
+            } else {
+                ++mid;
+            }
+        }
+    }
+
+    private static void swap(int[] arr, int from, int to) {
+        int tmp = arr[from];
+        arr[from] = arr[to];
+        arr[to] = tmp;
     }
 
 }
