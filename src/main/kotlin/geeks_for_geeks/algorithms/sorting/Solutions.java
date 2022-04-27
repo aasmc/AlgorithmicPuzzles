@@ -265,4 +265,21 @@ public class Solutions {
         arr[to] = tmp;
     }
 
+    //Function to arrange all letters of a string in lexicographical
+    //order using Counting Sort.
+    public static String countSort(String arr)
+    {
+        int[] letters = new int[26];
+        for(int i = 0; i < arr.length(); ++i) {
+            letters[arr.charAt(i) - 'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 26; ++i) {
+            for(int j = 0; j < letters[i]; ++j) {
+                sb.append((char)('a' + i));
+            }
+        }
+        return sb.toString();
+    }
+
 }
