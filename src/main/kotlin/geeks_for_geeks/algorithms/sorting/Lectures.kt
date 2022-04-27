@@ -315,7 +315,8 @@ fun partitionStable(arr: IntArray, start: Int, end: Int, pivot: Int): Int {
 
 /**
  * Performs unstable partition of the part of the array [arr] from [start] to [end] indices,
- * so that all elements less than or equal to the element at [pivotIdx] index are to the left of the [pivotIdx],
+ * so that all elements less than or equal to the element at
+ * [pivotIdx] index are to the left of the [pivotIdx],
  * and all other elements are to the right of the [pivotIdx].
  *
  * Time complexity O(N)

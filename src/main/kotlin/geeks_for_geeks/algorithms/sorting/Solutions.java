@@ -63,10 +63,6 @@ public class Solutions {
         }
     }
 
-    private static int selectPivot(int start, int end) {
-        return (int) ((Math.random() * (end - start)) + start);
-    }
-
     //Function to sort the binary array.
     static void binSort(int A[], int N) {
         int toSwapIdx = 0;
@@ -294,12 +290,6 @@ public class Solutions {
         }
     }
 
-    private static void swap(int[] arr, int from, int to) {
-        int tmp = arr[from];
-        arr[from] = arr[to];
-        arr[to] = tmp;
-    }
-
     /**
      * Given an array of N elements and a number K. The task is to arrange array
      * elements according to the absolute difference with K, i. e., element having
@@ -364,8 +354,7 @@ public class Solutions {
      * Given an array of size n,
      * find the minimum difference between any pair of elements in given array.
      */
-    public static int MinimumDifference(int arr[], int n)
-    {
+    public static int MinimumDifference(int arr[], int n) {
         Arrays.sort(arr);
         if (n < 2) throw new RuntimeException("Number of elements in the array must be greater than 2");
         int first = arr[0];
@@ -380,4 +369,51 @@ public class Solutions {
         return diff;
     }
 
+    /**
+     * Given an array arr[] of N positive integers and a number K.
+     * The task is to find the kth smallest element in the array.
+     * <p>
+     * Expected Time Complexity: O(NlogK)
+     * Expected Auxilliary Space: O(K)
+     */
+    public static int kthSmallest(int arr[], int n, int k) {
+        int left = 0;
+        int right = n - 1;
+        while (left <= right) {
+            int curPivot = selectPivot(left, right);
+            int pivot = lomutoPartition(arr, left, right, curPivot);
+            if (pivot == k -1) {
+                return arr[pivot];
+            } else if (pivot > k - 1) {
+                right = pivot - 1;
+            } else {
+                left = pivot + 1;
+            }
+        }
+        throw new IllegalArgumentException("K should be within the range of the array");
+    }
+
+    private static int lomutoPartition(int[] arr, int start, int end, int pivotIdx) {
+        swap(arr, pivotIdx, end);
+        int pivot = arr[end];
+        int smallerIdx = start - 1;
+        for (int curIdx = start; curIdx < end; ++curIdx) {
+            if (arr[curIdx] <= pivot) {
+                ++smallerIdx;
+                swap(arr, smallerIdx, curIdx);
+            }
+        }
+        swap(arr, smallerIdx + 1, end);
+        return smallerIdx + 1;
+    }
+
+    private static int selectPivot(int start, int end) {
+        return (int) ((Math.random() * (end - start)) + start);
+    }
+
+    private static void swap(int[] arr, int from, int to) {
+        int tmp = arr[from];
+        arr[from] = arr[to];
+        arr[to] = tmp;
+    }
 }
