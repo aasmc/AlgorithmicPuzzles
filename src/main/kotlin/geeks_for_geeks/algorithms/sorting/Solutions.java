@@ -231,17 +231,14 @@ public class Solutions {
     }
 
     /**
-     *
      * Given an array of size n and a range [a, b]. The task is to partition the
      * array around the range such that array is divided into three parts.
      * 1) All elements smaller than a come first.
      * 2) All elements in range a to b come next.
      * 3) All elements greater than b appear in the end.
      * The individual elements of three sets can appear in any order.
-     *
      */
-    public void threeWayPartition(int array[], int a, int b)
-    {
+    public void threeWayPartition(int array[], int a, int b) {
         int low = 0;
         int mid = 0;
         int high = array.length - 1;
@@ -259,27 +256,87 @@ public class Solutions {
         }
     }
 
+
+    //Function to arrange all letters of a string in lexicographical
+    //order using Counting Sort.
+    public static String countSort(String arr) {
+        int[] letters = new int[26];
+        for (int i = 0; i < arr.length(); ++i) {
+            letters[arr.charAt(i) - 'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 26; ++i) {
+            for (int j = 0; j < letters[i]; ++j) {
+                sb.append((char) ('a' + i));
+            }
+        }
+        return sb.toString();
+    }
+
+    // arr[]: Input Array
+    // N: Size of the Array arr[]
+    //Function to segregate 0s, 1s and 2s in sorted increasing order.
+    public static void segragate012(int arr[], int N) {
+        int low = 0;
+        int mid = 0;
+        int high = N - 1;
+        while (mid <= high) {
+            if (arr[mid] < 1) {
+                swap(arr, low, mid);
+                ++mid;
+                ++low;
+            } else if (arr[mid] > 1) {
+                swap(arr, mid, high);
+                --high;
+            } else {
+                ++mid;
+            }
+        }
+    }
+
     private static void swap(int[] arr, int from, int to) {
         int tmp = arr[from];
         arr[from] = arr[to];
         arr[to] = tmp;
     }
 
-    //Function to arrange all letters of a string in lexicographical
-    //order using Counting Sort.
-    public static String countSort(String arr)
-    {
-        int[] letters = new int[26];
-        for(int i = 0; i < arr.length(); ++i) {
-            letters[arr.charAt(i) - 'a']++;
-        }
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 26; ++i) {
-            for(int j = 0; j < letters[i]; ++j) {
-                sb.append((char)('a' + i));
+    /**
+     * Given an array of N elements and a number K. The task is to arrange array
+     * elements according to the absolute difference with K, i. e., element having
+     * minimum difference comes first and so on.
+     * Note : If two or more elements are at equal distance arrange them in same
+     * sequence as in the given array.
+     * <p>
+     * Example
+     * Input: N = 5, K = 7
+     * arr[] = {10, 5, 3, 9, 2}
+     * Output: 5 9 10 3 2
+     * Explanation: Sorting the numbers accoding to
+     * the absolute difference with 7, we have
+     * array elements as 5, 9, 10, 3, 2.
+     */
+    static void sortABS(int arr[], int n, int k) {
+        Map<Integer, List<Integer>> complements = new TreeMap<>();
+        for (int elem :
+                arr) {
+            if (complements.containsKey(Math.abs(k - elem))) {
+                complements.get(Math.abs(k - elem)).add(elem);
+            } else {
+                List<Integer> l = new ArrayList<>();
+                l.add(elem);
+                complements.put(Math.abs(k - elem), l);
             }
         }
-        return sb.toString();
+        int idx = 0;
+        Set<Integer> integers = complements.keySet();
+        for (int key :
+                integers) {
+            List<Integer> l = complements.get(key);
+            for (int i :
+                    l) {
+                arr[idx++] = i;
+            }
+        }
     }
 
 }
