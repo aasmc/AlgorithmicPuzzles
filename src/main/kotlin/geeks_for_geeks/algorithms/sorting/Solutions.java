@@ -196,7 +196,7 @@ public class Solutions {
         return false;
     }
 
-    private Pair findPairOfSum(int sum, int[] arr) {
+    private static Pair findPairOfSum(int sum, int[] arr) {
         Map<Integer, Integer> complements = new HashMap<>();
         for (int j : arr) {
             if (j == -sum) continue; // skip identity values
@@ -337,6 +337,47 @@ public class Solutions {
                 arr[idx++] = i;
             }
         }
+    }
+
+    /**
+     * Given an array arr of size n and an integer X.
+     * Find if there's a triplet in the array which sums up to the given integer X.
+     */
+    public static boolean find3Numbers(int[] arr, int n, int x) {
+        Arrays.sort(arr);
+        for (int i = 0; i <= n - 3; i++) {
+            int target = x - arr[i];
+            int j = i + 1;
+            int k = n - 1;
+
+            while (j < k) {
+                int sum = arr[j] + arr[k];
+                if (target == sum) return true;
+                else if (target > sum) j++;
+                else k--;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Given an array of size n,
+     * find the minimum difference between any pair of elements in given array.
+     */
+    public static int MinimumDifference(int arr[], int n)
+    {
+        Arrays.sort(arr);
+        if (n < 2) throw new RuntimeException("Number of elements in the array must be greater than 2");
+        int first = arr[0];
+        int second = arr[1];
+        int diff = Math.abs(second - first);
+        for (int i = 2; i < n; i++) {
+            int cur = arr[i];
+            int curDiff = Math.abs(cur - second);
+            diff = Math.min(diff, curDiff);
+            second = cur;
+        }
+        return diff;
     }
 
 }
