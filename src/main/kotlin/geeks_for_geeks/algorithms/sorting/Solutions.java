@@ -527,4 +527,106 @@ public class Solutions {
             }
         }
     }
+
+    /**
+     * Given three sorted arrays A, B and C of size N, M and P respectively.
+     * The task is to merge them into a single array which must be sorted in
+     * increasing order.
+     *
+     * Input:
+     * N = 4, A[] = [1 2 3 4]
+     * M = 5, B[] = [1 2 3 4 5]
+     * P = 6, C[] = [1 2 3 4 5 6]
+     * Output: 1 1 1 2 2 2 3 3 3 4 4 4 5 5 6
+     * Explanation: Merging these three sorted
+     * arrays, we have:
+     * 1 1 1 2 2 2 3 3 3 4 4 4 5 5 6.
+     *
+     * Input:
+     * N = 2, A[] = [1 2]
+     * M = 3, B[] = [2 3 4]
+     * P = 4, C[] = [4 5 6 7]
+     * Output: 1 2 2 3 4 4 5 6 7
+     * Explanation: Merging three sorted arrays,
+     * we have: 1 2 2 3 4 4 5 6 7.
+     *
+     * Expected Time Complexity: O(N + M + P)
+     * Expected Auxiliary Space: O(N + M + P) for the resultant array only.
+     */
+    static ArrayList<Integer> merge3sorted(int A[], int B[], int C[])
+    {
+        // creating an empty list to store sorted numbers
+        ArrayList<Integer> list = new ArrayList<>(A.length + B.length + C.length);
+        int i = 0, j = 0, k = 0;
+
+        // using merge concept and trying to find
+        // smallest of three while all three arrays
+        // contains at least one element
+        while (i < A.length && j < B.length && k < C.length) {
+            int a = A[i];
+            int b = B[j];
+            int c = C[k];
+            if (a <= b && a <= c) {
+                list.add(a);
+                i++;
+            }
+            else if (b <= a && b <= c) {
+                list.add(b);
+                j++;
+            }
+            else {
+                list.add(c);
+                k++;
+            }
+        }
+        // next three while loops are to sort two
+        // of arrays if one of the three gets exhausted
+        while (i < A.length && j < B.length) {
+            if (A[i] < B[j]) {
+                list.add(A[i]);
+                i++;
+            }
+            else {
+                list.add(B[j]);
+                j++;
+            }
+        }
+        while (j < B.length && k < C.length) {
+            if (B[j] < C[k]) {
+                list.add(B[j]);
+                j++;
+            }
+            else {
+                list.add(C[k]);
+                k++;
+            }
+        }
+        while (i < A.length && k < C.length) {
+            if (A[i] < C[k]) {
+                list.add(A[i]);
+                i++;
+            }
+            else {
+                list.add(C[k]);
+                k++;
+            }
+        }
+
+        // if one of the array are left then
+        // simply appending them as there will
+        // be only largest element left
+        while (i < A.length) {
+            list.add(A[i]);
+            i++;
+        }
+        while (j < B.length) {
+            list.add(B[j]);
+            j++;
+        }
+        while (k < C.length) {
+            list.add(C[k]);
+            k++;
+        }
+        return list;
+    }
 }
