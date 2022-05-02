@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.sorting
 
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -851,7 +853,97 @@ private fun findPairOfSum(sum: Int, arr: IntArray): Pair<Int, Int>? {
     return null
 }
 
+/**
+ * Given two arrays X and Y of positive integers, find the number
+ * of pairs such that x^y > y^x (raised to power of) where x is an
+ * element from X and y is an element from Y.
+ *
+ * Input:
+ * M = 3, X[] = [2 1 6]
+ * N = 2, Y[] = [1 5]
+ * Output: 3
+ * Explanation:
+ * The pairs which follow x^y > y^x are
+ * as such: 2^1 > 1^2,  2^5 > 5^2 and 6^1 > 1^6 .
+ *
+ * Input:
+ * M = 4, X[] = [2 3 4 5]
+ * N = 3, Y[] = [1 2 3]
+ * Output: 5
+ * Explanation:
+ * The pairs for the given input are
+ * 2^1 > 1^2 , 3^1 > 1^3 , 3^2 > 2^3 , 4^1 > 1^4 ,
+ * 5^1 > 1^5 .
+ *
+ *
+ * Expected Time Complexity: O((N + M)log(N)).
+ * Expected Auxiliary Space: O(1).
+ *
+ * Solution.
+ *
+ * The problem can be solved in O(nLogn + mLogn) time.
+ * The trick here is, if y > x then x^y > y^x with some exceptions.
+ * Following are simple steps based on this trick.
+ *
+ * 1) Sort array Y[].
+ * 2) For every x in X[], find the index idx of the smallest number greater
+ *    than x (also called ceil of x) in Y[] using binary search.
+ * 3) All the numbers after idx satisfy the relation so just add (n-idx) to the count.
+ *
+ * Base Cases and Exceptions:
+ *      Following are exceptions for x from X[] and y from Y[]
+ *      If x = 0, then the count of pairs for this x is 0.
+ *      If x = 1, then the count of pairs for this x is equal to count of 0s in Y[].
+ *      The following cases must be handled separately as they don’t follow the
+ *      general rule that x smaller than y means x^y is greater than y^x.
+ *      a) x = 2, y = 3 or 4
+ *      b) x = 3, y = 2
+ *      Note that the case where x = 4 and y = 2 is not there
+ */
+fun countPairs(first: IntArray, second: IntArray): Long {
+    // To store counts of 0, 1, 2, 3 and 4 in array Y
+    val noOfY = LongArray(5)
+    for (elem in second) {
+        if (elem < 5) {
+            noOfY[elem]++
+        }
+    }
+    // Sort Y[] so that we can do binary search in it
+    second.sort()
+    var total = 0L
+    for (num in first) {
+        total += countPairsForX(num, second, noOfY)
+    }
+    return total
+}
 
+private fun countPairsForX(x: Int, yArray: IntArray, noOfY: LongArray): Long {
+    // If x is 0, then there cannot be any value in Y such that
+    // x^Y[i] > Y[i]^x
+    if (x == 0) return 0
+    // If x is 1, then the number of pais is equal to number of
+    // zeroes in Y[]
+    if (x == 1) return noOfY[0]
+    // Find number of elements in Y[] with values greater than x
+    // getting upperbound of x with binary search
+    var idx = Arrays.binarySearch(yArray, x)
+    if (idx < 0) {
+        idx = abs(idx + 1)
+    } else {
+        while (idx < yArray.size && yArray[idx] == x) {
+            ++idx
+        }
+    }
+    var answer: Long = (yArray.size - idx).toLong()
+    // If we have reached here, then x must be greater than 1,
+    // increase number of pairs for y=0 and y=1
+    answer += (noOfY[0] + noOfY[1])
+    // Decrease number of pairs for x=2 and (y=4 or y=3)
+    if (x == 2) answer -= (noOfY[3] + noOfY[4])
+    // Increase number of pairs for x=3 and y=2
+    if (x == 3) answer += noOfY[2]
+    return answer
+}
 
 
 

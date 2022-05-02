@@ -293,6 +293,17 @@ internal class GFGSortingTest {
         val input = intArrayOf(4, -16, 43, 4, 7, -36, 18)
         assertFalse(findTriplets(input))
     }
+
+    @Test
+    fun countPairs_correct() {
+        val first = intArrayOf(2,1,6)
+        val second = intArrayOf(1,5)
+        assertEquals(3, countPairs(first, second))
+
+        val first1 = intArrayOf(2,3,4,5)
+        val second2 = intArrayOf(1,2,3)
+        assertEquals(5, countPairs(first1, second2))
+    }
 }
 
 

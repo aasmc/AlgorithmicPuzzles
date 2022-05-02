@@ -416,4 +416,65 @@ public class Solutions {
         arr[from] = arr[to];
         arr[to] = tmp;
     }
+
+    /**
+     * Given two arrays X and Y of positive integers, find the number
+     * of pairs such that xy > yx (raised to power of) where x is an
+     * element from X and y is an element from Y.
+     *
+     * Input:
+     * M = 3, X[] = [2 1 6]
+     * N = 2, Y[] = [1 5]
+     * Output: 3
+     * Explanation:
+     * The pairs which follow x^y > y^x are
+     * as such: 2^1 > 1^2,  2^5 > 5^2 and 6^1 > 1^6 .
+     *
+     * Input:
+     * M = 4, X[] = [2 3 4 5]
+     * N = 3, Y[] = [1 2 3]
+     * Output: 5
+     * Explanation:
+     * The pairs for the given input are
+     * 2^1 > 1^2 , 3^1 > 1^3 , 3^2 > 2^3 , 4^1 > 1^4 ,
+     * 5^1 > 1^5 .
+     *
+     *
+     * Expected Time Complexity: O((N + M)log(N)).
+     * Expected Auxiliary Space: O(1).
+     */
+    static long countPairs(int x[], int y[], int M, int N)
+    {
+        int[] noOfY = new int[5];
+        for (int i = 0; i < N; i++) {
+            if (y[i] < 5) {
+                noOfY[y[i]]++;
+            }
+        }
+        Arrays.sort(y);
+        long total = 0L;
+        for (int num :
+                x) {
+            total += countPairsForX(num, y, noOfY);
+        }
+        return total;
+    }
+
+    static long countPairsForX(int x, int[] yArray, int[] noOfY) {
+        if (x == 0) return 0L;
+        if (x == 1) return (long) noOfY[0];
+        int idx = Arrays.binarySearch(yArray, x);
+        if (idx < 0) {
+            idx = Math.abs(idx + 1);
+        } else {
+            while (idx < yArray.length && yArray[idx] == x) {
+                ++idx;
+            }
+        }
+        long answer = (long) yArray.length - idx;
+        answer += (noOfY[0] + noOfY[1]);
+        if (x == 2) answer -= (noOfY[3] + noOfY[4]);
+        if (x == 3) answer += noOfY[2];
+        return answer;
+    }
 }
