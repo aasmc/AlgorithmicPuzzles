@@ -629,4 +629,51 @@ public class Solutions {
         }
         return list;
     }
+
+    /**
+     * Given an array arr[](0-based indexing) of N integers which is closer sorted
+     * (defined below) and an element x. The task is to find the index of element
+     * x if it is present. If not present, then print -1.
+     * Closer Sorted: The first array is sorted, but after sorting some elements
+     * are moved to either of the adjacent positions, i.e, maybe to the arr[i+1]
+     * or arr[i-1].
+     *
+     * Input: N = 5, A[] = [3 2 10 4 40], x = 2
+     * Output: 1
+     * Explanation: 2 is present at index 1
+     * (0-based indexing) in the given array.
+     *
+     * Input: N = 4, A[] = [2 1 4 3], x = 5
+     * Output: -1
+     * Explanation:
+     * 5 is not in the array so the output will
+     * be -1.
+     *
+     *
+     * Expected Time Complexity: O(Log(N)).
+     * Expected Auxiliary Space: O(1).
+     */
+    static long closer(int arr[], int n, long x)
+    {
+        int start = 0;
+        int end = n - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] == x) {
+                return mid;
+            }
+            if (mid > 0 && arr[mid - 1] == x) {
+                return mid - 1;
+            }
+            if (mid < n - 1 && arr[mid + 1] == x) {
+                return mid + 1;
+            }
+            if (arr[mid] < x) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return -1;
+    }
 }
