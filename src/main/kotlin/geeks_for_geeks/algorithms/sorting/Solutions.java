@@ -532,7 +532,7 @@ public class Solutions {
      * Given three sorted arrays A, B and C of size N, M and P respectively.
      * The task is to merge them into a single array which must be sorted in
      * increasing order.
-     *
+     * <p>
      * Input:
      * N = 4, A[] = [1 2 3 4]
      * M = 5, B[] = [1 2 3 4 5]
@@ -541,7 +541,7 @@ public class Solutions {
      * Explanation: Merging these three sorted
      * arrays, we have:
      * 1 1 1 2 2 2 3 3 3 4 4 4 5 5 6.
-     *
+     * <p>
      * Input:
      * N = 2, A[] = [1 2]
      * M = 3, B[] = [2 3 4]
@@ -549,12 +549,11 @@ public class Solutions {
      * Output: 1 2 2 3 4 4 5 6 7
      * Explanation: Merging three sorted arrays,
      * we have: 1 2 2 3 4 4 5 6 7.
-     *
+     * <p>
      * Expected Time Complexity: O(N + M + P)
      * Expected Auxiliary Space: O(N + M + P) for the resultant array only.
      */
-    static ArrayList<Integer> merge3sorted(int A[], int B[], int C[])
-    {
+    static ArrayList<Integer> merge3sorted(int A[], int B[], int C[]) {
         // creating an empty list to store sorted numbers
         ArrayList<Integer> list = new ArrayList<>(A.length + B.length + C.length);
         int i = 0, j = 0, k = 0;
@@ -569,12 +568,10 @@ public class Solutions {
             if (a <= b && a <= c) {
                 list.add(a);
                 i++;
-            }
-            else if (b <= a && b <= c) {
+            } else if (b <= a && b <= c) {
                 list.add(b);
                 j++;
-            }
-            else {
+            } else {
                 list.add(c);
                 k++;
             }
@@ -585,8 +582,7 @@ public class Solutions {
             if (A[i] < B[j]) {
                 list.add(A[i]);
                 i++;
-            }
-            else {
+            } else {
                 list.add(B[j]);
                 j++;
             }
@@ -595,8 +591,7 @@ public class Solutions {
             if (B[j] < C[k]) {
                 list.add(B[j]);
                 j++;
-            }
-            else {
+            } else {
                 list.add(C[k]);
                 k++;
             }
@@ -605,8 +600,7 @@ public class Solutions {
             if (A[i] < C[k]) {
                 list.add(A[i]);
                 i++;
-            }
-            else {
+            } else {
                 list.add(C[k]);
                 k++;
             }
@@ -637,24 +631,23 @@ public class Solutions {
      * Closer Sorted: The first array is sorted, but after sorting some elements
      * are moved to either of the adjacent positions, i.e, maybe to the arr[i+1]
      * or arr[i-1].
-     *
+     * <p>
      * Input: N = 5, A[] = [3 2 10 4 40], x = 2
      * Output: 1
      * Explanation: 2 is present at index 1
      * (0-based indexing) in the given array.
-     *
+     * <p>
      * Input: N = 4, A[] = [2 1 4 3], x = 5
      * Output: -1
      * Explanation:
      * 5 is not in the array so the output will
      * be -1.
-     *
-     *
+     * <p>
+     * <p>
      * Expected Time Complexity: O(Log(N)).
      * Expected Auxiliary Space: O(1).
      */
-    static long closer(int arr[], int n, long x)
-    {
+    static long closer(int arr[], int n, long x) {
         int start = 0;
         int end = n - 1;
         while (start <= end) {
@@ -676,4 +669,60 @@ public class Solutions {
         }
         return -1;
     }
+
+    /**
+     * Given arrival and departure times of all trains that reach a railway station.
+     * Find the minimum number of platforms required for the railway station so
+     * that no train is kept waiting.
+     * Consider that all the trains arrive on the same day and leave on the same day.
+     * Arrival and departure time can never be the same for a train but we can
+     * have arrival time of one train equal to departure time of the other.
+     * At any given instance of time, same platform can not be used for both
+     * departure of a train and arrival of another train. In such cases, we need
+     * different platforms.
+     * <p>
+     * Input: n = 6
+     * arr[] = {0900, 0940, 0950, 1100, 1500, 1800}
+     * dep[] = {0910, 1200, 1120, 1130, 1900, 2000}
+     * Output: 3
+     * Explanation:
+     * Minimum 3 platforms are required to
+     * safely arrive and depart all trains.
+     * <p>
+     * Input: n = 3
+     * arr[] = {0900, 1100, 1235}
+     * dep[] = {1000, 1200, 1240}
+     * Output: 1
+     * Explanation: Only 1 platform is required to
+     * safely manage the arrival and departure
+     * of all trains.
+     * <p>
+     * Note: Time intervals are in the 24-hour format(HHMM) ,
+     * where the first two characters represent hour (between 00 to 23 )
+     * and the last two characters represent minutes (this may be > 59).
+     * <p>
+     * Expected Time Complexity: O(nLogn)
+     * Expected Auxiliary Space: O(n)
+     */
+    static int findPlatform(int arr[], int dep[], int n) {
+        // add your code here
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        int arrivalIdx = 1;
+        int departureIdx = 0;
+        int maxPlatforms = 1;
+        int currentPlatforms = 1;
+        while (arrivalIdx < n && departureIdx < n) {
+            if (arr[arrivalIdx] <= dep[departureIdx]) {
+                ++currentPlatforms;
+                ++arrivalIdx;
+            } else {
+                --currentPlatforms;
+                ++departureIdx;
+            }
+            maxPlatforms = Math.max(maxPlatforms, currentPlatforms);
+        }
+        return maxPlatforms;
+    }
+
 }
