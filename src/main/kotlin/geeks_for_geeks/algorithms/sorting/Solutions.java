@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.sorting;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Solutions {
@@ -382,7 +383,7 @@ public class Solutions {
         while (left <= right) {
             int curPivot = selectPivot(left, right);
             int pivot = lomutoPartition(arr, left, right, curPivot);
-            if (pivot == k -1) {
+            if (pivot == k - 1) {
                 return arr[pivot];
             } else if (pivot > k - 1) {
                 right = pivot - 1;
@@ -421,7 +422,7 @@ public class Solutions {
      * Given two arrays X and Y of positive integers, find the number
      * of pairs such that xy > yx (raised to power of) where x is an
      * element from X and y is an element from Y.
-     *
+     * <p>
      * Input:
      * M = 3, X[] = [2 1 6]
      * N = 2, Y[] = [1 5]
@@ -429,7 +430,7 @@ public class Solutions {
      * Explanation:
      * The pairs which follow x^y > y^x are
      * as such: 2^1 > 1^2,  2^5 > 5^2 and 6^1 > 1^6 .
-     *
+     * <p>
      * Input:
      * M = 4, X[] = [2 3 4 5]
      * N = 3, Y[] = [1 2 3]
@@ -438,13 +439,12 @@ public class Solutions {
      * The pairs for the given input are
      * 2^1 > 1^2 , 3^1 > 1^3 , 3^2 > 2^3 , 4^1 > 1^4 ,
      * 5^1 > 1^5 .
-     *
-     *
+     * <p>
+     * <p>
      * Expected Time Complexity: O((N + M)log(N)).
      * Expected Auxiliary Space: O(1).
      */
-    static long countPairs(int x[], int y[], int M, int N)
-    {
+    static long countPairs(int x[], int y[], int M, int N) {
         int[] noOfY = new int[5];
         for (int i = 0; i < N; i++) {
             if (y[i] < 5) {
@@ -476,5 +476,55 @@ public class Solutions {
         if (x == 2) answer -= (noOfY[3] + noOfY[4]);
         if (x == 3) answer += noOfY[2];
         return answer;
+    }
+
+    /**
+     * Given two sorted arrays arr1[] and arr2[] of sizes n and m in
+     * non-decreasing order. Merge them in sorted order without using
+     * any extra space. Modify arr1 so that it contains the first N
+     * elements and modify arr2 so that it contains the last M elements.
+     * <p>
+     * Input:
+     * n = 4, arr1[] = [1 3 5 7]
+     * m = 5, arr2[] = [0 2 6 8 9]
+     * Output:
+     * arr1[] = [0 1 2 3]
+     * arr2[] = [5 6 7 8 9]
+     * Explanation:
+     * After merging the two
+     * non-decreasing arrays, we get,
+     * 0 1 2 3 5 6 7 8 9.
+     * <p>
+     * Input:
+     * n = 2, arr1[] = [10, 12]
+     * m = 3, arr2[] = [5 18 20]
+     * Output:
+     * arr1[] = [5 10]
+     * arr2[] = [12 18 20]
+     * Explanation:
+     * After merging two sorted arrays
+     * we get 5 10 12 18 20.
+     * <p>
+     * Expected Time Complexity:  O((n+m) log(n+m))
+     * Expected Auxilliary Space: O(1)
+     */
+    public static void merge(long arr1[], long arr2[], int n, int m) {
+        // Iterate through all elements of arr2[] starting from
+        // the last element
+        for (int i = m - 1; i >= 0; i--) {
+            /* Find the smallest element in arr1[] greater than arr2[i]. Move all
+               elements one position ahead till the smallest greater
+               element is not found */
+            int j;
+            long last = arr1[n - 1];
+            for (j = n - 2; j >= 0 && arr1[j] > arr2[i]; j--)
+                arr1[j + 1] = arr1[j];
+
+            // If there was a greater element
+            if (j != n - 2 || last > arr2[i]) {
+                arr1[j + 1] = arr2[i];
+                arr2[i] = last;
+            }
+        }
     }
 }
