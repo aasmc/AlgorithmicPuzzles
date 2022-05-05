@@ -15,3 +15,39 @@ fun convertMatrixInSnakeForm(matrix: Array<IntArray>): List<Int> {
     }
     return result
 }
+
+fun boundaryMatrixTraversal(matrix: Array<IntArray>): List<Int> {
+    val result = mutableListOf<Int>()
+    for (i in matrix[0].indices) {
+        result.add(matrix[0][i])
+    }
+    if (isSingleColumnMatrix(matrix) && matrix.size > 1) {
+        for (i in 1 until matrix.size) {
+            result.add(matrix[i][0])
+        }
+    } else if (matrix.size > 1) {
+        for (i in 1 until matrix.size) {
+            result.add(matrix[i][matrix[i].lastIndex])
+        }
+
+        for (i in matrix[matrix.lastIndex].lastIndex - 1 downTo 0) {
+            result.add(matrix[matrix.lastIndex][i])
+        }
+
+        for (i in matrix.lastIndex - 1 downTo 1) {
+            result.add(matrix[i][0])
+        }
+    }
+    return result
+}
+
+private fun isSingleColumnMatrix(matrix: Array<IntArray>): Boolean {
+    var singleColumn = true
+    for (i in matrix.indices) {
+        if (matrix[i].size > 1) {
+            singleColumn = false
+            break
+        }
+    }
+    return singleColumn
+}
