@@ -51,3 +51,13 @@ private fun isSingleColumnMatrix(matrix: Array<IntArray>): Boolean {
     }
     return singleColumn
 }
+
+fun transposeMatrix(matrix: Array<IntArray>) {
+    for (i in matrix.indices) {
+        for (j in matrix[0].lastIndex downTo i + 1) {
+            val tmp = matrix[i][j]
+            matrix[i][j] = matrix[j][i]
+            matrix[j][i] = tmp
+        }
+    }
+}

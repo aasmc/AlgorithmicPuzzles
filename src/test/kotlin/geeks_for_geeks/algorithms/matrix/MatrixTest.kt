@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.matrix
 
+import geeks_for_geeks.algorithms.arrays.array
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -78,5 +79,35 @@ internal class MatrixTest {
             1
         )
         assertEquals(expected, boundaryMatrixTraversal(matrix))
+    }
+
+    @Test
+    fun transposeMatrix_correct_two_by_two() {
+        val rowOne = intArrayOf(1, 2)
+        val rowTwo = intArrayOf(1, 2)
+        val matrix = arrayOf(rowOne, rowTwo)
+        transposeMatrix(matrix)
+        assertEquals(1, matrix[0][0])
+        assertEquals(1, matrix[0][1])
+        assertEquals(2, matrix[1][0])
+        assertEquals(2, matrix[1][1])
+    }
+
+    @Test
+    fun transposeMatrix_correct_four_by_four() {
+        val rowOne = intArrayOf(1, 2, 3, 4)
+        val rowTwo = intArrayOf(5, 6, 7, 8)
+        val rowThree = intArrayOf(9, 10, 11, 12)
+        val rowFour = intArrayOf(13, 14, 15, 16)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree, rowFour)
+        val expected1 = intArrayOf(1, 5, 9, 13)
+        val expected2 = intArrayOf(2, 6, 10, 14)
+        val expected3 = intArrayOf(3, 7, 11, 15)
+        val expected4 = intArrayOf(4, 8, 12, 16)
+        transposeMatrix(matrix)
+        assertTrue(expected1.contentEquals(matrix[0]))
+        assertTrue(expected2.contentEquals(matrix[1]))
+        assertTrue(expected3.contentEquals(matrix[2]))
+        assertTrue(expected4.contentEquals(matrix[3]))
     }
 }
