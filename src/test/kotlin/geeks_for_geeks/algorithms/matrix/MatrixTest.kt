@@ -110,4 +110,22 @@ internal class MatrixTest {
         assertTrue(expected3.contentEquals(matrix[2]))
         assertTrue(expected4.contentEquals(matrix[3]))
     }
+
+    @Test
+    fun rotateMatrixToLeft_correct() {
+        val rowOne = intArrayOf(1, 2, 3, 4)
+        val rowTwo = intArrayOf(5, 6, 7, 8)
+        val rowThree = intArrayOf(9, 10, 11, 12)
+        val rowFour = intArrayOf(13, 14, 15, 16)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree, rowFour)
+        val expected1 = intArrayOf(4, 8, 12, 16)
+        val expected2 = intArrayOf(3, 7, 11, 15)
+        val expected3 = intArrayOf(2, 6, 10, 14)
+        val expected4 = intArrayOf(1, 5, 9, 13)
+        rotateMatrixToLeft(matrix)
+        assertTrue(expected1.contentEquals(matrix[0]))
+        assertTrue(expected2.contentEquals(matrix[1]))
+        assertTrue(expected3.contentEquals(matrix[2]))
+        assertTrue(expected4.contentEquals(matrix[3]))
+    }
 }

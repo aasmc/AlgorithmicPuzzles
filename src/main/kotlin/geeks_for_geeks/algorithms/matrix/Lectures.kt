@@ -54,10 +54,51 @@ private fun isSingleColumnMatrix(matrix: Array<IntArray>): Boolean {
 
 fun transposeMatrix(matrix: Array<IntArray>) {
     for (i in matrix.indices) {
-        for (j in matrix[0].lastIndex downTo i + 1) {
+        for (j in i + 1..matrix[0].lastIndex) {
             val tmp = matrix[i][j]
             matrix[i][j] = matrix[j][i]
             matrix[j][i] = tmp
         }
     }
 }
+
+fun rotateMatrixToLeft(matrix: Array<IntArray>) {
+    // transpose the matrix
+    for (i in matrix.indices) {
+        for (j in i + 1..matrix[0].lastIndex) {
+            val tmp = matrix[i][j]
+            matrix[i][j] = matrix[j][i]
+            matrix[j][i] = tmp
+        }
+    }
+    // swap the rows
+    for (i in 0 until matrix.size / 2) {
+        val tmp = matrix[matrix.lastIndex - i]
+        matrix[matrix.lastIndex - i] = matrix[i]
+        matrix[i] = tmp
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
