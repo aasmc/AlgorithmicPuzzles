@@ -1,6 +1,7 @@
 package geeks_for_geeks.algorithms.matrix
 
 import java.util.*
+import kotlin.math.abs
 
 fun convertMatrixInSnakeForm(matrix: Array<IntArray>): List<Int> {
     val result = mutableListOf<Int>()
@@ -146,6 +147,12 @@ fun searchInMatrixWithColumnsAndRowsSorted(
 ): Pair<Int, Int> {
     var row = 0
     var col = matrix[0].lastIndex
+    if (target < matrix[0][0]) {
+        return Pair(-1, -1)
+    }
+    if (target > matrix[matrix.lastIndex][col]) {
+        return Pair(-1, -1)
+    }
     while (row < matrix.size && col >= 0) {
         if (matrix[row][col] == target) {
             return Pair(row, col)
@@ -160,6 +167,62 @@ fun searchInMatrixWithColumnsAndRowsSorted(
     return Pair(-1, -1)
 }
 
+
+/**
+ * Given a matrix with odd total number of elements,
+ * where all elements in the rows are sorted in ascending order,
+ * find the median elements of the matrix.
+ *
+ * Time Complexity(R * log(max - min) * logC) where R - number of rows,
+ * C - number of columns, max - maximum element in the matrix, min - minimum element in
+ * the matrix.
+ *
+ * The solution is based on the idea of binary search.
+ */
+fun matrixMedian(matrix: Array<IntArray>): Int {
+    val rows = matrix.size
+    val cols = matrix[0].size
+    // minimum elements in the matrix will be in the first column
+    var min = matrix[0][0]
+    // maximum elements in the matrix will be in the last column
+    var max = matrix[0][cols - 1]
+    // traverse every row to find min and max elements in the matrix
+    // time complexity O(R)
+    for (i in 1 until rows) {
+        if (matrix[i][0] < min) min = matrix[i][0]
+        if (matrix[i][cols - 1] > max) max = matrix[i][cols - 1]
+    }
+    val medianPosition = (rows * cols + 1) / 2
+    // Time complexity O(R * log(max - min) * logC)
+    while (min < max) {
+        val mid = min + (max - min) / 2
+        var midPos = 0
+        // Time complexity O(R * logC)
+        for(i in 0 until rows) {
+            // search for a position of mid in the current row using
+            // Arrays#binarySearch that returns
+            // index of the search key, if it is contained in the array;
+            // otherwise, (-(insertion point) - 1)
+            // Time Complexity O(logC)
+            val pos = Arrays.binarySearch(matrix[i], mid) + 1
+            // accumulate the final position of the mid element in the matrix
+            // as if the matrix were flat mapped to a list.
+            midPos += abs(pos)
+        }
+        if (midPos < medianPosition) {
+            min = mid + 1
+        } else {
+            // this trick ensures that we find element that is in fact in the matrix
+            // if we stopped when midPos == medianPos we could try to return
+            // mid element, BUT the mid element was computed as the middle between
+            // max and min, so it might not be present in the matrix,
+            // therefore we simply keep updating max = mid when either the midPos > medianPosition
+            // or midPos == medianPos
+            max = mid
+        }
+    }
+    return min
+}
 
 
 

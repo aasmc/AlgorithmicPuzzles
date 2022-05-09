@@ -173,6 +173,22 @@ internal class MatrixTest {
         val result = searchInMatrixWithColumnsAndRowsSorted(matrix, target)
         assertEquals(2, result.first)
         assertEquals(2, result.second)
+
+        val notFound = 30
+        val notFoundRes = searchInMatrixWithColumnsAndRowsSorted(matrix, notFound)
+        assertEquals(-1, notFoundRes.first)
+        assertEquals(-1, notFoundRes.second)
+    }
+
+    @Test
+    fun matrixMedian_correct() {
+        val rowOne = intArrayOf(5,10,20,30,40)
+        val rowTwo = intArrayOf(1,2,3,4,6)
+        val rowThree = intArrayOf(11,13,15,17,19)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree)
+        val expected = 11
+        val result = matrixMedian(matrix)
+        assertEquals(expected, result)
     }
 
 }
