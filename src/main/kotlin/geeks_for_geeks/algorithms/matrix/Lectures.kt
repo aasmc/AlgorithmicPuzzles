@@ -79,6 +79,44 @@ fun rotateMatrixToLeft(matrix: Array<IntArray>) {
     }
 }
 
+/**
+ * Given a matrix of n rows and m columns, return the list of
+ * matrix elements in spiral form.
+ */
+fun spiralTraversalOfMatrix(matrix: Array<IntArray>): List<Int> {
+    val result = mutableListOf<Int>()
+    var top = 0
+    var bottom = matrix.lastIndex
+    var left = 0
+    var right = matrix[0].lastIndex
+    while (top <= bottom && left <= right) {
+        // traverse topmost row
+        for (i in left..right) {
+            result.add(matrix[top][i])
+        }
+        ++top
+        // traverse rightmost column
+        for (i in top..bottom) {
+            result.add(matrix[i][right])
+        }
+        --right
+        // traverse bottommost row if any
+        if (top <= bottom) {
+            for (i in right downTo left) {
+                result.add(matrix[bottom][i])
+            }
+            --bottom
+        }
+        // traverse leftmost column if any
+        if (left <= right) {
+            for (i in bottom downTo top) {
+                result.add(matrix[i][left])
+            }
+            ++left
+        }
+    }
+    return result
+}
 
 
 

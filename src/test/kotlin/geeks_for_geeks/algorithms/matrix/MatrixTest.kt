@@ -128,4 +128,38 @@ internal class MatrixTest {
         assertTrue(expected3.contentEquals(matrix[2]))
         assertTrue(expected4.contentEquals(matrix[3]))
     }
+
+    @Test
+    fun spiralTraversalOfMatrix_singleRow_correct() {
+        val rowOne = intArrayOf(1, 2, 3, 4)
+        val matrix: Array<IntArray> = arrayOf(rowOne)
+        val result = spiralTraversalOfMatrix(matrix)
+        val expected = rowOne.toList()
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun spiralTraversalOfMatrix_singleColumn_correct() {
+        val rowOne = intArrayOf(1,)
+        val rowTwo = intArrayOf(5, )
+        val rowThree = intArrayOf(9,)
+        val rowFour = intArrayOf(13,)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree, rowFour)
+        val result = spiralTraversalOfMatrix(matrix)
+        val expected = listOf<Int>(1,5,9,13)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun spiralTraversalOfMatrix_correct() {
+        val rowOne = intArrayOf(1, 2, 3, 4)
+        val rowTwo = intArrayOf(5, 6, 7, 8)
+        val rowThree = intArrayOf(9, 10, 11, 12)
+        val rowFour = intArrayOf(13, 14, 15, 16)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree, rowFour)
+        val result = spiralTraversalOfMatrix(matrix)
+        val expected = listOf<Int>(1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10)
+        assertEquals(expected, result)
+    }
+
 }
