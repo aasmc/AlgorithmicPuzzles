@@ -162,4 +162,17 @@ internal class MatrixTest {
         assertEquals(expected, result)
     }
 
+    @Test
+    fun searchInMatrixWithColumnsAndRowsSorted_correct() {
+        val rowOne = intArrayOf(1, 2, 3, 4)
+        val rowTwo = intArrayOf(5, 6, 7, 8)
+        val rowThree = intArrayOf(9, 10, 11, 12)
+        val rowFour = intArrayOf(13, 14, 15, 16)
+        val matrix: Array<IntArray> = arrayOf(rowOne, rowTwo, rowThree, rowFour)
+        val target = 11
+        val result = searchInMatrixWithColumnsAndRowsSorted(matrix, target)
+        assertEquals(2, result.first)
+        assertEquals(2, result.second)
+    }
+
 }

@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.matrix
 
+import java.util.*
+
 fun convertMatrixInSnakeForm(matrix: Array<IntArray>): List<Int> {
     val result = mutableListOf<Int>()
     for (i in matrix.indices) {
@@ -118,8 +120,45 @@ fun spiralTraversalOfMatrix(matrix: Array<IntArray>): List<Int> {
     return result
 }
 
-
-
+/**
+ * Given a matrix with rows sorted in ascending order and
+ * columns sorted in ascending order, search for a position of [target] value
+ * in the matrix.
+ *
+ * Time Complexity O(n + m) where n is the number of rows, and m is the number of columns.
+ *
+ * Solution takes into account the fact that rows and columns are sorted.
+ * We start from top right corner and check if the element is equal to the target element,
+ * if so, return its position.
+ * If the element is larger than the target, then we know that all elements in that
+ * column will be larger than the target, so we simply move one column to the left,
+ * basically skipping the entire column.
+ * If the element is smaller than the target, then we know that all elements to the left of
+ * the current element in that row will be smaller than the target as well, so we skip the
+ * row as well and move down one row.
+ *
+ * @return Pair of row, col position of the [target] value or Pair(-1, -1) if no
+ *          such value is present in the matrix.
+ */
+fun searchInMatrixWithColumnsAndRowsSorted(
+    matrix: Array<IntArray>,
+    target: Int
+): Pair<Int, Int> {
+    var row = 0
+    var col = matrix[0].lastIndex
+    while (row < matrix.size && col >= 0) {
+        if (matrix[row][col] == target) {
+            return Pair(row, col)
+            // if element at this row col position is smaller, then skip the column
+        } else if (matrix[row][col] > target) {
+            --col
+            // if element at this row col position is greater than target, then skip the row
+        } else {
+            ++row
+        }
+    }
+    return Pair(-1, -1)
+}
 
 
 
