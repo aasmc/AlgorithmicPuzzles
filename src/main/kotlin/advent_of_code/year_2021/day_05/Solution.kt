@@ -1,6 +1,8 @@
 package advent_of_code.year_2021.day_05
 
 import advent_of_code.readLinesFromFile
+import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 fun main() {
     val lines =
@@ -8,6 +10,7 @@ fun main() {
             .map { Line.fromString(it) }
 
     println(solvePartOne(lines))
+    println(solvePartTwo(lines))
 
 }
 
@@ -18,36 +21,20 @@ fun solvePartOne(lines: List<Line>): Int {
 
     val filtered = lines.filter(lineFilter)
 
-    fun points(): List<Point> {
-        val points = mutableListOf<Point>()
-        filtered.forEach { line ->
-            val (x1, y1, x2, y2) = line
-            val vertical = x1 == x2
-            val horizontal = y1 == y2
-            when {
-                horizontal -> {
-                    val min = minOf(x1, x2)
-                    val max = maxOf(x1, x2)
-                    for(i in min..max) {
-                        points.add(Point(i, y1))
-                    }
-                }
-                vertical -> {
-                    val min = minOf(y1, y2)
-                    val max = maxOf(y1, y2)
-                    for (i in min..max) {
-                        points.add(Point(x1, i))
-                    }
-                }
-            }
-        }
-        return points
+    val points = filtered.flatMap {
+        it.pointsOnLine()
     }
 
-    val points = points()
-    return points.groupBy { it }.count {
-        it.value.size >= 2
+    return points.groupBy { it }
+        .count { it.value.size > 1 }
+}
+
+fun solvePartTwo(lines: List<Line>): Int {
+    val points = lines.flatMap {
+        it.pointsOnLine()
     }
+    return points.groupBy { it }
+        .count { it.value.size > 1 }
 }
 
 data class Point(
@@ -61,6 +48,17 @@ data class Line(
     val x2: Int,
     val y2: Int
 ) {
+
+    fun pointsOnLine(): List<Point> {
+        val xDelta = (x2 - x1).sign
+        val yDelta = (y2 - y1).sign
+
+        val steps = maxOf((x1 - x2).absoluteValue, (y1 - y2).absoluteValue)
+        return (1..steps).scan(Point(x1, y1)) { next, _ ->
+            Point(next.x + xDelta, next.y + yDelta)
+        }
+    }
+
     companion object {
         fun fromString(line: String): Line {
             val (start, end) = line.split(" -> ")
