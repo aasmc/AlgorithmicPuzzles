@@ -10,3 +10,11 @@ fun countDistinctElementsIn(array: IntArray): Int {
     }
     return set.size
 }
+
+fun findFrequenciesOfElements(array: IntArray): Map<Int, Int> {
+    val res = hashMapOf<Int, Int>()
+    array.forEach { num ->
+        res.merge(num, 1, Int::plus)
+    }
+    return res
+}

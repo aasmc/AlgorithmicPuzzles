@@ -36,7 +36,7 @@ fun main() {
  * to a binary string of 1000110111. Then it uses a library function to convert the
  * binary string representation of a number to an integer. We don't need to multiply
  * the rows by 8, because we concatenated rows and cols, while 8 = 2^3, i.e. we use
- * the number of columns (3) as a right shift for rows thus multiplying rows by 2^3.
+ * the number of columns (3) as a left shift for rows thus multiplying rows by 2^3.
  */
 fun String.toSeatId(): Int {
     return replace('F', '0').replace('B', '1')

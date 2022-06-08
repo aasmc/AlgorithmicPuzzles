@@ -10,4 +10,18 @@ internal class HashingLecturesTest {
         assertEquals(1, countDistinctElementsIn(intArrayOf(15,15,15,15,15,15)))
         assertEquals(3, countDistinctElementsIn(intArrayOf(1,2,3)))
     }
+
+    @Test
+    fun findFrequenciesOfElementsCorrect() {
+        val input = intArrayOf(10, 12, 15, 10, 15, 10, 20, 12, 12, 12)
+        val expected = mapOf<Int, Int>(
+            10 to 3,
+            12 to 4,
+            15 to 2,
+            20 to 1
+        )
+
+        val result = findFrequenciesOfElements(input)
+        assertEquals(expected, result)
+    }
 }
