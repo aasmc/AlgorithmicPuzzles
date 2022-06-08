@@ -18,3 +18,32 @@ fun findFrequenciesOfElements(array: IntArray): Map<Int, Int> {
     }
     return res
 }
+
+/**
+ * Given two unsorted arrays that might contain duplicates, count distinct elements
+ * in the intersection of these two arrays.
+ */
+fun findIntersectionOfArrays(first: IntArray, second: IntArray): Int {
+    val map = hashMapOf<Int, Int>()
+    first.forEach { num ->
+        map.putIfAbsent(num, 1)
+    }
+    second.forEach { num ->
+        map.computeIfPresent(num) { _, value ->
+            value + 1
+        }
+    }
+    return map.count { it.value > 1 }
+}
+
+fun findIntersectionOfArraysVersionWithSets(first: IntArray, second: IntArray): Int {
+    val setA = first.toMutableSet()
+    var res = 0
+    second.forEach { num ->
+        if (num in setA) {
+            ++res
+            setA.remove(num)
+        }
+    }
+    return res
+}
