@@ -15,11 +15,11 @@ fun main() {
 }
 
 fun solvePartOne(lines: List<Line>): Int {
-    val lineFilter: (line: Line) -> Boolean = { line ->
+    val onlyHorizontalOrVertical: (line: Line) -> Boolean = { line ->
         line.x1 == line.x2 || line.y1 == line.y2
     }
 
-    val filtered = lines.filter(lineFilter)
+    val filtered = lines.filter(onlyHorizontalOrVertical)
 
     val points = filtered.flatMap {
         it.pointsOnLine()
@@ -50,10 +50,23 @@ data class Line(
 ) {
 
     fun pointsOnLine(): List<Point> {
+        // these two lines compute whether we need to add or subtract or do nothing
+        // to move one point along x or y axis in the direction from x1 to x2 | y1 to y2
         val xDelta = (x2 - x1).sign
         val yDelta = (y2 - y1).sign
 
+        // since we know that lines are either vertical, or horizontal, or diagonal at a degree of
+        // 45%, we can safely compute the number of steps we need to create a line with points
+        // by computing the max difference between x1, x2 or y1, y2
         val steps = maxOf((x1 - x2).absoluteValue, (y1 - y2).absoluteValue)
+        // Here we use:
+        // public inline fun <T, R> Iterable<T>.scan(initial: R, operation: (acc: R, T) -> R): List<R> {
+        //    return runningFold(initial, operation)
+        //}
+        // because we want to save intermediate results in the list as well, and not just reduce
+        // the line to some final result
+        // We start from x1, y1 and move one step at a time by adding xDelta and yDelta
+        // thus creating a line with Points
         return (1..steps).scan(Point(x1, y1)) { next, _ ->
             Point(next.x + xDelta, next.y + yDelta)
         }
