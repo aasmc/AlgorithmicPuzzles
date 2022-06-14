@@ -1,6 +1,9 @@
 package advent_of_code.year_2020.day7
 
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.stream.Collectors
 
 typealias Color = String
 typealias Rule = Set<String>
