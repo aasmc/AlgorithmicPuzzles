@@ -107,4 +107,35 @@ internal class HashingLecturesTest {
         val sss = 3
         assertTrue(findPairWithGivenSum(aaa, sss))
     }
+
+    @Test
+    fun subArrayWithZeroSum_correct() {
+        val a = intArrayOf(1,4,13,-3,-10,5)
+        assertTrue(subarrayWithZeroSum(a))
+
+        val aa = intArrayOf(-1,4,-3,5,1)
+        assertTrue(subarrayWithZeroSum(aa))
+
+        val aaa = intArrayOf(3,1,-2,5,6)
+        assertFalse(subarrayWithZeroSum(aaa))
+
+        val aaaa = intArrayOf(5,6,0,8)
+        assertTrue(subarrayWithZeroSum(aaaa))
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
