@@ -116,7 +116,17 @@ fun subarrayWithZeroSum(array: IntArray): Boolean {
     return false
 }
 
-
+fun subarrayWithGivenSum(array: IntArray, sum: Int): Boolean {
+    if (array.isEmpty()) return false
+    var prefixSum = 0
+    val set = hashSetOf<Int>()
+    for (i in array.indices) {
+        prefixSum += array[i]
+        if (prefixSum == sum || set.contains(prefixSum - sum)) return true
+        set.add(prefixSum)
+    }
+    return false
+}
 
 
 

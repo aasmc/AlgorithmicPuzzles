@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test
 internal class HashingLecturesTest {
     @Test
     fun countDistinctElementsCorrect() {
-        assertEquals(4, countDistinctElementsIn(intArrayOf(15,12,12,13,16,16,15)))
-        assertEquals(1, countDistinctElementsIn(intArrayOf(15,15,15,15,15,15)))
-        assertEquals(3, countDistinctElementsIn(intArrayOf(1,2,3)))
+        assertEquals(4, countDistinctElementsIn(intArrayOf(15, 12, 12, 13, 16, 16, 15)))
+        assertEquals(1, countDistinctElementsIn(intArrayOf(15, 15, 15, 15, 15, 15)))
+        assertEquals(3, countDistinctElementsIn(intArrayOf(1, 2, 3)))
     }
 
     @Test
@@ -65,62 +65,77 @@ internal class HashingLecturesTest {
 
     @Test
     fun countDistinctElementsInArraysCorrect() {
-        val a = intArrayOf(15,20,5,15)
-        val b = intArrayOf(15,15,15,20,10)
+        val a = intArrayOf(15, 20, 5, 15)
+        val b = intArrayOf(15, 15, 15, 20, 10)
         assertEquals(4, countDistinctElementsInArrays(a, b))
 
         val aa = intArrayOf(10, 12, 15)
         val bb = intArrayOf(18, 12)
         assertEquals(4, countDistinctElementsInArrays(aa, bb))
 
-        val aaa = intArrayOf(3,3,3)
-        val bbb = intArrayOf(3,3)
+        val aaa = intArrayOf(3, 3, 3)
+        val bbb = intArrayOf(3, 3)
         assertEquals(1, countDistinctElementsInArrays(aaa, bbb))
     }
 
     @Test
     fun countDistinctElementsInArraysKotlinStyleCorrect() {
-        val a = intArrayOf(15,20,5,15)
-        val b = intArrayOf(15,15,15,20,10)
+        val a = intArrayOf(15, 20, 5, 15)
+        val b = intArrayOf(15, 15, 15, 20, 10)
         assertEquals(4, countDistinctElementsKotlinStyle(a, b))
 
         val aa = intArrayOf(10, 12, 15)
         val bb = intArrayOf(18, 12)
         assertEquals(4, countDistinctElementsKotlinStyle(aa, bb))
 
-        val aaa = intArrayOf(3,3,3)
-        val bbb = intArrayOf(3,3)
+        val aaa = intArrayOf(3, 3, 3)
+        val bbb = intArrayOf(3, 3)
         assertEquals(1, countDistinctElementsKotlinStyle(aaa, bbb))
     }
 
     @Test
     fun findPairWithGivenSum_Correct() {
-        val a = intArrayOf(3,2,8,15,-8)
+        val a = intArrayOf(3, 2, 8, 15, -8)
         val s = 17
         assertTrue(findPairWithGivenSum(a, s))
 
-        val aa = intArrayOf(2,1,6,3)
+        val aa = intArrayOf(2, 1, 6, 3)
         val ss = 6
         assertFalse(findPairWithGivenSum(aa, ss))
 
-        val aaa = intArrayOf(5,8,-3,6)
+        val aaa = intArrayOf(5, 8, -3, 6)
         val sss = 3
         assertTrue(findPairWithGivenSum(aaa, sss))
     }
 
     @Test
     fun subArrayWithZeroSum_correct() {
-        val a = intArrayOf(1,4,13,-3,-10,5)
+        val a = intArrayOf(1, 4, 13, -3, -10, 5)
         assertTrue(subarrayWithZeroSum(a))
 
-        val aa = intArrayOf(-1,4,-3,5,1)
+        val aa = intArrayOf(-1, 4, -3, 5, 1)
         assertTrue(subarrayWithZeroSum(aa))
 
-        val aaa = intArrayOf(3,1,-2,5,6)
+        val aaa = intArrayOf(3, 1, -2, 5, 6)
         assertFalse(subarrayWithZeroSum(aaa))
 
-        val aaaa = intArrayOf(5,6,0,8)
+        val aaaa = intArrayOf(5, 6, 0, 8)
         assertTrue(subarrayWithZeroSum(aaaa))
+    }
+
+    @Test
+    fun subArrayWithGivenSum_correct() {
+        val a = intArrayOf(5, 8, 6, 13, 3, -1)
+        assertTrue(subarrayWithGivenSum(a, 22))
+
+        val aa = intArrayOf(15, 2, 8, 10, -5, -8, 6)
+        assertTrue(subarrayWithGivenSum(aa, 3))
+
+        val aaa = intArrayOf(3, 2, 5, 6)
+        assertTrue(subarrayWithGivenSum(aaa, 10))
+
+        val aaaa = intArrayOf(5,8,6,13)
+        assertTrue(subarrayWithGivenSum(aaaa, 14))
     }
 }
 
