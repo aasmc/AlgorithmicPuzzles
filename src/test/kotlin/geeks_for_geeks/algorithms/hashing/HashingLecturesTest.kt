@@ -62,4 +62,49 @@ internal class HashingLecturesTest {
         val cc = 1
         assertEquals(cc, findIntersectionOfArraysVersionWithSets(aa, bb))
     }
+
+    @Test
+    fun countDistinctElementsInArraysCorrect() {
+        val a = intArrayOf(15,20,5,15)
+        val b = intArrayOf(15,15,15,20,10)
+        assertEquals(4, countDistinctElementsInArrays(a, b))
+
+        val aa = intArrayOf(10, 12, 15)
+        val bb = intArrayOf(18, 12)
+        assertEquals(4, countDistinctElementsInArrays(aa, bb))
+
+        val aaa = intArrayOf(3,3,3)
+        val bbb = intArrayOf(3,3)
+        assertEquals(1, countDistinctElementsInArrays(aaa, bbb))
+    }
+
+    @Test
+    fun countDistinctElementsInArraysKotlinStyleCorrect() {
+        val a = intArrayOf(15,20,5,15)
+        val b = intArrayOf(15,15,15,20,10)
+        assertEquals(4, countDistinctElementsKotlinStyle(a, b))
+
+        val aa = intArrayOf(10, 12, 15)
+        val bb = intArrayOf(18, 12)
+        assertEquals(4, countDistinctElementsKotlinStyle(aa, bb))
+
+        val aaa = intArrayOf(3,3,3)
+        val bbb = intArrayOf(3,3)
+        assertEquals(1, countDistinctElementsKotlinStyle(aaa, bbb))
+    }
+
+    @Test
+    fun findPairWithGivenSum_Correct() {
+        val a = intArrayOf(3,2,8,15,-8)
+        val s = 17
+        assertTrue(findPairWithGivenSum(a, s))
+
+        val aa = intArrayOf(2,1,6,3)
+        val ss = 6
+        assertFalse(findPairWithGivenSum(aa, ss))
+
+        val aaa = intArrayOf(5,8,-3,6)
+        val sss = 3
+        assertTrue(findPairWithGivenSum(aaa, sss))
+    }
 }

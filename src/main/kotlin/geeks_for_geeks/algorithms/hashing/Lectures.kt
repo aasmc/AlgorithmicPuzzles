@@ -47,3 +47,59 @@ fun findIntersectionOfArraysVersionWithSets(first: IntArray, second: IntArray): 
     }
     return res
 }
+
+/**
+ * Given two arrays that may be unsorted and may contain duplicates, count the number of elements that are
+ * distinct in both the arrays combined.
+ */
+fun countDistinctElementsInArrays(first: IntArray, second: IntArray) : Int {
+    val setA = first.toSet()
+    var count = setA.size
+    val setB = second.toSet()
+    setB.forEach { num ->
+        if (!setA.contains(num)) {
+            ++count
+        }
+    }
+    return count
+}
+
+fun countDistinctElementsKotlinStyle(first: IntArray, second: IntArray): Int {
+    return first.toSet()
+        .union(second.toSet()).size
+}
+
+
+/**
+ * Given an unsorted array that may contain duplicates and negative numbers,
+ * find if the array contains a pair of elements with the given [sum].
+ */
+fun findPairWithGivenSum(array: IntArray, sum: Int): Boolean {
+    val set = hashSetOf<Int>()
+    array.forEach { num ->
+        if (set.contains(sum - num)) {
+            return true
+        } else {
+            set.add(num)
+        }
+    }
+    return false
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
