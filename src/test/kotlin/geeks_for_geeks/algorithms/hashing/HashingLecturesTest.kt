@@ -134,8 +134,23 @@ internal class HashingLecturesTest {
         val aaa = intArrayOf(3, 2, 5, 6)
         assertTrue(subarrayWithGivenSum(aaa, 10))
 
-        val aaaa = intArrayOf(5,8,6,13)
+        val aaaa = intArrayOf(5, 8, 6, 13)
         assertTrue(subarrayWithGivenSum(aaaa, 14))
+    }
+
+    @Test
+    fun lengthOfLongestSubarrayWithGivenSum_correct() {
+        val a = intArrayOf(5, 8, -4, -4, 9, -2, 2)
+        assertEquals(3, lengthOfLongestSubarrayWithGivenSum(a, 0))
+
+        val aa = intArrayOf(3, 1, 0, 1, 8, 2, 3, 6)
+        assertEquals(4, lengthOfLongestSubarrayWithGivenSum(aa, 5))
+
+        val aaa = intArrayOf(8, 3, 7)
+        assertEquals(0, lengthOfLongestSubarrayWithGivenSum(aaa, 15))
+
+        val aaaa = intArrayOf(8, 3, 1, 5, -6, 6, 2, 2)
+        assertEquals(4, lengthOfLongestSubarrayWithGivenSum(aaaa, 4))
     }
 }
 

@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.hashing
 
+import kotlin.math.max
+
 /**
  * Counts the number of distinct elements in a given [array].
  */
@@ -52,7 +54,7 @@ fun findIntersectionOfArraysVersionWithSets(first: IntArray, second: IntArray): 
  * Given two arrays that may be unsorted and may contain duplicates, count the number of elements that are
  * distinct in both the arrays combined.
  */
-fun countDistinctElementsInArrays(first: IntArray, second: IntArray) : Int {
+fun countDistinctElementsInArrays(first: IntArray, second: IntArray): Int {
     val setA = first.toSet()
     var count = setA.size
     val setB = second.toSet()
@@ -99,7 +101,7 @@ fun findPairWithGivenSum(array: IntArray, sum: Int): Boolean {
  * 3. Otherwise, we add the prefix sum to the set.
  *
  * What is a prefix sum.
- * Consider array a1, a2, a3 ... ai - 1, ai, ai + 1, ai + 2 ... aj ... an - 1
+ * Consider an array a1, a2, a3 ... ai - 1, ai, ai + 1, ai + 2 ... aj ... an - 1
  * If subarray [ai : aj] has sum = 0, then subarray [a1 : aj] will have sum = [a1 : ai - 1],
  * because adding 0 to the sum won't change the sum. So all we need to do is compute
  * prefix sums.
@@ -128,8 +130,45 @@ fun subarrayWithGivenSum(array: IntArray, sum: Int): Boolean {
     return false
 }
 
-
-
+/**
+ * Given an array and a sum, find out the length of the longest subarray with the given sum.
+ * If there's no subarray with the given sum, return 0.
+ */
+fun lengthOfLongestSubarrayWithGivenSum(array: IntArray, sum: Int): Int {
+    if (array.isEmpty()) return 0
+    var maxLength = 0
+    var prefixSum = 0
+    val prefixSumToEndIdx = hashMapOf<Int, Int>()
+    for (i in array.indices) {
+        prefixSum += array[i]
+        if (prefixSum == sum) {
+            maxLength = i + 1
+        } else if (prefixSumToEndIdx.containsKey(prefixSum - sum)) {
+            maxLength = max(maxLength, i - prefixSumToEndIdx[prefixSum - sum]!!)
+        } else {
+            // the trick here is NOT TO REPLACE a previous prefix sum's end index,
+            // if it's already present in the map, because in this case it means that,
+            // current index in the array is the end index of subarray with sum of
+            // elements equal to 0, therefore we don't need to update the end index
+            // of the previous prefix sum, otherwise we would decrease the length of
+            // a possible subarray.
+            // ex.        [8,  3,  1,  5,  -6,  6,  2,  2]
+            // idx         0   1   2   3    4   5   6   7
+            // prefixSum   8  11  12  17   11  17  19  21
+            // You can see that we have two prefix sums with 11, one with end index = 1,
+            // the other with end index = 4
+            // we also have two prefix sums with 17, one with end index = 3,
+            // the other with end index = 5, and actually when we try to find the
+            // subarray with the given sum, we reach the end of array and check if
+            // prefixSum - sum is anywhere in the map. We get: 21 - 4 = 17
+            // and 17 is already in the map, BUT if we updated the end index of this
+            // prefixSum we would have gotten the length = 7 - 5 = 2,
+            // while there's a greater length: 7 - 3 = 4
+            prefixSumToEndIdx.putIfAbsent(prefixSum, i)
+        }
+    }
+    return maxLength
+}
 
 
 

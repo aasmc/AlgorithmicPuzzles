@@ -20,9 +20,10 @@ fun main() {
 private fun Set<Int>.asRange(): IntRange =
     this.minOf { it }..this.maxOf { it }
 
-private fun solve(crabs: Map<Int, Int>, fuelCost: (Int) -> Int): Int =
-    crabs.keys.asRange().minOf { target ->
-        crabs.map { (crab, crabCount) ->
-            fuelCost((target - crab).absoluteValue) * crabCount
+private fun solve(positionsToNumberOfCrabs: Map<Int, Int>, fuelCost: (Int) -> Int): Int =
+    positionsToNumberOfCrabs.keys.asRange().minOf { targetPosition ->
+        positionsToNumberOfCrabs.map { (currentPosition, crabCount) ->
+            // how much fuel is needed for all crabs in current position to move to the target position
+            fuelCost((targetPosition - currentPosition).absoluteValue) * crabCount
         }.sum()
     }
