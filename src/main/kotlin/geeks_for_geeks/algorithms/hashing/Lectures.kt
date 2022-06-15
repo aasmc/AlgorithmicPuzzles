@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.hashing
 
+import java.util.*
 import kotlin.math.max
 
 /**
@@ -170,9 +171,56 @@ fun lengthOfLongestSubarrayWithGivenSum(array: IntArray, sum: Int): Int {
     return maxLength
 }
 
+/**
+ * Given a binary array (contains only 1s and 0es), find the length of the longest
+ * subarray that contains equal number of zeroes and ones.
+ */
+fun binaryArraySubarrayLengthNaive(array: IntArray): Int {
+    var res = 0
+    for (i in array.indices) {
+        var zeroes = 0
+        var ones = 0
+        for (j in i..array.lastIndex) {
+            if (array[j] == 1) {
+                ++ones
+            }
+            if (array[j] == 0) {
+                ++zeroes
+            }
+            if (zeroes == ones) {
+                res = max(res, zeroes + ones)
+            }
+        }
+    }
+    return res
+}
 
-
-
+fun binaryArraySubarrayLengthEfficient(array: IntArray): Int {
+    // this is the trick to modify the array, so that if a subarray contains
+    // equal number of ones and zeroes, then the sum of its elements will be
+    // equal to zero.
+    for (i in array.indices) {
+        if (array[i] == 0) {
+            array[i] = -1
+        }
+    }
+    // algorithm to find the longest length of subarray with the given sum, here it is = 0
+    val sum = 0
+    var maxLength = 0
+    var prefixSum = 0
+    val prefixSumToEndIdx = hashMapOf<Int, Int>()
+    for (i in array.indices) {
+        prefixSum += array[i]
+        if (prefixSum == sum) {
+            maxLength = i + 1
+        } else if (prefixSumToEndIdx.containsKey(prefixSum - sum)) {
+            maxLength = max(maxLength, i - prefixSumToEndIdx[prefixSum - sum]!!)
+        } else {
+            prefixSumToEndIdx.putIfAbsent(prefixSum, i)
+        }
+    }
+    return maxLength
+}
 
 
 

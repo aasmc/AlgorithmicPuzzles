@@ -152,6 +152,38 @@ internal class HashingLecturesTest {
         val aaaa = intArrayOf(8, 3, 1, 5, -6, 6, 2, 2)
         assertEquals(4, lengthOfLongestSubarrayWithGivenSum(aaaa, 4))
     }
+
+    @Test
+    fun binaryArraySubarrayLengthNaive_correct() {
+        val a = intArrayOf(1, 0, 1, 1, 1, 0, 0)
+        assertEquals(6, binaryArraySubarrayLengthNaive(a))
+
+        val aa = intArrayOf(1, 1, 1, 1)
+        assertEquals(0, binaryArraySubarrayLengthNaive(aa))
+
+        val aaa = intArrayOf(0, 0, 1, 1, 1, 1, 1, 0)
+        assertEquals(4, binaryArraySubarrayLengthNaive(aaa))
+
+        val aaaa = intArrayOf(0, 0, 1, 0, 1, 1)
+        assertEquals(6, binaryArraySubarrayLengthNaive(aaaa))
+    }
+
+    @Test
+    fun binaryArraySubarrayLengthEfficient_correct() {
+        val a = intArrayOf(1, 0, 1, 1, 1, 0, 0)
+        assertEquals(6, binaryArraySubarrayLengthEfficient(a))
+
+        val aa = intArrayOf(1, 1, 1, 1)
+        assertEquals(0, binaryArraySubarrayLengthEfficient(aa))
+
+        val aaa = intArrayOf(0, 0, 1, 1, 1, 1, 1, 0)
+        assertEquals(4, binaryArraySubarrayLengthEfficient(aaa))
+
+        val aaaa = intArrayOf(0, 0, 1, 0, 1, 1)
+        assertEquals(6, binaryArraySubarrayLengthEfficient(aaaa))
+    }
+
+
 }
 
 
