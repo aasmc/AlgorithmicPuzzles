@@ -222,7 +222,56 @@ fun binaryArraySubarrayLengthEfficient(array: IntArray): Int {
     return maxLength
 }
 
+/**
+ * Given two binary arrays of the same size, find the length of the longest
+ * common subarray (starting and ending indices should be same in both arrays, and sum of the
+ * elements of subarrays must be equal).
+ */
+fun longestLengthOfCommonSubarrayNaive(first: IntArray, second: IntArray): Int {
+    var result = 0
+    for (i in first.indices) {
+        var sumOne = 0
+        var sumTwo = 0
+        for (j in i..first.lastIndex) {
+            sumOne += first[j]
+            sumTwo += second[j]
+            if (sumOne == sumTwo) {
+                result = max(result, j - i + 1)
+            }
+        }
+    }
+    return result
+}
 
+/**
+ * Efficient solution is reduced to finding the length of the longest subarray with sum
+ * equal to 0. To achieve this we need to find the difference between the two arrays.
+ * E.G.    0  1  0  0  0  0
+ *         1  0  1  0  0  1
+ *        -1  1 -1  0  0 -1
+ *            __________
+ *        this subarray has sum of elements equal to 0
+ */
+fun longestLengthOfCommonSubarrayEfficient(first: IntArray, second: IntArray): Int {
+    val tmp = IntArray(first.size) { index ->
+        first[index] - second[index]
+    }
+    val sum = 0
+    var prefixSum = 0
+    var maxLength = 0
+    val prefixSumToEndIndex = hashMapOf<Int, Int>()
+    for (i in tmp.indices) {
+        prefixSum += tmp[i]
+        if (prefixSum == sum) {
+            maxLength = i + 1
+        } else if (prefixSumToEndIndex.containsKey(prefixSum)) {
+            maxLength = max(maxLength, i - prefixSumToEndIndex[prefixSum]!!)
+        } else {
+            prefixSumToEndIndex.putIfAbsent(prefixSum, i)
+        }
+    }
+    return maxLength
+}
 
 
 

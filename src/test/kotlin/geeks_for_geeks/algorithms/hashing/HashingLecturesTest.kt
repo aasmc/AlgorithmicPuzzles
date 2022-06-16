@@ -183,6 +183,46 @@ internal class HashingLecturesTest {
         assertEquals(6, binaryArraySubarrayLengthEfficient(aaaa))
     }
 
+    @Test
+    fun longestLengthOfCommonSubarray_correct() {
+        val a = intArrayOf(0,1,0,0,0,0)
+        val b = intArrayOf(1,0,1,0,0,1)
+        assertEquals(4, longestLengthOfCommonSubarrayNaive(a, b))
+
+        val aa = intArrayOf(0,1,0,1,1,1,1)
+        val bb = intArrayOf(1,1,1,1,1,0,1)
+        assertEquals(6, longestLengthOfCommonSubarrayNaive(aa, bb))
+
+        val aaa = intArrayOf(0,0,0)
+        val bbb = intArrayOf(1,1,1)
+        assertEquals(0, longestLengthOfCommonSubarrayNaive(aaa, bbb))
+
+        val aaaa = intArrayOf(0,0,1,0)
+        val bbbb = intArrayOf(1,1,1,1)
+        assertEquals(1, longestLengthOfCommonSubarrayNaive(aaaa, bbbb))
+
+    }
+
+    @Test
+    fun longestLengthOfCommonSubarrayEfficient_correct() {
+        val a = intArrayOf(0,1,0,0,0,0)
+        val b = intArrayOf(1,0,1,0,0,1)
+        assertEquals(4, longestLengthOfCommonSubarrayEfficient(a, b))
+
+        val aa = intArrayOf(0,1,0,1,1,1,1)
+        val bb = intArrayOf(1,1,1,1,1,0,1)
+        assertEquals(6, longestLengthOfCommonSubarrayEfficient(aa, bb))
+
+        val aaa = intArrayOf(0,0,0)
+        val bbb = intArrayOf(1,1,1)
+        assertEquals(0, longestLengthOfCommonSubarrayEfficient(aaa, bbb))
+
+        val aaaa = intArrayOf(0,0,1,0)
+        val bbbb = intArrayOf(1,1,1,1)
+        assertEquals(1, longestLengthOfCommonSubarrayEfficient(aaaa, bbbb))
+
+    }
+
 
 }
 
