@@ -185,45 +185,67 @@ internal class HashingLecturesTest {
 
     @Test
     fun longestLengthOfCommonSubarray_correct() {
-        val a = intArrayOf(0,1,0,0,0,0)
-        val b = intArrayOf(1,0,1,0,0,1)
+        val a = intArrayOf(0, 1, 0, 0, 0, 0)
+        val b = intArrayOf(1, 0, 1, 0, 0, 1)
         assertEquals(4, longestLengthOfCommonSubarrayNaive(a, b))
 
-        val aa = intArrayOf(0,1,0,1,1,1,1)
-        val bb = intArrayOf(1,1,1,1,1,0,1)
+        val aa = intArrayOf(0, 1, 0, 1, 1, 1, 1)
+        val bb = intArrayOf(1, 1, 1, 1, 1, 0, 1)
         assertEquals(6, longestLengthOfCommonSubarrayNaive(aa, bb))
 
-        val aaa = intArrayOf(0,0,0)
-        val bbb = intArrayOf(1,1,1)
+        val aaa = intArrayOf(0, 0, 0)
+        val bbb = intArrayOf(1, 1, 1)
         assertEquals(0, longestLengthOfCommonSubarrayNaive(aaa, bbb))
 
-        val aaaa = intArrayOf(0,0,1,0)
-        val bbbb = intArrayOf(1,1,1,1)
+        val aaaa = intArrayOf(0, 0, 1, 0)
+        val bbbb = intArrayOf(1, 1, 1, 1)
         assertEquals(1, longestLengthOfCommonSubarrayNaive(aaaa, bbbb))
 
     }
 
     @Test
     fun longestLengthOfCommonSubarrayEfficient_correct() {
-        val a = intArrayOf(0,1,0,0,0,0)
-        val b = intArrayOf(1,0,1,0,0,1)
+        val a = intArrayOf(0, 1, 0, 0, 0, 0)
+        val b = intArrayOf(1, 0, 1, 0, 0, 1)
         assertEquals(4, longestLengthOfCommonSubarrayEfficient(a, b))
 
-        val aa = intArrayOf(0,1,0,1,1,1,1)
-        val bb = intArrayOf(1,1,1,1,1,0,1)
+        val aa = intArrayOf(0, 1, 0, 1, 1, 1, 1)
+        val bb = intArrayOf(1, 1, 1, 1, 1, 0, 1)
         assertEquals(6, longestLengthOfCommonSubarrayEfficient(aa, bb))
 
-        val aaa = intArrayOf(0,0,0)
-        val bbb = intArrayOf(1,1,1)
+        val aaa = intArrayOf(0, 0, 0)
+        val bbb = intArrayOf(1, 1, 1)
         assertEquals(0, longestLengthOfCommonSubarrayEfficient(aaa, bbb))
 
-        val aaaa = intArrayOf(0,0,1,0)
-        val bbbb = intArrayOf(1,1,1,1)
+        val aaaa = intArrayOf(0, 0, 1, 0)
+        val bbbb = intArrayOf(1, 1, 1, 1)
         assertEquals(1, longestLengthOfCommonSubarrayEfficient(aaaa, bbbb))
 
     }
 
+    @Test
+    fun lengthOfLongestConsecutiveSubsequenceSorting_correct() {
+        val a = intArrayOf(1, 9, 3, 4, 2, 20)
+        assertEquals(4, lengthOfLongestConsecutiveSubsequenceSorting(a))
 
+        val aa = intArrayOf(8, 20, 7, 30)
+        assertEquals(2, lengthOfLongestConsecutiveSubsequenceSorting(aa))
+
+        val aaa = intArrayOf(20, 30, 40)
+        assertEquals(1, lengthOfLongestConsecutiveSubsequenceSorting(aaa))
+    }
+
+    @Test
+    fun lengthOfLongestConsecutiveSubsequenceHashing_correct() {
+        val a = intArrayOf(1, 9, 3, 4, 2, 20)
+        assertEquals(4, lengthOfLongestConsecutiveSubsequenceHashing(a))
+
+        val aa = intArrayOf(8, 20, 7, 30)
+        assertEquals(2, lengthOfLongestConsecutiveSubsequenceHashing(aa))
+
+        val aaa = intArrayOf(20, 30, 40)
+        assertEquals(1, lengthOfLongestConsecutiveSubsequenceHashing(aaa))
+    }
 }
 
 

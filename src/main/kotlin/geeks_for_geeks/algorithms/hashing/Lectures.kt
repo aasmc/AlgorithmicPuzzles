@@ -273,6 +273,64 @@ fun longestLengthOfCommonSubarrayEfficient(first: IntArray, second: IntArray): I
     return maxLength
 }
 
+/**
+ * Given an array of integers, find the length of the longest subsequence, such that this
+ * subsequence has consecutive elements. The elements from the subsequence may appear in
+ * random order in the array.
+ *
+ * E.g. 1  9  3  4  2  20
+ *      _     _  _  _
+ *   These elements form a consecutive subsequence: 1,2,3,4,
+ *   so the answer is 4.
+ */
+fun lengthOfLongestConsecutiveSubsequenceSorting(array: IntArray): Int {
+    // Time complexity is O(n log n)
+    if (array.isEmpty()) return 0
+    array.sort()
+    var count = 1
+    var result = 1
+    for (i in 1 until array.size) {
+        if (array[i] == array[i - 1] + 1) {
+            ++count
+        } else if (array[i] != array[i - 1]) {
+            result = max(result, count)
+            count = 1
+        }
+    }
+    // handle the case when at the end of the array we have consecutive elements
+    return max(result, count)
+}
 
+/**
+ * The idea of the solution is based on hashing.
+ * Step 1: create a hash set out of all array elements
+ * Step 2: traverse the set of elements
+ * Step 3: we check if the set contains an element that is less than current element by 1,
+ *         if so, this means that we ignore current element, because it is not the starting
+ *         element of a consecutive subsequence. Otherwise, it means that the current element
+ *         is indeed the starting element of a consecutive subsequence, so we begin counting
+ *         all subsequent elements present in the set.
+ * Step 4: compare the current count with the previous count and select the max result.
+ *
+ * At first it may seem that in the worst case we perform n^2 lookups, but this is wrong.
+ * We perform 2n traversals.
+ *
+ * So the time complexity is: O(N)
+ * Space complexity is O(N)
+ */
+fun lengthOfLongestConsecutiveSubsequenceHashing(array: IntArray): Int {
+    val set = array.toHashSet()
+    var result = 1
+    for (num in set) {
+        if (!set.contains(num - 1)) {
+            var current = 1
+            while (set.contains(num + current)) {
+                ++current
+            }
+            result = max(result, current)
+        }
+    }
+    return result
+}
 
 
