@@ -368,3 +368,47 @@ fun countDistinctElementsInEveryWindow(input: IntArray, k: Int): IntArray {
     return result
 }
 
+/**
+ * Given an array of size N and a number K, return a list of elements whose
+ * count of occurrences in the array is > N / K.
+ */
+fun occurrencesGreaterThanSizeOverK(array: IntArray, k: Int): List<Int> {
+    val occurrences = hashMapOf<Int, Int>()
+    array.forEach { num ->
+        occurrences.merge(num, 1, Int::plus)
+    }
+    val threshold = array.size / k
+    val result = mutableListOf<Int>()
+    occurrences.forEach { (key, count) ->
+        if (count > threshold) {
+            result.add(key)
+        }
+    }
+    return result
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
