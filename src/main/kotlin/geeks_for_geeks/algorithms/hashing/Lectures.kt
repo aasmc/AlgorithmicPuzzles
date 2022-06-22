@@ -333,4 +333,38 @@ fun lengthOfLongestConsecutiveSubsequenceHashing(array: IntArray): Int {
     return result
 }
 
+/**
+ * Given an array and a number [k] <= array's size, find distinct element
+ * count in every window of size [k] in this array.
+ *
+ * The number of windows in the array = size - k + 1;
+ *
+ * @return the array of size = inputArray.size - k + 1, containing number of distinct
+ *         elements in every window in inputArray.
+ */
+fun countDistinctElementsInEveryWindow(input: IntArray, k: Int): IntArray {
+    val windowsNum = input.size - k + 1
+    val result = IntArray(windowsNum) { 0 }
+    val frequencyMap = hashMapOf<Int, Int>()
+    for (i in 0 until k) {
+        frequencyMap.merge(input[i], 1, Int::plus)
+    }
+    var currentWindow = 0
+    result[currentWindow] = frequencyMap.size
+    ++currentWindow
+    for (i in k until input.size) {
+        // decrease the frequency of (i - k)th element, if it becomes 0, then remove the
+        // element from the map, here i use the fact that merge deletes mapping if remappingFinction
+        // returns null
+        frequencyMap.merge(input[i - k], -1) { prev, cur ->
+            return@merge if (prev + cur == 0) null else prev + cur
+        }
+        // add current element to the map and compute its frequency
+        frequencyMap.merge(input[i], 1, Int::plus)
+
+        result[currentWindow++] = frequencyMap.size
+
+    }
+    return result
+}
 

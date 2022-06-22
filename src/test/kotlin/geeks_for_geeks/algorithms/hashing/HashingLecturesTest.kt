@@ -2,6 +2,7 @@ package geeks_for_geeks.algorithms.hashing
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class HashingLecturesTest {
     @Test
@@ -245,6 +246,24 @@ internal class HashingLecturesTest {
 
         val aaa = intArrayOf(20, 30, 40)
         assertEquals(1, lengthOfLongestConsecutiveSubsequenceHashing(aaa))
+    }
+
+    @Test
+    fun countDistinctElementsInEveryWindow_correct() {
+        val a = intArrayOf(10, 20, 20, 10, 30, 40, 10)
+        val res1 = countDistinctElementsInEveryWindow(a, 4)
+        val expected1 = intArrayOf(2,3,4,3)
+        assertTrue(expected1.contentEquals(res1))
+
+        val b = intArrayOf(10,10,10,10,10)
+        val res2 = countDistinctElementsInEveryWindow(b, 3)
+        val expected2 = intArrayOf(1,1,1)
+        assertTrue(expected2.contentEquals(res2))
+
+        val c = intArrayOf(10, 20, 30, 40)
+        val res3 = countDistinctElementsInEveryWindow(c, 3)
+        val expected3 = intArrayOf(3,3)
+        assertTrue(expected3.contentEquals(res3))
     }
 }
 
