@@ -276,6 +276,17 @@ internal class HashingLecturesTest {
         val expected2 = listOf(30)
         assertEquals(expected2, occurrencesGreaterThanSizeOverK(b, 2))
     }
+
+    @Test
+    fun occurrencesGreaterThanSizeOverKOptimizedForSmallK_correct() {
+        val a = intArrayOf(30,10,20,20,10,20,30,30)
+        val expected1 = listOf(20, 30)
+        assertEquals(expected1, occurrencesGreaterThanSizeOverKOptimizedForSmallK(a, 4))
+
+        val b = intArrayOf(30,10,20,30,30,40,30,40,30)
+        val expected2 = listOf(30)
+        assertEquals(expected2, occurrencesGreaterThanSizeOverKOptimizedForSmallK(b, 2))
+    }
 }
 
 

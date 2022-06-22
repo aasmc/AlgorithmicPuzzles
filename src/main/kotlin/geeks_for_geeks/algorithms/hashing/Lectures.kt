@@ -387,7 +387,51 @@ fun occurrencesGreaterThanSizeOverK(array: IntArray, k: Int): List<Int> {
     return result
 }
 
-
+/**
+ * Here we need to consider the fact that the number of elements in the result list
+ * will not exceed K - 1. To prove that, assume that it is wrong, then and the number
+ * of elements in the result list == K and we know that every element appears > N / K times.
+ * Then the following expression must be true:
+ *      K * (N / K + 1) <= N, after simplifying we get: (N + K) <= N, which is wrong, assuming
+ *      that K > 0.
+ * Therefore we can safely state that the number of elements in the result list will be strictly
+ * less than K.
+ *
+ * Step 1. Create a map of occurrences. Its size will at most be K - 1.
+ * Step 2. Compute the occurrences
+ * Step 3. Compute the result
+ *
+ * Time Complexity is O(N * K)
+ */
+fun occurrencesGreaterThanSizeOverKOptimizedForSmallK(array: IntArray, k: Int): List<Int> {
+    val occurrences = hashMapOf<Int, Int>()
+    for (i in array.indices) {
+        if (occurrences.containsKey(array[i])) {
+            occurrences[array[i]] = occurrences[array[i]]!! + 1
+        } else if (occurrences.size < k - 1) {
+            occurrences[array[i]] = 1
+        } else {
+            for (key in occurrences.keys) {
+                occurrences[key] = occurrences[key]!! - 1
+            }
+            val iterator = occurrences.entries.iterator()
+            while (iterator.hasNext()) {
+                val next = iterator.next()
+                if (next.value == 0) {
+                    iterator.remove()
+                }
+            }
+        }
+    }
+    val result =  mutableListOf<Int>()
+    val threshold = array.size / k
+    for (key in occurrences.keys) {
+        if (array.count { it == key } > threshold) {
+            result.add(key)
+        }
+    }
+    return result
+}
 
 
 
