@@ -1,6 +1,5 @@
 package geeks_for_geeks.algorithms.hashing
 
-import java.util.*
 import kotlin.math.max
 
 /**
