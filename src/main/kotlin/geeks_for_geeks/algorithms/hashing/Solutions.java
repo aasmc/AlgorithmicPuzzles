@@ -1,9 +1,7 @@
 package geeks_for_geeks.algorithms.hashing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solutions {
 
@@ -294,6 +292,119 @@ public class Solutions {
             }
         }
         return -1;
+    }
+
+    /**
+     * Given two arrays a[] and b[] respectively of size n and m, the task is to print the count
+     * of elements in the intersection (or common elements) of the two arrays.
+     *
+     * For this question, the intersection of two arrays can be defined as the set containing
+     * distinct common elements between the two arrays.
+     *
+     * Example 1:
+     *      Input:
+     *      n = 5, m = 3
+     *      a[] = {89, 24, 75, 11, 23}
+     *      b[] = {89, 2, 4}
+     *
+     *      Output: 1
+     *
+     *      Explanation:
+     *      89 is the only element
+     *      in the intersection of two arrays.
+     *
+     * Example 2:
+     *      Input:
+     *      n = 6, m = 5
+     *      a[] = {1, 2, 3, 4, 5, 6}
+     *      b[] = {3, 4, 5, 6, 7}
+     *
+     *      Output: 4
+     *
+     *      Explanation:
+     *      3 4 5 and 6 are the elements
+     *      in the intersection of two arrays.
+     *
+     * Expected Time Complexity: O(n + m).
+     * Expected Auxiliary Space: O(min(n,m)).
+     */
+    public static int NumberofElementsInIntersection(int a[], int b[], int n, int m) {
+        // Your code here
+        int count = n < m ? numCommonElements(a, b) : numCommonElements(b, a);
+        return count;
+    }
+
+    private static int numCommonElements(int[] lesser, int[] greater) {
+        int count = 0;
+        Set<Integer> hash = new HashSet<>();
+        for (int j : lesser) {
+            hash.add(j);
+        }
+        for (int num : greater) {
+            if (hash.contains(num)) {
+                ++count;
+                hash.remove(num);
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * Given two arrays a[] and b[] of size n and m respectively. The task is to find
+     * union between these two arrays.
+     *
+     * Union of the two arrays can be defined as the set containing distinct elements
+     * from both the arrays. If there are repetitions, then only one occurrence of
+     * element should be printed in the union.
+     *
+     * Example 1:
+     *
+     *      Input:
+     *      5 3
+     *      1 2 3 4 5
+     *      1 2 3
+     *      Output:
+     *      5
+     *      Explanation:
+     *      1, 2, 3, 4 and 5 are the
+     *      elements which comes in the union set
+     *      of both arrays. So count is 5.
+     *
+     * Example 2:
+     *      Input:
+     *      6 2
+     *      85 25 1 32 54 6
+     *      85 2
+     *      Output:
+     *      7
+     *      Explanation:
+     *      85, 25, 1, 32, 54, 6, and
+     *      2 are the elements which comes in the
+     *      union set of both arrays. So count is 7.
+     *
+     *
+     * Elements are not necessarily distinct.
+     *
+     * Expected Time Complexity : O((n+m)log(n+m))
+     * Expected Auxilliary Space : O(n+m)
+     */
+    public static int doUnion(int a[], int n, int b[], int m)
+    {
+        //Your code here
+        Set<Integer> first = Arrays.stream(a)
+                .boxed()
+                .collect(Collectors.toSet());
+        Set<Integer> second = Arrays.stream(b)
+                .boxed()
+                .collect(Collectors.toSet());
+        int count = first.size();
+        for (Integer num : second) {
+            if (!first.contains(num)) {
+                ++count;
+            }
+        }
+        return count;
     }
 }
 
