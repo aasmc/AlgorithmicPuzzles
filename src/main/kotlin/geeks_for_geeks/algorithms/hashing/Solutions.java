@@ -342,34 +342,34 @@ public class Solutions {
     /**
      * Given two arrays a[] and b[] respectively of size n and m, the task is to print the count
      * of elements in the intersection (or common elements) of the two arrays.
-     *
+     * <p>
      * For this question, the intersection of two arrays can be defined as the set containing
      * distinct common elements between the two arrays.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      n = 5, m = 3
-     *      a[] = {89, 24, 75, 11, 23}
-     *      b[] = {89, 2, 4}
-     *
-     *      Output: 1
-     *
-     *      Explanation:
-     *      89 is the only element
-     *      in the intersection of two arrays.
-     *
+     * Input:
+     * n = 5, m = 3
+     * a[] = {89, 24, 75, 11, 23}
+     * b[] = {89, 2, 4}
+     * <p>
+     * Output: 1
+     * <p>
+     * Explanation:
+     * 89 is the only element
+     * in the intersection of two arrays.
+     * <p>
      * Example 2:
-     *      Input:
-     *      n = 6, m = 5
-     *      a[] = {1, 2, 3, 4, 5, 6}
-     *      b[] = {3, 4, 5, 6, 7}
-     *
-     *      Output: 4
-     *
-     *      Explanation:
-     *      3 4 5 and 6 are the elements
-     *      in the intersection of two arrays.
-     *
+     * Input:
+     * n = 6, m = 5
+     * a[] = {1, 2, 3, 4, 5, 6}
+     * b[] = {3, 4, 5, 6, 7}
+     * <p>
+     * Output: 4
+     * <p>
+     * Explanation:
+     * 3 4 5 and 6 are the elements
+     * in the intersection of two arrays.
+     * <p>
      * Expected Time Complexity: O(n + m).
      * Expected Auxiliary Space: O(min(n,m)).
      */
@@ -397,44 +397,43 @@ public class Solutions {
     /**
      * Given two arrays a[] and b[] of size n and m respectively. The task is to find
      * union between these two arrays.
-     *
+     * <p>
      * Union of the two arrays can be defined as the set containing distinct elements
      * from both the arrays. If there are repetitions, then only one occurrence of
      * element should be printed in the union.
-     *
+     * <p>
      * Example 1:
-     *
-     *      Input:
-     *      5 3
-     *      1 2 3 4 5
-     *      1 2 3
-     *      Output:
-     *      5
-     *      Explanation:
-     *      1, 2, 3, 4 and 5 are the
-     *      elements which comes in the union set
-     *      of both arrays. So count is 5.
-     *
+     * <p>
+     * Input:
+     * 5 3
+     * 1 2 3 4 5
+     * 1 2 3
+     * Output:
+     * 5
+     * Explanation:
+     * 1, 2, 3, 4 and 5 are the
+     * elements which comes in the union set
+     * of both arrays. So count is 5.
+     * <p>
      * Example 2:
-     *      Input:
-     *      6 2
-     *      85 25 1 32 54 6
-     *      85 2
-     *      Output:
-     *      7
-     *      Explanation:
-     *      85, 25, 1, 32, 54, 6, and
-     *      2 are the elements which comes in the
-     *      union set of both arrays. So count is 7.
-     *
-     *
+     * Input:
+     * 6 2
+     * 85 25 1 32 54 6
+     * 85 2
+     * Output:
+     * 7
+     * Explanation:
+     * 85, 25, 1, 32, 54, 6, and
+     * 2 are the elements which comes in the
+     * union set of both arrays. So count is 7.
+     * <p>
+     * <p>
      * Elements are not necessarily distinct.
-     *
+     * <p>
      * Expected Time Complexity : O((n+m)log(n+m))
      * Expected Auxilliary Space : O(n+m)
      */
-    public static int doUnion(int a[], int n, int b[], int m)
-    {
+    public static int doUnion(int a[], int n, int b[], int m) {
         //Your code here
         Set<Integer> first = Arrays.stream(a)
                 .boxed()
@@ -449,6 +448,25 @@ public class Solutions {
             }
         }
         return count;
+    }
+
+    /**
+     * Given two arrays A and B of equal size N, the task is to find if given arrays are equal
+     * or not. Two arrays are said to be equal if both of them contain same set of elements,
+     * arrangements (or permutation) of elements may be different though.
+     * Note : If there are repetitions, then counts of repeated elements must also be same
+     * for two array to be equal.
+     */
+    public static boolean check(long[] A, long[] B, int N) {
+        Map<Long, Integer> first = new HashMap<>();
+        for (long num : A) {
+            first.merge(num, 1, Integer::sum);
+        }
+        Map<Long, Integer> second = new HashMap<>();
+        for (long num : B) {
+            second.merge(num, 1, Integer::sum);
+        }
+        return first.equals(second);
     }
 }
 
