@@ -1,9 +1,6 @@
 package geeks_for_geeks.algorithms.hashing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Solutions {
 
@@ -14,44 +11,43 @@ public class Solutions {
      * to handle the problem of collisions. That is, every slot of the hash table is a linked list,
      * so whenever a collision occurs, the element can be appended as a node to the linked list at
      * the slot.
-     *
+     * <p>
      * In this question, we'll learn how to fill up the hash table using Separate chaining technique.
      * Given an array and a hashtable size, you have to fill the elements of the array into a hash
      * table of given size.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      hashSize = 10
-     *      sizeOfArray = 6
-     *      arr[] = {92,4,14,24,44,91}
-     *      Output:
-     *      1->91
-     *      2->92
-     *      4->4->14->24->44
-     *      Explanation: 92%10=2 so 92 goes to slot 2.
-     *      4%10=4 so 4 goes to slot 4. 14%10=4. But 4
-     *      is already occupied so we make a linked
-     *      list at this position and add 14 after 4
-     *      in slot 4 and so on.
-     *
+     * Input:
+     * hashSize = 10
+     * sizeOfArray = 6
+     * arr[] = {92,4,14,24,44,91}
+     * Output:
+     * 1->91
+     * 2->92
+     * 4->4->14->24->44
+     * Explanation: 92%10=2 so 92 goes to slot 2.
+     * 4%10=4 so 4 goes to slot 4. 14%10=4. But 4
+     * is already occupied so we make a linked
+     * list at this position and add 14 after 4
+     * in slot 4 and so on.
+     * <p>
      * Example 2:
-     *      Input:
-     *      hashSize = 10
-     *      sizeOfArray = 5
-     *      arr[] = {12,45,36,87,11}
-     *      Output:
-     *      1->11
-     *      2->12
-     *      5->45
-     *      6->36
-     *      7->87
-     *      Explanation: 12%10=2 so 12 goes to slot 2.
-     *      45%10=5 goes to slot 5. 36%10=6 goes to
-     *      slot 6. 87%10=7 goes to slot 7 and finally
-     *      11%10=1 goes to slot 1.
+     * Input:
+     * hashSize = 10
+     * sizeOfArray = 5
+     * arr[] = {12,45,36,87,11}
+     * Output:
+     * 1->11
+     * 2->12
+     * 5->45
+     * 6->36
+     * 7->87
+     * Explanation: 12%10=2 so 12 goes to slot 2.
+     * 45%10=5 goes to slot 5. 36%10=6 goes to
+     * slot 6. 87%10=7 goes to slot 7 and finally
+     * 11%10=1 goes to slot 1.
      */
-    public ArrayList<ArrayList<Integer>> separateChaining(int[] arr, int n, int hashSize)
-    {
+    public ArrayList<ArrayList<Integer>> separateChaining(int[] arr, int n, int hashSize) {
         //Your code here
         ArrayList<ArrayList<Integer>> table = new ArrayList<>();
         initTable(table, hashSize);
@@ -80,12 +76,12 @@ public class Solutions {
     /**
      * Linear probing is a collision handling technique in hashing. Linear probing says that
      * whenever a collision occurs, search for the immediate next position.
-     *
+     * <p>
      * Given an array of integers and a hash table size. Fill the array elements into a hash
      * table using Linear Probing to handle collisions. Duplicate elements must be mapped to
      * the same position in the hash table while colliding elements must be mapped to the
      * [(value+1)%hashSise] position.
-     *
+     * <p>
      * Example 1:
      * Input:
      * hashSize = 10
@@ -97,7 +93,7 @@ public class Solutions {
      * hashtable[4].Now, 14%10=4, but
      * hashtable[4] is alreadyfilled so put
      * 14 in the next slot and so on.
-     *
+     * <p>
      * Example 2:
      * Input:
      * hashSize = 10
@@ -110,22 +106,21 @@ public class Solutions {
      * hashtable[9] is already filled so
      * put 99 in the (99+1)%10 =0 slot so
      * 99 goes into hashtable[0] and so on.
-     *
+     * <p>
      * The function should return the hash table.
      * The empty cells of the hash table are to be given a value of -1.
      * Also, if there's no more space to insert a new element, just drop that element.
-     *
-     *
+     * <p>
+     * <p>
      * Expected Time Complexity: O(N)
      * Expected Auxiliary Space: O(1)
-     *
+     * <p>
      * Constraints:
      * 1 <= hashSize <= 100
      * 1 <= sizeOfArray <= 100
      * 0 <= Array[] <= 10^5
      */
-    int[] linearProbing(int hash_size, int[] arr, int sizeOfArray)
-    {
+    int[] linearProbing(int hash_size, int[] arr, int sizeOfArray) {
         //Your code here
         int[] table = new int[hash_size];
         Arrays.fill(table, -1);
@@ -139,7 +134,7 @@ public class Solutions {
                 table[hash] = num;
             } else {
                 inner:
-                while (table[(++hash) % hash_size]  != -1) {
+                while (table[(++hash) % hash_size] != -1) {
                     // we have no more space in the table, so break out of all the loops
                     if (table[hash % hash_size] == current) break outer;
                     // we encountered a duplicate, so just replace it
@@ -155,42 +150,41 @@ public class Solutions {
     /**
      * Quadratic probing is a collision handling technique in hashing. Quadratic probing
      * says that whenever a collision occurs, search for i^2 position.
-     *
+     * <p>
      * Given an array of integers and a Hash table. Fill the elements of the array into
      * the hash table by using Quadratic Probing in case of collisions.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      hashSize = 11
-     *      N = 4
-     *      Array[] = {21,10,32,43}
-     *      Output:
-     *      10 -1 -1 32 -1 -1 -1 -1 43 -1 21
-     *      Explanation: 21%11=10 so 21 goes into
-     *      hashTable[10] position. 10%11=10.
-     *      hashTable[10] is already filled so we try
-     *      for (10+1^2)%11=0 position. hashTable[0]
-     *      is empty so we put 10 there. 32%11=10.
-     *      hashTable[10] is filled. We try
-     *      (32+1^2)%11=0. But hashTable[0] is also
-     *      already filled. We try (32+2^2)%11=3.
-     *      hashTable[3] is empty so we put 32 in
-     *      hashTable[3] position. 43 uses
-     *      (43+32)%11=8. We put it in hashTable[8].
+     * Input:
+     * hashSize = 11
+     * N = 4
+     * Array[] = {21,10,32,43}
+     * Output:
+     * 10 -1 -1 32 -1 -1 -1 -1 43 -1 21
+     * Explanation: 21%11=10 so 21 goes into
+     * hashTable[10] position. 10%11=10.
+     * hashTable[10] is already filled so we try
+     * for (10+1^2)%11=0 position. hashTable[0]
+     * is empty so we put 10 there. 32%11=10.
+     * hashTable[10] is filled. We try
+     * (32+1^2)%11=0. But hashTable[0] is also
+     * already filled. We try (32+2^2)%11=3.
+     * hashTable[3] is empty so we put 32 in
+     * hashTable[3] position. 43 uses
+     * (43+32)%11=8. We put it in hashTable[8].
      * Example 2:
-     *      Input:
-     *      hashSize = 11
-     *      N = 4
-     *      Array[] = {880,995,647,172 }
-     *      Output:
-     *      880 -1 -1 -1 -1 995 -1 172 -1 647 -1
-     *      Explanation: Using the similar approach
-     *      as used in above explanation we will get
-     *      the output like
-     *      880 -1 -1 -1 -1 995 -1 172 -1 647 -1.
+     * Input:
+     * hashSize = 11
+     * N = 4
+     * Array[] = {880,995,647,172 }
+     * Output:
+     * 880 -1 -1 -1 -1 995 -1 172 -1 647 -1
+     * Explanation: Using the similar approach
+     * as used in above explanation we will get
+     * the output like
+     * 880 -1 -1 -1 -1 995 -1 172 -1 647 -1.
      */
-    static void quadraticProbing(int[] hash, int hash_size, int[] arr, int N)
-    {
+    static void quadraticProbing(int[] hash, int hash_size, int[] arr, int N) {
         //Your code here
         Arrays.fill(hash, -1);
         for (int elem : arr) {
@@ -209,41 +203,40 @@ public class Solutions {
 
     /**
      * Hashing is very useful to keep track of the frequency of the elements in a list.
-     *
+     * <p>
      * You are given an array of integers. You need to print the count of non-repeated
      * elements in the array.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      10
-     *      1 1 2 2 3 3 4 5 6 7
-     *
-     *      Output:
-     *      4
-     *
-     *      Explanation:
-     *      4, 5, 6 and 7 are the
-     *      elements with frequency 1 and rest
-     *      elements are repeated so the number
-     *      of non-repeated elements are 4.
-     *
+     * Input:
+     * 10
+     * 1 1 2 2 3 3 4 5 6 7
+     * <p>
+     * Output:
+     * 4
+     * <p>
+     * Explanation:
+     * 4, 5, 6 and 7 are the
+     * elements with frequency 1 and rest
+     * elements are repeated so the number
+     * of non-repeated elements are 4.
+     * <p>
      * Example 2:
-     *      Input:
-     *      5
-     *      10 20 30 40 10
-     *
-     *      Output:
-     *      3
-     *
-     *      Explanation:
-     *      20, 30, 40 are the
-     *      elements with the frequency 1 and
-     *      10 is the repeated element to
-     *      number of non-repeated elements
-     *      are 3.
+     * Input:
+     * 5
+     * 10 20 30 40 10
+     * <p>
+     * Output:
+     * 3
+     * <p>
+     * Explanation:
+     * 20, 30, 40 are the
+     * elements with the frequency 1 and
+     * 10 is the repeated element to
+     * number of non-repeated elements
+     * are 3.
      */
-    static long countNonRepeated(int[] arr, int n)
-    {
+    static long countNonRepeated(int[] arr, int n) {
         // add your code
         HashMap<Integer, Integer> hash = new HashMap<>();
         for (int elem : arr) {
@@ -252,8 +245,7 @@ public class Solutions {
         return hash.values().stream().filter(num -> num == 1).count();
     }
 
-    static ArrayList<Integer> printNonRepeated(int[] arr, int n)
-    {
+    static ArrayList<Integer> printNonRepeated(int[] arr, int n) {
         // add your code here
         HashMap<Integer, Integer> hash = new HashMap<>();
         for (int elem : arr) {
@@ -271,7 +263,7 @@ public class Solutions {
     /**
      * Given an array arr[] of size n, find the first repeating element. The element should occurs more
      * than once and the index of its first occurrence should be the smallest.
-     *
+     * <p>
      * Input:
      * n = 7
      * arr[] = {1, 5, 3, 4, 3, 5, 6}
@@ -294,6 +286,55 @@ public class Solutions {
             }
         }
         return -1;
+    }
+
+    /**
+     * You are given an array of distinct integers and a sum. Check if there's a pair
+     * with the given sum in the array.
+     * <p>
+     * Example 1:
+     * Input:
+     * N = 10
+     * arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+     * sum = 14
+     * Output:
+     * 1
+     * <p>
+     * Explanation:
+     * arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+     * and sum = 14.  There is a pair {4, 10}
+     * with sum 14.
+     * <p>
+     * Example 2:
+     * Input:
+     * N = 2
+     * arr[] = {2, 5}
+     * sum = 10
+     * Output:
+     * 0
+     * <p>
+     * Explanation:
+     * arr[]  = {2, 5} and sum = 10.
+     * There is no pair with sum 10.
+     * <p>
+     * Expected Time Complexity: O(N).
+     * Expected Auxiliary Space: O(N).
+     *
+     * @return 1 if there's a pair and 0 if there's no such pair
+     */
+    public static int sumExists(int[] arr, int N, int sum) {
+        // Your code here, Geeks
+        Map<Integer, Integer> complements = new HashMap<>();
+        for (int num : arr) {
+            complements.put(sum - num, num);
+        }
+        for (int num : arr) {
+            Integer possible = complements.get(num);
+            if (possible != null && possible != num) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
 
