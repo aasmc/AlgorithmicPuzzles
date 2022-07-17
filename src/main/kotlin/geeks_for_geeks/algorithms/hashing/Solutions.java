@@ -468,6 +468,78 @@ public class Solutions {
         }
         return first.equals(second);
     }
+
+    /**
+     * Given an array of positive and negative numbers.
+     * Find if there is a subarray (of size at-least one) with 0 sum.
+     * <p>
+     * Example 1:
+     * Input:
+     * 5
+     * 4 2 -3 1 6
+     * <p>
+     * Output:
+     * Yes
+     * <p>
+     * Explanation:
+     * 2, -3, 1 is the subarray
+     * with sum 0.
+     * <p>
+     * Example 2:
+     * Input:
+     * 5
+     * 4 2 0 1 6
+     * <p>
+     * Output:
+     * Yes
+     * <p>
+     * Explanation:
+     * 0 is one of the element
+     * in the array so there exist a
+     * subarray with sum 0.
+     */
+    static boolean findsum(int arr[], int n) {
+        //Your code here
+        if (n == 0) return false;
+        int prefixSum = 0;
+        Set<Integer> prefixSums = new HashSet<>();
+        for (int i : arr) {
+            prefixSum += i;
+            if (prefixSums.contains(prefixSum) || prefixSum == 0) {
+                return true;
+            }
+            prefixSums.add(prefixSum);
+        }
+        return false;
+    }
+
+    /**
+     * Given an array of names (consisting of lowercase characters) of candidates in an election.
+     * A candidate name in array represents a vote casted to the candidate.
+     * Print the name of candidate that received Max votes. If there is tie,
+     * print lexicographically smaller name.
+     */
+    public static String[] winner(String[] arr, int n) {
+        Map<String, Integer> votes = new HashMap<>();
+        for (String candidate : arr) {
+            votes.merge(candidate, 1, Integer::sum);
+        }
+        String winner = arr[0];
+        int maxVotes = 1;
+        for (int i = 1; i < n; i++) {
+            String name = arr[i];
+            Integer currentVotes = votes.get(name);
+            if (currentVotes > maxVotes) {
+                winner = name;
+                maxVotes = currentVotes;
+            } else if (currentVotes == maxVotes) {
+                if (name.compareTo(winner) < 0) {
+                    winner = name;
+                }
+            }
+        }
+        return new String[]{winner, String.valueOf(maxVotes)};
+    }
 }
 
 
