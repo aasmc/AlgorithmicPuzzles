@@ -540,6 +540,43 @@ public class Solutions {
         }
         return new String[]{winner, String.valueOf(maxVotes)};
     }
+
+    /**
+     * Given an unsorted array of integers and a sum. The task is to count the number of
+     * subarrays which add to the given sum.
+     * <p>
+     * Example 1:
+     * Input:
+     * n = 5
+     * arr[] = {10,2,-2,-20,10}
+     * sum = -10
+     * Output: 3
+     * Explanation: Subarrays with sum -10 are:
+     * [10, 2, -2, -20], [2, -2, -20, 10] and
+     * [-20, 10].
+     * <p>
+     * Example 2:
+     * Input:
+     * n = 6
+     * arr[] = {1,4,20,3,10,5}
+     * sum = 33
+     * Output: 1
+     * Explanation: Subarray with sum 33 is:
+     * [20,3,10].
+     */
+    static int subArraySum(int[] arr, int n, int sum) {
+        // add your code here
+        int count = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        int prefixSum = 0;
+        map.put(0, 1);
+        for (int i = 0; i < n; ++i) {
+            prefixSum += arr[i]; //compute prefix sum until current element
+            count += map.getOrDefault(prefixSum - sum, 0);//add num of times presum-sum has already appeared
+            map.merge(prefixSum, 1, Integer::sum); //increment the occurrence of presum
+        }
+        return count;
+    }
 }
 
 
