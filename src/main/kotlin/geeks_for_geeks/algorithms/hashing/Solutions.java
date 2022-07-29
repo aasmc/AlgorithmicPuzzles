@@ -567,15 +567,60 @@ public class Solutions {
     static int subArraySum(int[] arr, int n, int sum) {
         // add your code here
         int count = 0;
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> prefixSumToCount = new HashMap<>();
         int prefixSum = 0;
-        map.put(0, 1);
+        prefixSumToCount.put(0, 1);
         for (int i = 0; i < n; ++i) {
             prefixSum += arr[i]; //compute prefix sum until current element
-            count += map.getOrDefault(prefixSum - sum, 0);//add num of times presum-sum has already appeared
-            map.merge(prefixSum, 1, Integer::sum); //increment the occurrence of presum
+            count += prefixSumToCount.getOrDefault(prefixSum - sum, 0);//add num of times presum-sum has already appeared
+            prefixSumToCount.merge(prefixSum, 1, Integer::sum); //increment the occurrence of presum
         }
         return count;
+    }
+
+    /**
+     * Given an array of distinct integers, find all the pairs having both negative
+     * and positive values of a number in the array.
+     *
+     * Example 1:
+     *      Input:
+     *      n = 8
+     *      arr[] = {1,3,6,-2,-1,-3,2,7}
+     *      Output: -1 1 -3 3 -2 2
+     *      Explanation: 1, 3 and 2 are present
+     *      pairwise positive and negative. 6 and
+     *      7 have no pair.
+     * Example 2:
+     *      Input:
+     *      n = 3
+     *      arr[] = {3,2,1}
+     *      Output: 0
+     *      Explanation: No such pair exists so the
+     *      output is 0.
+     *
+     * The pair that appears first(i.e. second element of the pair appears first) in A[]
+     * should appear first in the returning list and within the pair, the negative integer
+     * should appear before the positive integer. Return an empty integer list if no such
+     * pair exists.
+     */
+    public static ArrayList<Integer>findPairs(int[] arr, int n)
+    {
+        Set<Integer> set = new HashSet<>();
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int reverse = -arr[i];
+            int num = arr[i];
+            if (set.contains(reverse)) {
+                result.add(-Math.abs(num));
+                result.add(Math.abs(num));
+                set.remove(reverse);
+            } else {
+                set.add(num);
+            }
+        }
+        return result;
     }
 }
 
