@@ -662,6 +662,55 @@ public class Solutions {
         }
         return count;
     }
+
+    /**
+     * Given an array containing 0s and 1s. Find the number of subarrays
+     * having equal number of 0s and 1s.
+     *
+     * Example 1:
+     *      Input:
+     *      n = 7
+     *      A[] = {1,0,0,1,0,1,1}
+     *      Output: 8
+     *      Explanation: The index range for the 8
+     *      sub-arrays are: (0, 1), (2, 3), (0, 3), (3, 4),
+     *      (4, 5) ,(2, 5), (0, 5), (1, 6)
+     *
+     * Example 2:
+     *      Input:
+     *      n = 5
+     *      A[] = {1,1,1,1,0}
+     *      Output: 1
+     *      Explanation: The index range for the
+     *      subarray is (3,4).
+     *
+     * Expected Time Complexity: O(n).
+     * Expected Auxiliary Space: O(n).
+     */
+    static int countSubarrWithEqualZeroAndOne(int[] arr, int n)
+    {
+        // add your code here
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) {
+                arr[i] = -1;
+            }
+        }
+        int sum = 0;
+        int prefixSum = 0;
+        int count = 0;
+        Map<Integer, Integer> prefixSumToCount = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            prefixSum += arr[i];
+            if (prefixSum == sum) {
+                prefixSumToCount.merge(sum, 1, Integer::sum);
+                count += prefixSumToCount.getOrDefault(prefixSum, 0);
+            } else {
+                count += prefixSumToCount.getOrDefault(prefixSum, 0);
+                prefixSumToCount.merge(prefixSum, 1, Integer::sum);
+            }
+        }
+        return count;
+    }
 }
 
 
