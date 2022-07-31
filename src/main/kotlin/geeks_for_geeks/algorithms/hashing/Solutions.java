@@ -783,6 +783,72 @@ public class Solutions {
         }
         return result;
     }
+
+    /**
+     * Given an array of integers, sort the array according to frequency of elements.
+     * That is elements that have higher frequency come first. If frequencies of two
+     * elements are same, then smaller number comes first.
+     *
+     * Example 1:
+     *      Input:
+     *      N = 5
+     *      A[] = {5,5,4,6,4}
+     *      Output: 4 4 5 5 6
+     *      Explanation: The highest frequency here is
+     *      2. Both 5 and 4 have that frequency. Now
+     *      since the frequencies are same then
+     *      smallerelement comes first. So 4 4 comes
+     *      firstthen comes 5 5. Finally comes 6.
+     *      The output is 4 4 5 5 6.
+     *
+     * Example 2:
+     *      Input:
+     *      N = 5
+     *      A[] = {9,9,9,2,5}
+     *      Output: 9 9 9 2 5
+     *      Explanation: The highest frequency here is
+     *      3. The element 9 has the highest frequency
+     *      So 9 9 9 comes first. Now both 2 and 5
+     *      have same frequency. So we print smaller
+     *      element first.
+     *      The output is 9 9 9 2 5.
+     *
+     * Expected Time Complexity: O(NLogN).
+     * Expected Auxiliary Space: O(N).
+     */
+    static ArrayList<Integer> sortByFreq(int[] arr, int n)
+    {
+        // compute frequencies of elements in the array
+        Map<Integer, Integer> frequencies = new HashMap<>();
+        for (int elem : arr) {
+            frequencies.merge(elem, 1, Integer::sum);
+        }
+        // holds frequency to sorted set of elements from the array
+        Map<Integer, SortedSet<Integer>> freqToElements = new HashMap<>();
+        for(Map.Entry<Integer, Integer> entry : frequencies.entrySet()) {
+            int elem = entry.getKey();
+            int freq = entry.getValue();
+            if (!freqToElements.containsKey(freq)) {
+                freqToElements.put(freq, new TreeSet<>());
+            }
+            freqToElements.get(freq).add(elem);
+        }
+        // sorted frequencies
+        TreeSet<Integer> sortedFrequences = new TreeSet<>(freqToElements.keySet());
+        ArrayList<Integer> result = new ArrayList<>();
+        // traverse from the end of the set since we need elements with max frequency to appear first
+        Iterator<Integer> sortedDescendingIterator = sortedFrequences.descendingIterator();
+        while (sortedDescendingIterator.hasNext()) {
+            int maxFreq = sortedDescendingIterator.next();
+            SortedSet<Integer> elems = freqToElements.get(maxFreq);
+            for(Integer elem : elems) {
+                for (int i = 0; i < maxFreq; i++) {
+                    result.add(elem);
+                }
+            }
+        }
+        return result;
+    }
 }
 
 
