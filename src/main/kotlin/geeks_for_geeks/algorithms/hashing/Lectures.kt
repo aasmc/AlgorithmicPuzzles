@@ -353,7 +353,7 @@ fun countDistinctElementsInEveryWindow(input: IntArray, k: Int): IntArray {
     ++currentWindow
     for (i in k until input.size) {
         // decrease the frequency of (i - k)th element, if it becomes 0, then remove the
-        // element from the map, here i use the fact that merge deletes mapping if remappingFinction
+        // element from the map, here i use the fact that merge deletes mapping if remappingFunction
         // returns null
         frequencyMap.merge(input[i - k], -1) { prev, cur ->
             return@merge if (prev + cur == 0) null else prev + cur
