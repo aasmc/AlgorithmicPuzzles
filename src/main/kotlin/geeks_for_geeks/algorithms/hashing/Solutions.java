@@ -581,30 +581,29 @@ public class Solutions {
     /**
      * Given an array of distinct integers, find all the pairs having both negative
      * and positive values of a number in the array.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      n = 8
-     *      arr[] = {1,3,6,-2,-1,-3,2,7}
-     *      Output: -1 1 -3 3 -2 2
-     *      Explanation: 1, 3 and 2 are present
-     *      pairwise positive and negative. 6 and
-     *      7 have no pair.
+     * Input:
+     * n = 8
+     * arr[] = {1,3,6,-2,-1,-3,2,7}
+     * Output: -1 1 -3 3 -2 2
+     * Explanation: 1, 3 and 2 are present
+     * pairwise positive and negative. 6 and
+     * 7 have no pair.
      * Example 2:
-     *      Input:
-     *      n = 3
-     *      arr[] = {3,2,1}
-     *      Output: 0
-     *      Explanation: No such pair exists so the
-     *      output is 0.
-     *
+     * Input:
+     * n = 3
+     * arr[] = {3,2,1}
+     * Output: 0
+     * Explanation: No such pair exists so the
+     * output is 0.
+     * <p>
      * The pair that appears first(i.e. second element of the pair appears first) in A[]
      * should appear first in the returning list and within the pair, the negative integer
      * should appear before the positive integer. Return an empty integer list if no such
      * pair exists.
      */
-    public static ArrayList<Integer>findPairs(int[] arr, int n)
-    {
+    public static ArrayList<Integer> findPairs(int[] arr, int n) {
         Set<Integer> set = new HashSet<>();
 
         ArrayList<Integer> result = new ArrayList<>();
@@ -627,26 +626,25 @@ public class Solutions {
      * You are given an array arr[] of size n.
      * Find the total count of sub-arrays having their sum equal to 0.
      * Example 1:
-     *      Input:
-     *      n = 6
-     *      arr[] = {0,0,5,5,0,0}
-     *      Output: 6
-     *      Explanation: The 6 subarrays are
-     *      [0], [0], [0], [0], [0,0], and [0,0].
-     *
+     * Input:
+     * n = 6
+     * arr[] = {0,0,5,5,0,0}
+     * Output: 6
+     * Explanation: The 6 subarrays are
+     * [0], [0], [0], [0], [0,0], and [0,0].
+     * <p>
      * Example 2:
-     *      Input:
-     *      n = 10
-     *      arr[] = {6,-1,-3,4,-2,2,4,6,-12,-7}
-     *      Output: 4
-     *      Explanation: The 4 subarrays are [-1 -3 4]
-     *      [-2 2], [2 4 6 -12], and [-1 -3 4 -2 2]
-     *
+     * Input:
+     * n = 10
+     * arr[] = {6,-1,-3,4,-2,2,4,6,-12,-7}
+     * Output: 4
+     * Explanation: The 4 subarrays are [-1 -3 4]
+     * [-2 2], [2 4 6 -12], and [-1 -3 4 -2 2]
+     * <p>
      * Expected Time Complexity : O(n)
      * Expected Auxiliary Space : O(n)
      */
-    public static long findSubarray(long[] arr ,int n)
-    {
+    public static long findSubarray(long[] arr, int n) {
         long count = 0;
         Map<Integer, Integer> prefixSumToCount = new HashMap<>();
         int prefixSum = 0;
@@ -666,29 +664,28 @@ public class Solutions {
     /**
      * Given an array containing 0s and 1s. Find the number of subarrays
      * having equal number of 0s and 1s.
-     *
+     * <p>
      * Example 1:
-     *      Input:
-     *      n = 7
-     *      A[] = {1,0,0,1,0,1,1}
-     *      Output: 8
-     *      Explanation: The index range for the 8
-     *      sub-arrays are: (0, 1), (2, 3), (0, 3), (3, 4),
-     *      (4, 5) ,(2, 5), (0, 5), (1, 6)
-     *
+     * Input:
+     * n = 7
+     * A[] = {1,0,0,1,0,1,1}
+     * Output: 8
+     * Explanation: The index range for the 8
+     * sub-arrays are: (0, 1), (2, 3), (0, 3), (3, 4),
+     * (4, 5) ,(2, 5), (0, 5), (1, 6)
+     * <p>
      * Example 2:
-     *      Input:
-     *      n = 5
-     *      A[] = {1,1,1,1,0}
-     *      Output: 1
-     *      Explanation: The index range for the
-     *      subarray is (3,4).
-     *
+     * Input:
+     * n = 5
+     * A[] = {1,1,1,1,0}
+     * Output: 1
+     * Explanation: The index range for the
+     * subarray is (3,4).
+     * <p>
      * Expected Time Complexity: O(n).
      * Expected Auxiliary Space: O(n).
      */
-    static int countSubarrWithEqualZeroAndOne(int[] arr, int n)
-    {
+    static int countSubarrWithEqualZeroAndOne(int[] arr, int n) {
         // add your code here
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == 0) {
@@ -710,6 +707,81 @@ public class Solutions {
             }
         }
         return count;
+    }
+
+    /**
+     * Given two integer arrays A1[ ] and A2[ ] of size N and M respectively.
+     * Sort the first array A1[ ] such that all the relative positions of the elements
+     * in the first array are the same as the elements in the second array A2[ ].
+     * See example for better understanding.
+     * Note: If elements are repeated in the second array, consider their first occurrence only.
+     * <p>
+     * Example 1:
+     * Input:
+     * N = 11
+     * M = 4
+     * A1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}
+     * A2[] = {2, 1, 8, 3}
+     * Output:
+     * 2 2 1 1 8 8 3 5 6 7 9
+     * Explanation: Array elements of A1[] are
+     * sorted according to A2[]. So 2 comes first
+     * then 1 comes, then comes 8, then finally 3
+     * comes, now we append remaining elements in
+     * sorted order.
+     * <p>
+     * Example 2:
+     * Input:
+     * N = 11
+     * M = 4
+     * A1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}
+     * A2[] = {99, 22, 444, 56}
+     * Output:
+     * 1 1 2 2 3 5 6 7 8 8 9
+     * Explanation: No A1[] elements are in A2[]
+     * so we cannot sort A1[] according to A2[].
+     * Hence we sort the elements in non-decreasing
+     * order.
+     * <p>
+     * For the elements not present in A2[ ] but in A1[ ], it appends them at the last
+     * in increasing order.
+     * <p>
+     * Expected Time Complexity: O(N * Log(N)).
+     * Expected Auxiliary Space: O(N).
+     */
+    public static int[] sortA1ByA2(int[] A1, int N, int[] A2, int M) {
+        Map<Integer, Integer> occurrences = new HashMap<>();
+        // 1. compute occurrences of elements in A1
+        for (int i = 0; i < N; i++) {
+            occurrences.merge(A1[i], 1, Integer::sum);
+        }
+        int[] result = new int[N];
+        int index = 0;
+        // for all elements in A2
+        for (int candidate : A2) {
+            // if present in A1
+            if (occurrences.containsKey(candidate)) {
+                // get the number of times it occurrs in A1
+                int occurrence = occurrences.get(candidate);
+                // add to the result array
+                for (int i = 0; i < occurrence; i++) {
+                    result[index++] = candidate;
+                }
+                // must remove from map to reuse the map for checks for remaining elements
+                occurrences.remove(candidate);
+            }
+        }
+        int startOfUnsorted = index;
+        // add all remaining elements to the result array
+        for (int elem : A1) {
+            if (occurrences.containsKey(elem)) {
+                result[index++] = elem;
+            }
+        }
+        if (startOfUnsorted != N) {
+            Arrays.sort(result, startOfUnsorted, N);
+        }
+        return result;
     }
 }
 
