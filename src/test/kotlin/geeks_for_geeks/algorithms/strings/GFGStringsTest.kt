@@ -11,4 +11,22 @@ internal class GFGStringsTest {
         assertTrue("00  00  00  aba  00  00  00".isPalindrome())
         assertFalse("GEEKS".isPalindrome())
     }
+
+    @Test
+    fun stringIsSubsequenceOfOther_Correct() {
+        assertTrue("GRGES" isSubsequenceOf  "GEEKSFORGEEKS")
+        assertTrue("AD" isSubsequenceOf  "ABCD")
+        assertTrue("" isSubsequenceOf  "ABCD")
+        assertFalse("AED" isSubsequenceOf  "ABCDEF")
+        assertFalse(" " isSubsequenceOf  "ABCDEF")
+    }
+
+    @Test
+    fun stringIsSubsequenceOfOtherRecursive_Correct() {
+        assertTrue(isSubsequenceRecursive("GRGES", "GEEKSFORGEEKS" ) )
+        assertTrue(isSubsequenceRecursive("AD",  "ABCD"))
+        assertTrue(isSubsequenceRecursive("",  "ABCD"))
+        assertFalse(isSubsequenceRecursive("AED",  "ABCDEF"))
+        assertFalse(isSubsequenceRecursive(" ",  "ABCDEF"))
+    }
 }

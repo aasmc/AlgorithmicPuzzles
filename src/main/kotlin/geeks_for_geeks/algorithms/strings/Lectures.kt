@@ -34,3 +34,47 @@ fun String.isPalindrome(): Boolean {
     }
     return true
 }
+
+/**
+ * Checks if a given [String] is a subsequence of [other] [String].
+ * A subsequence means that all chars in this [String] are present in [other]
+ * [String] and are in the same order.
+ */
+infix fun String.isSubsequenceOf(other: String): Boolean {
+    if (this.length > other.length) return false
+    var i = 0
+    var j = 0
+    while (i < this.length && j < other.length) {
+        if (this[i] == other[j]) {
+            ++i
+            ++j
+        } else {
+            ++j
+        }
+    }
+    return i == this.length
+}
+
+fun isSubsequenceRecursive(current: String, other: String) : Boolean {
+    if (current.length > other.length) return false
+    return isSubsequenceRecursiveHelper(current, other, current.length, other.length)
+}
+
+/**
+ * It is common practise to use length of a [String] as an index parameter
+ * in recursive algorithms.
+ */
+private fun isSubsequenceRecursiveHelper(
+    current: String,
+    other: String,
+    currentLength: Int,
+    otherLength: Int
+) : Boolean {
+    if (currentLength == 0) return true
+    if (otherLength == 0) return false
+    return if (current[currentLength - 1] == other[otherLength - 1]) {
+        isSubsequenceRecursiveHelper(current, other, currentLength - 1, otherLength - 1)
+    } else {
+        isSubsequenceRecursiveHelper(current, other, currentLength, otherLength - 1)
+    }
+}
