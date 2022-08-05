@@ -29,4 +29,37 @@ internal class GFGStringsTest {
         assertFalse(isSubsequenceRecursive("AED",  "ABCDEF"))
         assertFalse(isSubsequenceRecursive(" ",  "ABCDEF"))
     }
+
+    @Test
+    fun stringIsAnagramWithOtherString_correct() {
+        assertTrue("listen".isAnagramWith("silent"))
+        assertTrue("aaacb".isAnagramWith("acbaa"))
+        assertTrue("they see".isAnagramWith("the eyes"))
+        assertTrue("i learned words".isAnagramWith("older and wiser"))
+        assertFalse("aab".isAnagramWith("bab"))
+    }
+
+    @Test
+    fun leftMostRepeatingCharacter_correct() {
+        assertEquals(0, "geeksforgeeks".leftMostRepeatingCharacterIndex())
+        assertEquals(1, "abbcc".leftMostRepeatingCharacterIndex())
+        assertEquals(1, "abccb".leftMostRepeatingCharacterIndex())
+        assertEquals(-1, "abcd".leftMostRepeatingCharacterIndex())
+    }
+
+    @Test
+    fun leftMostRepeatingCharacterIndexImproved_correct() {
+        assertEquals(0, "geeksforgeeks".leftMostRepeatingCharacterIndexImproved())
+        assertEquals(1, "abbcc".leftMostRepeatingCharacterIndexImproved())
+        assertEquals(1, "abccb".leftMostRepeatingCharacterIndexImproved())
+        assertEquals(-1, "abcd".leftMostRepeatingCharacterIndexImproved())
+    }
+
+    @Test
+    fun leftMostRepeatingCharacterIndexImprovedVrsionTwo_correct() {
+        assertEquals(0, "geeksforgeeks".leftMostCharacterRepeatingImprovedVersionTwo())
+        assertEquals(1, "abbcc".leftMostCharacterRepeatingImprovedVersionTwo())
+        assertEquals(1, "abccb".leftMostCharacterRepeatingImprovedVersionTwo())
+        assertEquals(-1, "abcd".leftMostCharacterRepeatingImprovedVersionTwo())
+    }
 }
