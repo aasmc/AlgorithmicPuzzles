@@ -56,10 +56,26 @@ internal class GFGStringsTest {
     }
 
     @Test
-    fun leftMostRepeatingCharacterIndexImprovedVrsionTwo_correct() {
+    fun leftMostRepeatingCharacterIndexImprovedVersionTwo_correct() {
         assertEquals(0, "geeksforgeeks".leftMostCharacterRepeatingImprovedVersionTwo())
         assertEquals(1, "abbcc".leftMostCharacterRepeatingImprovedVersionTwo())
         assertEquals(1, "abccb".leftMostCharacterRepeatingImprovedVersionTwo())
         assertEquals(-1, "abcd".leftMostCharacterRepeatingImprovedVersionTwo())
+    }
+
+    @Test
+    fun leftMostNonRepeatingCharacterIndex_correct() {
+        assertEquals(5, "geeksforgeeks".indexOfLeftmostNonRepeatingChar())
+        assertEquals(0, "abbcc".indexOfLeftmostNonRepeatingChar())
+        assertEquals(-1, "abcabc".indexOfLeftmostNonRepeatingChar())
+        assertEquals(0, "apple".indexOfLeftmostNonRepeatingChar())
+    }
+
+    @Test
+    fun leftMostNonRepeatingCharacterIndexImproved_correct() {
+        assertEquals(5, "geeksforgeeks".indexOfLeftmostNonRepeatingCharImproved())
+        assertEquals(0, "abbcc".indexOfLeftmostNonRepeatingCharImproved())
+        assertEquals(-1, "abcabc".indexOfLeftmostNonRepeatingCharImproved())
+        assertEquals(0, "apple".indexOfLeftmostNonRepeatingCharImproved())
     }
 }

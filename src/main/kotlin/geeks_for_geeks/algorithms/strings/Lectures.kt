@@ -180,7 +180,7 @@ fun String.leftMostRepeatingCharacterIndexImproved(): Int {
  * keep track if we previously visited the char from the string. if yes, then we update
  * the result to the current index, otherwise we mark the char as visited.
  */
-fun String.leftMostCharacterRepeatingImprovedVersionTwo() : Int {
+fun String.leftMostCharacterRepeatingImprovedVersionTwo(): Int {
     val (minCode, maxCode) = minMaxCharValue()
     val visited = BooleanArray(maxCode - minCode + 1) { false }
     var res = -1
@@ -195,8 +195,42 @@ fun String.leftMostCharacterRepeatingImprovedVersionTwo() : Int {
     return res
 }
 
+fun String.indexOfLeftmostNonRepeatingChar(): Int {
+    val (minCode, maxCode) = minMaxCharValue()
+    val count = IntArray(maxCode - minCode + 1)
+    for (char in this) {
+        count[char.code - minCode]++
+    }
+    for ((index, char) in this.withIndex()) {
+        if (count[char.code - minCode] == 1) {
+            return index
+        }
+    }
+    return -1
+}
 
-
+fun String.indexOfLeftmostNonRepeatingCharImproved(): Int {
+    val (minCode, maxCode) = minMaxCharValue()
+    val indexStore = IntArray(maxCode - minCode + 1) { -1 }
+    for ((index, char) in this.withIndex()) {
+        if (indexStore[char.code - minCode] == -1) { // first occurrence
+            indexStore[char.code - minCode] = index
+        } else {
+            indexStore[char.code - minCode] = -2
+        }
+    }
+    var result = Int.MAX_VALUE
+    for (i in 0..maxCode - minCode) {
+        if (indexStore[i] >= 0) {
+            result = kotlin.math.min(result, indexStore[i])
+        }
+    }
+    return if (result == Int.MAX_VALUE) {
+        -1
+    } else {
+        result
+    }
+}
 
 
 
