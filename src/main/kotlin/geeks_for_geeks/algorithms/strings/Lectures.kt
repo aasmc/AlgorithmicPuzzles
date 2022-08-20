@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.strings
 
+import java.lang.StringBuilder
+
 fun main() {
     stringToFrequencySorted("geeksforgeeks")
 }
@@ -214,14 +216,14 @@ fun String.indexOfLeftmostNonRepeatingCharImproved(): Int {
     val indexStore = IntArray(maxCode - minCode + 1) { -1 }
     for ((index, char) in this.withIndex()) {
         if (indexStore[char.code - minCode] == -1) { // first occurrence
-            indexStore[char.code - minCode] = index
+            indexStore[char.code - minCode] = index // save index to store
         } else {
-            indexStore[char.code - minCode] = -2
+            indexStore[char.code - minCode] = -2 // non-first occurrence -> update to -2
         }
     }
     var result = Int.MAX_VALUE
     for (i in 0..maxCode - minCode) {
-        if (indexStore[i] >= 0) {
+        if (indexStore[i] >= 0) { // we have a non-repeating char
             result = kotlin.math.min(result, indexStore[i])
         }
     }
@@ -232,7 +234,42 @@ fun String.indexOfLeftmostNonRepeatingCharImproved(): Int {
     }
 }
 
+fun String.reverseWords(): String {
+    return this.split(" ").reversed().joinToString(separator = " ")
+}
 
+/**
+ * Reverses words in a given string represented as CharArray.
+ * Precondition is that all the words are separated by a single space.
+ *
+ * First we reverse chars in all words.
+ * Then we reverse the entire CharArray.
+ */
+fun reverseWords(str: CharArray): String {
+    var start = 0
+    for (end in str.indices) {
+        if (str[end] == ' ') {
+            reverseSingleWord(str, start, end - 1)
+            start = end + 1
+        }
+    }
+    // Don't forget to reverse the last word
+    reverseSingleWord(str, start, str.size - 1)
+    reverseSingleWord(str, 0, str.size - 1)
+    return str.joinToString(separator = "")
+}
+
+private fun reverseSingleWord(word: CharArray, from: Int, to: Int) {
+    var low = from
+    var high = to
+    while (low <= high) {
+        val tmp = word[low]
+        word[low] = word[high]
+        word[high] = tmp
+        ++low
+        --high
+    }
+}
 
 
 

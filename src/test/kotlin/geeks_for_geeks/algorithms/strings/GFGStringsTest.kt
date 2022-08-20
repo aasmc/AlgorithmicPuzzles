@@ -78,4 +78,33 @@ internal class GFGStringsTest {
         assertEquals(-1, "abcabc".indexOfLeftmostNonRepeatingCharImproved())
         assertEquals(0, "apple".indexOfLeftmostNonRepeatingCharImproved())
     }
+
+    @Test
+    fun reverseWordsString_correct() {
+        assertEquals("gfg to welcome", "welcome to gfg".reverseWords())
+        assertEquals("coding love i", "i love coding".reverseWords())
+        assertEquals("abc", "abc".reverseWords())
+    }
+
+
+
+    @Test
+    fun reverseWordsCharArray_correct() {
+        assertEquals("gfg to welcome", reverseWords("welcome to gfg".toCharArray()))
+        assertEquals("coding love i", reverseWords("i love coding".toCharArray()))
+        assertEquals("abc", reverseWords("abc".toCharArray()))
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
