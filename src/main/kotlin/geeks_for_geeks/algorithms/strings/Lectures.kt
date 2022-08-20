@@ -271,6 +271,21 @@ private fun reverseSingleWord(word: CharArray, from: Int, to: Int) {
     }
 }
 
+/**
+ * Searchers for occurrences of [pattern] in a given [String].
+ * Returns indices of all starting positions of the [pattern] in the [str].
+ * If the [str] doesn't contain the [pattern] then return an empty list.
+ */
+fun findPatternNaive(str: String, pattern: String): List<Int> {
+    val windowed = str.windowed(size = pattern.length, step = 1, partialWindows = false)
+    val result = mutableListOf<Int>()
+    for ((index, window) in windowed.withIndex()) {
+        if (window == pattern) {
+            result.add(index)
+        }
+    }
+    return result.toList()
+}
 
 
 

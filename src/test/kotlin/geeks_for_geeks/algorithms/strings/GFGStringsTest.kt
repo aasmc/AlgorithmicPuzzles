@@ -14,20 +14,20 @@ internal class GFGStringsTest {
 
     @Test
     fun stringIsSubsequenceOfOther_Correct() {
-        assertTrue("GRGES" isSubsequenceOf  "GEEKSFORGEEKS")
-        assertTrue("AD" isSubsequenceOf  "ABCD")
-        assertTrue("" isSubsequenceOf  "ABCD")
-        assertFalse("AED" isSubsequenceOf  "ABCDEF")
-        assertFalse(" " isSubsequenceOf  "ABCDEF")
+        assertTrue("GRGES" isSubsequenceOf "GEEKSFORGEEKS")
+        assertTrue("AD" isSubsequenceOf "ABCD")
+        assertTrue("" isSubsequenceOf "ABCD")
+        assertFalse("AED" isSubsequenceOf "ABCDEF")
+        assertFalse(" " isSubsequenceOf "ABCDEF")
     }
 
     @Test
     fun stringIsSubsequenceOfOtherRecursive_Correct() {
-        assertTrue(isSubsequenceRecursive("GRGES", "GEEKSFORGEEKS" ) )
-        assertTrue(isSubsequenceRecursive("AD",  "ABCD"))
-        assertTrue(isSubsequenceRecursive("",  "ABCD"))
-        assertFalse(isSubsequenceRecursive("AED",  "ABCDEF"))
-        assertFalse(isSubsequenceRecursive(" ",  "ABCDEF"))
+        assertTrue(isSubsequenceRecursive("GRGES", "GEEKSFORGEEKS"))
+        assertTrue(isSubsequenceRecursive("AD", "ABCD"))
+        assertTrue(isSubsequenceRecursive("", "ABCD"))
+        assertFalse(isSubsequenceRecursive("AED", "ABCDEF"))
+        assertFalse(isSubsequenceRecursive(" ", "ABCDEF"))
     }
 
     @Test
@@ -87,7 +87,6 @@ internal class GFGStringsTest {
     }
 
 
-
     @Test
     fun reverseWordsCharArray_correct() {
         assertEquals("gfg to welcome", reverseWords("welcome to gfg".toCharArray()))
@@ -96,15 +95,13 @@ internal class GFGStringsTest {
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    @Test
+    fun findPatternNaive_correct() {
+        val expectedOne = listOf(2, 10)
+        assertEquals(expectedOne, findPatternNaive("geeksforgeeks", "eks"))
+        val expectedTwo = listOf(0, 1, 2)
+        assertEquals(expectedTwo, findPatternNaive("aaaaa", "aaa"))
+        assertTrue(findPatternNaive("abcabcd", "abd").isEmpty())
+    }
 
 }
