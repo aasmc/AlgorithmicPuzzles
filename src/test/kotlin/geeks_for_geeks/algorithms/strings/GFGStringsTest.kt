@@ -104,4 +104,22 @@ internal class GFGStringsTest {
         assertTrue(findPatternNaive("abcabcd", "abd").isEmpty())
     }
 
+    @Test
+    fun findPatternNaive_version2_correct() {
+        val expectedOne = listOf(2, 10)
+        assertEquals(expectedOne, findPatternNaiveVersion2("geeksforgeeks", "eks"))
+        val expectedTwo = listOf(0, 1, 2)
+        assertEquals(expectedTwo, findPatternNaiveVersion2("aaaaa", "aaa"))
+        assertTrue(findPatternNaiveVersion2("abcabcd", "abd").isEmpty())
+    }
+
+    @Test
+    fun findPatternNaivePatternDistinct_correct() {
+        val expectedOne = listOf(2, 10)
+        assertEquals(expectedOne, findPatternNaivePatternDistinct("geeksforgeeks", "eks"))
+        val expectedTwo = listOf(3,7)
+        assertEquals(expectedTwo, findPatternNaivePatternDistinct("abcabcdabcd", "abcd"))
+        assertTrue(findPatternNaivePatternDistinct("abcabcd", "abd").isEmpty())
+    }
+
 }

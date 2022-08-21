@@ -287,6 +287,73 @@ fun findPatternNaive(str: String, pattern: String): List<Int> {
     return result.toList()
 }
 
+/**
+ * Time complexity: O((n - m + 1) * m)
+ * Auxiliary space: O(1)
+ */
+fun findPatternNaiveVersion2(str: String, pattern: String): List<Int> {
+    val m = pattern.length
+    val n = str.length
+    val result = mutableListOf<Int>()
+    for (i in 0..n - m) { // time complexity of the outer loop: n - m + 1
+        var j = 0
+        while (j < m) { // time complexity of the inner loop: m
+            if (pattern[j] != str[i + j]) {
+                break
+            }
+            ++j
+        }
+        if (j == m) {
+            result.add(i)
+        }
+    }
+    return result
+}
+
+/**
+ * This algorithm takes advantage of the fact that pattern has all
+ * distinct characters. This means, that if we find a mismatch at index j (of the pattern)
+ * during comparing the pattern with the string, we can be sure
+ * that all chars before index j will never match the string if shifted by one position,
+ * therefore we can slide the window by j indices.
+ *
+ * E.G. string    ABCABCD
+ *      pattern   ABCD
+ *      i = 0 (index of the string)
+ *      j = 0 (index of the pattern)
+ *      comparison stops at index j = 3 - there's a mismatch: A != D and i = 0
+ *      all chars of the pattern before j: ABC will never match
+ *      chars in the string if their comparison will start at index i = 1,
+ *      so we skip the comparison by 3 indices and begin the next iteration
+ *      of the inner loop from i = 3 instead of i = 1.
+ *
+ * Overall time complexity: O(N)
+ */
+fun findPatternNaivePatternDistinct(str: String, pattern: String): List<Int> {
+    val m = pattern.length
+    val n = str.length
+    val result = mutableListOf<Int>()
+    var i = 0
+    while (i <= n - m) {
+        var j = 0
+        while (j < m) {
+            if (pattern[j] != str[i + j]) {
+                break
+            }
+            ++j
+        }
+        if (j == m) {
+            result.add(i)
+        }
+        if (j == 0) { // fail on first iteration, i.e. the first char in the
+            // pattern doesn't match the char in the string
+            ++i
+        } else { // some chars in the pattern matched, so we skip by j chars.
+            i += j
+        }
+    }
+    return result
+}
 
 
 
