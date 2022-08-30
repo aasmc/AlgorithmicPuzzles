@@ -122,4 +122,13 @@ internal class GFGStringsTest {
         assertTrue(findPatternNaivePatternDistinct("abcabcd", "abd").isEmpty())
     }
 
+    @Test
+    fun findPatternRabinKarp_correct() {
+        val expectedOne = listOf(2, 10)
+        assertEquals(expectedOne, findPatternRabinKarp("geeksforgeeks", "eks"))
+        val expectedTwo = listOf(3,7)
+        assertEquals(expectedTwo, findPatternRabinKarp("abcabcdabcd", "abcd"))
+        assertTrue(findPatternRabinKarp("abcabcd", "abd").isEmpty())
+    }
+
 }

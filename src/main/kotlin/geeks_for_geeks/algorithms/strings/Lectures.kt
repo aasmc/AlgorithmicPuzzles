@@ -356,6 +356,66 @@ fun findPatternNaivePatternDistinct(str: String, pattern: String): List<Int> {
 }
 
 
+fun findPatternRabinKarp(str: String, pattern: String): List<Int> {
+    val prime = 98689
+    val d = 31
+    // precompute d ^ (pattern.length - 1) % prime
+    var highPower = 1
+    repeat((1 until pattern.length).count()) {
+        highPower = (highPower * d) % prime
+    }
+    var patternHash = 0
+    var textHash = 0
+    // compute hash for pattern and substring of text of the same length
+    // the resulting hash is computed by the following formula:
+    // hash = text[0] * d ^ (pattern.length - 1) + text[1] * d ^ (pattern.length - 2) .. text[pattern.length - 1]
+    // this is necessary to reduce the amount of spurious hits during comparison of the hashes.
+    // looking at the code it is unclear that we indeed are following the specified formula,
+    // so here is an example (omit modulo division for simplicity):
+    // hash = 0,
+    // iteration 1: hash = (0 * d + pattern[0]) = pattern[0]
+    // iteration 2: hash = pattern[0] * d + pattern[1]
+    // iteration 3: hash = (pattern[0] * d + pattern[1]) * d + pattern[2] =
+    // = pattern[0] * d^2 + pattern[1] * d + pattern[2]
+    // As you can see we are completely following the formula
+    for (i in pattern.indices) {
+        patternHash = (patternHash * d + pattern[i].code) % prime
+        textHash = (textHash * d + str[i].code) % prime
+    }
+
+    val n = str.length
+    val m = pattern.length
+
+    val result = mutableListOf<Int>()
+    for (i in 0..(n - m)) {
+        // we compare for equality only if hashes of pattern and text match
+        if (patternHash == textHash) {
+            var equal = true
+            for (j in 0 until m) {
+                if (str[i + j] != pattern[j]) {
+                    equal = false
+                    break
+                }
+            }
+            if (equal) {
+                result.add(i)
+            }
+        }
+        // we don't rehash for the last window of the text
+        if (i < (n - m)) {
+            // we use the following formula (omit modulo division for simplicity):
+            // textHash[i + 1] = d * (textHash[i] - text[i] * d ^ (pattern.length - 1)) + text[i + pattern.length]
+            // basically it is a rolling hash function, we subtract the hashed value of the i-th char and
+            // add the hashed value of the (i + pattern.length)-th char
+            textHash = (d * (textHash - str[i].code * highPower) + str[i + m].code) % prime
+            if (textHash < 0) {
+                textHash += prime
+            }
+        }
+    }
+    return result
+}
+
 
 
 
