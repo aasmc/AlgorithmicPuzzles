@@ -67,7 +67,7 @@ class MyTree<T : Comparable<T>> private constructor() {
         if (root == null) {
             return 0
         }
-        return max(heightRecHelper(root.left), heightRecHelper(root.right) + 1)
+        return max(heightRecHelper(root.left), heightRecHelper(root.right)) + 1
     }
 
     /**
@@ -141,6 +141,17 @@ class MyTree<T : Comparable<T>> private constructor() {
             result.add(list)
         }
         return result.toList()
+    }
+
+    fun size(): Int {
+        return sizeHelper(root)
+    }
+
+    private fun sizeHelper(root: Node<T>?): Int {
+        if (root == null) {
+            return 0
+        }
+        return 1 + sizeHelper(root.left) + sizeHelper(root.right)
     }
 
     fun clear() {

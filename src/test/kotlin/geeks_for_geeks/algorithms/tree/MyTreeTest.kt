@@ -89,4 +89,9 @@ internal class MyTreeTest {
         val result = tree.levelOrderLineByLine()
         assertEquals(expected, result.toList())
     }
+
+    @Test
+    fun size_correct() {
+        assertEquals(5, tree.size())
+    }
 }
