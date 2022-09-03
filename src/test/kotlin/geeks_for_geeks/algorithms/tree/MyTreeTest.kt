@@ -82,4 +82,11 @@ internal class MyTreeTest {
         assertEquals(expected, result.toList())
     }
 
+
+    @Test
+    fun levelOrderTraversalLineByLine_correct() {
+        val expected = listOf(listOf(10), listOf(20, 30), listOf(40, 50))
+        val result = tree.levelOrderLineByLine()
+        assertEquals(expected, result.toList())
+    }
 }

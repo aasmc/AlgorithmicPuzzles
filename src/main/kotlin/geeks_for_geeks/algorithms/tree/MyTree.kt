@@ -109,7 +109,39 @@ class MyTree<T : Comparable<T>> private constructor() {
         }
     }
 
+    fun levelOrderLineByLine(): List<List<T>> {
+        return levelOrderLineByLineHelper(root)
+    }
 
+    private fun levelOrderLineByLineHelper(root: Node<T>?): List<List<T>> {
+        if (root == null) return emptyList()
+        val q = LinkedList<Node<T>?>()
+        q.add(root)
+        // add null marker that signifies the end of current level
+        q.add(null)
+        val result = MutableList(0) {
+            listOf<T>()
+        }
+        var list: MutableList<T> = mutableListOf<T>()
+        while (q.size > 1) {
+            val current = q.poll()
+            // this means we reached the end of level and
+            // all elements from the next level have been added to the queue
+            if (current == null) {
+                result.add(list)
+                list = mutableListOf()
+                q.add(null)
+                continue
+            }
+            list.add(current.data)
+            current.left?.let { q.add(it) }
+            current.right?.let { q.add(it) }
+        }
+        if (list.isNotEmpty()) {
+            result.add(list)
+        }
+        return result.toList()
+    }
 
     fun clear() {
         root = null
