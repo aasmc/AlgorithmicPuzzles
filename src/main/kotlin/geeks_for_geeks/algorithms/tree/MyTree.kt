@@ -1,7 +1,8 @@
 package geeks_for_geeks.algorithms.tree
 
+import java.lang.Integer.max
 import java.util.*
-import kotlin.math.max
+import kotlin.math.abs
 
 /**
  * A simple binary tree.
@@ -153,6 +154,191 @@ class MyTree<T : Comparable<T>> private constructor() {
         }
         return 1 + sizeHelper(root.left) + sizeHelper(root.right)
     }
+
+    fun maxValue(): T? {
+        return maxValueRecHelper(root)
+    }
+
+    private fun maxValueRecHelper(root: Node<T>?): T? {
+        if (root == null) {
+            return null
+        }
+        return nodeMax(root.data, nodeMax(maxValueRecHelper(root.left), maxValueRecHelper(root.right)))
+    }
+
+    private fun <T : Comparable<T>> nodeMax(lhs: T?, rhs: T?): T? {
+        return when {
+            lhs == null && rhs == null -> null
+            lhs == null -> rhs
+            rhs == null -> lhs
+            else -> {
+                if (lhs >= rhs) {
+                    lhs
+                } else {
+                    rhs
+                }
+            }
+        }
+    }
+
+    /**
+     * The function creates a list of leftmost nodes from all levels of a tree.
+     * Basically, it is a pre-order traversal of a tree.
+     * First we initialize variable maxLevel = 0, it will be used to find out
+     * if we are traversing the right node of the same level.
+     *
+     * Second we check if current root is null, then we stop processing.
+     * If not and current level is greater than maxLevel, means we are processing
+     * the leftmost mode, so add it to the result list and change maxLevel to current level.
+     *
+     * Third. Make two recursive calls to root.left and root.right, also incrementing the level variable.
+     *
+     * By incrementing level, we make sure that when we go to the right child at the same level,
+     * we will not process it.
+     */
+    fun leftViewOfTreeRecursive(): List<T> {
+        var maxLevel = 0
+
+        fun leftViewOfTreeRecHelper(
+            root: Node<T>?,
+            level: Int,
+            visit: (T) -> Unit
+        ) {
+            if (root == null) return
+            if (maxLevel < level) {
+                visit(root.data)
+                maxLevel = level
+            }
+            leftViewOfTreeRecHelper(root.left, level + 1, visit)
+            leftViewOfTreeRecHelper(root.right, level + 1, visit)
+        }
+
+        val result = mutableListOf<T>()
+        leftViewOfTreeRecHelper(root, 1) {
+            result.add(it)
+        }
+        return result.toList()
+    }
+
+    fun leftViewOfTreeIterative(): List<T> {
+        if (root == null) return emptyList()
+        val queue = LinkedList<Node<T>>()
+        val result = mutableListOf<T>()
+        queue.add(root!!)
+        while (queue.isNotEmpty()) {
+            val size = queue.size
+            for (i in 0 until size) { // traverse current level
+                val current = queue.poll() // remove first element from the queue
+                if (i == 0) { // we are processing leftmost child
+                    result.add(current.data)
+                }
+                // enqueue next level elements
+                current.left?.let { queue.add(it) }
+                current.right?.let { queue.add(it) }
+            }
+        }
+        return result.toList()
+    }
+
+    /**
+     * Checks if sum of children of any node in the tree is equal to their parent.
+     * If there's only a root node, then it returns true.
+     * If a node has only one child, then it checks if the child's value is equal to
+     * this node's value.
+     */
+    fun isChildrenSumCompliant(): Boolean {
+        return isChildrenSumCompliantRecHelper(root)
+    }
+
+    /**
+     * Checks if this tree is height balanced, i.e. the difference
+     * between the height of the any node's left subtree and right subtree is not more than one.
+     */
+    fun isHeightBalanced(): Boolean {
+        return isHeightBalancedHelper(root) >= 0
+    }
+
+    private fun isHeightBalancedHelper(root: Node<T>?): Int {
+        if (root == null) return 0
+        // check if left subtree is balanced
+        val leftHeight = isHeightBalancedHelper(root.left)
+        if (leftHeight == -1) return -1
+        // check if the right subtree is balanced
+        val rightHeight = isHeightBalancedHelper(root.right)
+        if (rightHeight == -1) return -1
+        // if imbalanced, return -1
+        if (abs(rightHeight - leftHeight) > 1) return -1
+        // return the height of the tree
+        return max(rightHeight, leftHeight) + 1
+    }
+
+    private fun isChildrenSumCompliantRecHelper(root: Node<T>?): Boolean {
+        if (root == null) return true
+        if (root.data !is Int) throw UnsupportedOperationException("Cannot perform this operation not on Int")
+        if (root.left == null && root.right == null) {
+            return true
+        }
+        var sum = 0
+        root.left?.let {
+            sum += (it.data as Int)
+        }
+        root.right?.let {
+            sum += (it.data as Int)
+        }
+        return (root.data as Int) == sum
+                && isChildrenSumCompliantRecHelper(root.left)
+                && isChildrenSumCompliantRecHelper(root.right)
+    }
+
+    fun maxWidth(): Int {
+        if (root == null) return 0
+        val queue = LinkedList<Node<T>>()
+        queue.add(root!!)
+        var max = 0
+        while (queue.isNotEmpty()) {
+            val size = queue.size
+            max = max(size, max)
+            for (i in 0 until size) {
+                val current = queue.poll()
+                current.left?.let { queue.add(it) }
+                current.right?.let { queue.add(it) }
+            }
+        }
+        return max
+    }
+
+    /**
+     * Converts this binary tree to a doubly linked list and returns
+     * the head of the list. Conversion happens in place, i.e. no new
+     * memory is allocated for the Nodes.
+     *
+     * Order of the nodes is determined by in-order traversal of the tree,
+     * i.e Left - Root - Right.
+     */
+    fun toDoublyLinkedList(): Node<T>? {
+        var previous: Node<T>? = null
+        fun recursiveHelper(root: Node<T>?): Node<T>? {
+            if (root == null) return root
+            // process left subtree
+            var head = recursiveHelper(root.left)
+            // This means we have reached the leftmost leaf node, so make it the head of our list
+            if (previous == null) {
+                head = root
+            } else {
+                // connect root's left pointer to previous
+                root.left = previous
+                // connect previous' right pointer to root
+                previous!!.right = root
+            }
+            // move previous pointer to current node
+            previous = root
+            // traverse the right subtree
+            recursiveHelper(root.right)
+            return head
+        }
+        return recursiveHelper(root)
+    }
+
 
     fun clear() {
         root = null

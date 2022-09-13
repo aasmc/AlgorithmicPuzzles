@@ -357,7 +357,9 @@ fun findPatternNaivePatternDistinct(str: String, pattern: String): List<Int> {
 
 
 fun findPatternRabinKarp(str: String, pattern: String): List<Int> {
+    // large enough prime number to be used for modulo division
     val prime = 98689
+    // prime number to be used for calculating hash
     val d = 31
     // precompute d ^ (pattern.length - 1) % prime
     var highPower = 1

@@ -94,4 +94,86 @@ internal class MyTreeTest {
     fun size_correct() {
         assertEquals(5, tree.size())
     }
+
+    @Test
+    fun maxValue_correct() {
+        val expected = 50
+        assertEquals(expected, tree.maxValue())
+    }
+
+    @Test
+    fun leftViewOfTreeRecursive_correct() {
+        val expected = listOf<Int>(10, 20, 40)
+        assertEquals(expected, tree.leftViewOfTreeRecursive())
+    }
+
+    @Test
+    fun leftViewOfTreeIterative_correct() {
+        val expected = listOf<Int>(10, 20, 40)
+        assertEquals(expected, tree.leftViewOfTreeIterative())
+    }
+
+    @Test
+    fun isChildrenSumCompliant_correct() {
+        assertFalse(tree.isChildrenSumCompliant())
+
+        val r = MyTree.Node<Int>(20)
+        val rl = MyTree.Node(8)
+        val rr = MyTree.Node(12)
+        val rll = MyTree.Node(3)
+        val rlr = MyTree.Node(5)
+        r.left = rl
+        r.right = rr
+        rl.left = rll
+        rl.right = rlr
+        val t = MyTree(r)
+        assertTrue(t.isChildrenSumCompliant())
+    }
+
+    @Test
+    fun isHeightBalanced_correct() {
+        assertTrue(tree.isHeightBalanced())
+        val r = MyTree.Node<Int>(20)
+        val rl = MyTree.Node(8)
+        val rr = MyTree.Node(12)
+        val rll = MyTree.Node(3)
+        val rlr = MyTree.Node(5)
+        r.left = rl
+        r.left?.left = rr
+        rl.left?.left?.left = rll
+        rl.left?.left?.left?.left = rlr
+        val t = MyTree(r)
+        assertFalse(t.isHeightBalanced())
+    }
+
+    @Test
+    fun maxWidth_correct() {
+        assertEquals(2, tree.maxWidth())
+        val r = MyTree.Node(1)
+        val rl = MyTree.Node(2)
+        val rr = MyTree.Node(3)
+        r.left = rl
+        r.right = rr
+        val rll = MyTree.Node(4)
+        val rlr = MyTree.Node(5)
+        rl.left = rll
+        rl.right = rlr
+        val rrl = MyTree.Node(6)
+        val rrr = MyTree.Node(7)
+        rr.left = rrl
+        rr.right = rrr
+        val t = MyTree(r)
+        assertEquals(4, t.maxWidth())
+    }
+
+    @Test
+    fun toDoublyLinkedList_correct() {
+        val head = tree.toDoublyLinkedList()
+        assertEquals(20, head!!.data)
+        assertEquals(10, head.right!!.data)
+        assertEquals(40, head.right!!.right!!.data)
+        assertEquals(30, head.right!!.right!!.right!!.data)
+        assertEquals(50, head.right!!.right!!.right!!.right!!.data)
+        assertNull(head.right!!.right!!.right!!.right!!.right)
+    }
 }
