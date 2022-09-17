@@ -274,7 +274,7 @@ class MyTree<T : Comparable<T>> private constructor() {
 
     private fun isChildrenSumCompliantRecHelper(root: Node<T>?): Boolean {
         if (root == null) return true
-        if (root.data !is Int) throw UnsupportedOperationException("Cannot perform this operation not on Int")
+        if (root.data !is Int) throw UnsupportedOperationException("Cannot perform isChildrenSumCompliant not on Int")
         if (root.left == null && root.right == null) {
             return true
         }
@@ -349,4 +349,50 @@ class MyTree<T : Comparable<T>> private constructor() {
         var left: Node<T>? = null,
         var right: Node<T>? = null
     )
+
+    companion object {
+        /**
+         * Given an in-order and pre-order traversals of the tree in the form of
+         * arrays of [T] constructs a binary tree, and returns the root of
+         * the tree.
+         */
+        fun<T> constructFromInorderAndPreOrder(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
+            var preOrderIdx = 0
+            fun helper(inOrder: Array<T>, preOrder: Array<T>, inStart: Int, inEnd: Int): Node<T>? {
+                if (inStart > inEnd) return null
+                val root = Node(preOrder[preOrderIdx++])
+                var inIdx = 0
+                for (i in inStart..inEnd) {
+                    if (inOrder[i] == root.data) {
+                        inIdx = i
+                        break
+                    }
+                }
+                root.left = helper(inOrder, preOrder, inStart, inIdx - 1)
+                root.right = helper(inOrder, preOrder, inIdx + 1, inEnd)
+                return root
+            }
+            return helper(inOrder, preOrder, 0, preOrder.size - 1) ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

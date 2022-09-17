@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import java.util.*
 
 internal class MyTreeTest {
 
@@ -176,4 +177,55 @@ internal class MyTreeTest {
         assertEquals(50, head.right!!.right!!.right!!.right!!.data)
         assertNull(head.right!!.right!!.right!!.right!!.right)
     }
+
+    @Test
+    fun constructFromInorderAndPreOrder_correct() {
+        val inOrder1 = arrayOf(20, 10, 30)
+        val preOrder1 = arrayOf(10, 20, 30)
+        val expected = MyTree.Node(10);
+        expected.left = MyTree.Node(20)
+        expected.right = MyTree.Node(30)
+
+        val res1 = MyTree.constructFromInorderAndPreOrder(inOrder1, preOrder1)
+        assertEquals(expected.data, res1.data)
+        assertEquals(expected.left!!.data, res1.left!!.data)
+        assertEquals(expected.right!!.data, res1.right!!.data)
+
+        val inOrder2 = arrayOf(40, 20, 50, 10, 30, 80, 70, 90)
+        val preOrder2 = arrayOf(10, 20, 40, 50, 30, 70, 80, 90)
+        val resRoot = MyTree.constructFromInorderAndPreOrder(inOrder2, preOrder2)
+        val expectedTree = MyTree(resRoot)
+        val inOrderRes = mutableListOf<Int>()
+        expectedTree.inorderTraversalRecursive {
+            inOrderRes.add(it)
+        }
+        val preOrderRes = mutableListOf<Int>()
+        expectedTree.preOrderTraversalRecursive {
+            preOrderRes.add(it)
+        }
+
+        assertTrue(inOrder2.toIntArray().contentEquals(inOrderRes.toIntArray()))
+        assertTrue(preOrder2.toIntArray().contentEquals(preOrderRes.toIntArray()))
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
