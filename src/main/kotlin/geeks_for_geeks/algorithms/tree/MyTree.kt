@@ -340,6 +340,42 @@ class MyTree<T : Comparable<T>> private constructor() {
         return recursiveHelper(root)
     }
 
+    /**
+     * Traverses the tree in level order going by spiral,
+     * i.e. first root -> next level goes from right to left,
+     * next level goes from left to right and so on.
+     */
+    fun levelOrderTraversalSpiralFormUsingStack(visit: (T) -> Unit) {
+        fun helper(root: Node<T>?) {
+            if (root == null) return
+            val queue = LinkedList<Node<T>>()
+            queue.add(root)
+
+            val stack = Stack<Node<T>>()
+            var reverse = false
+            while (queue.isNotEmpty()) {
+                val count = queue.size
+                for (i in 0 until count) {
+                    val current = queue.poll()
+                    if (reverse) {
+                        stack.push(current)
+                    } else {
+                        visit(current.data)
+                    }
+                    current.left?.let { queue.add(it) }
+                    current.right?.let { queue.add(it) }
+                }
+                if (reverse) {
+                    while (stack.isNotEmpty()) {
+                        visit(stack.pop().data)
+                    }
+                }
+                reverse = !reverse
+            }
+        }
+        helper(root)
+    }
+
 
     fun clear() {
         root = null

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
-import java.util.*
 
 internal class MyTreeTest {
 
@@ -236,6 +235,17 @@ internal class MyTreeTest {
 
         assertTrue(inOrder2.toIntArray().contentEquals(inOrderRes.toIntArray()))
         assertTrue(preOrder2.toIntArray().contentEquals(preOrderRes.toIntArray()))
+    }
+
+    @Test
+    fun levelOrderTraversalSpiralForm_correct() {
+        val expected = listOf<Int>(10, 30, 20, 40, 50)
+        val result = mutableListOf<Int>()
+        tree.levelOrderTraversalSpiralFormUsingStack {
+            result.add(it)
+        }
+
+        assertEquals(expected, result.toList())
     }
 }
 
