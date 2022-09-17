@@ -2,6 +2,7 @@ package geeks_for_geeks.algorithms.tree
 
 import java.lang.Integer.max
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.abs
 
 /**
@@ -355,6 +356,8 @@ class MyTree<T : Comparable<T>> private constructor() {
          * Given an in-order and pre-order traversals of the tree in the form of
          * arrays of [T] constructs a binary tree, and returns the root of
          * the tree.
+         *
+         * Time Complexity O(N^2)
          */
         fun<T> constructFromInorderAndPreOrder(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
             var preOrderIdx = 0
@@ -373,6 +376,34 @@ class MyTree<T : Comparable<T>> private constructor() {
                 return root
             }
             return helper(inOrder, preOrder, 0, preOrder.size - 1) ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
+        }
+
+        /**
+         * Given an in-order and pre-order traversals of the tree in the form of
+         * arrays of [T] constructs a binary tree, and returns the root of
+         * the tree.
+         *
+         * Pre Condition -> the tree must contain no duplicate elements.
+         *
+         * Time Complexity O(N)
+         */
+        fun<T> constructFromInorderAndPreOrderWithHash(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
+            var preOrderIdx = 0
+            val hash_ = hashMapOf<T, Int>()
+            inOrder.forEachIndexed { idx, value ->
+                hash_[value] = idx
+            }
+
+            fun helper(inOrder: Array<T>, preOrder: Array<T>, inStart: Int, inEnd: Int, hash: HashMap<T, Int>): Node<T>? {
+                if (inStart > inEnd) return null
+                val root = Node(preOrder[preOrderIdx++])
+                val inIdx = hash[root.data]
+                    ?: throw IllegalArgumentException("Invalid parameters. Cannot construct a tree from: ${inOrder.contentToString()} and ${preOrder.contentToString()}")
+                root.left = helper(inOrder, preOrder, inStart, inIdx - 1, hash)
+                root.right = helper(inOrder, preOrder, inIdx + 1, inEnd, hash)
+                return root
+            }
+            return helper(inOrder, preOrder, 0, preOrder.size - 1, hash_) ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
         }
     }
 }
