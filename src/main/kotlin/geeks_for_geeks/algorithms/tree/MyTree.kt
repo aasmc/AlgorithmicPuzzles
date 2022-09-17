@@ -376,6 +376,31 @@ class MyTree<T : Comparable<T>> private constructor() {
         helper(root)
     }
 
+    fun levelOrderTraversalSpiralFormUsingStackEfficient(visit: (T) -> Unit) {
+        fun helper(root: Node<T>?) {
+            if (root == null) return
+            val queue = Stack<Node<T>>()
+            queue.push(root)
+            val stack = Stack<Node<T>>()
+
+            while (queue.isNotEmpty() || stack.isNotEmpty()) {
+                while (queue.isNotEmpty()) {
+                    val current = queue.pop()
+                    visit(current.data)
+                    current.left?.let { stack.push(it) }
+                    current.right?.let { stack.push(it) }
+                }
+                while (stack.isNotEmpty()) {
+                    val current = stack.pop()
+                    visit(current.data)
+                    current.right?.let { queue.push(it) }
+                    current.left?.let { queue.push(it) }
+                }
+            }
+        }
+        helper(root)
+    }
+
 
     fun clear() {
         root = null

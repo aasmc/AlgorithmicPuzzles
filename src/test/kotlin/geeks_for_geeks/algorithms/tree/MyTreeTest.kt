@@ -247,6 +247,18 @@ internal class MyTreeTest {
 
         assertEquals(expected, result.toList())
     }
+
+
+    @Test
+    fun levelOrderTraversalSpiralFormUsingStackEfficient_correct() {
+        val expected = listOf<Int>(10, 30, 20, 40, 50)
+        val result = mutableListOf<Int>()
+        tree.levelOrderTraversalSpiralFormUsingStackEfficient {
+            result.add(it)
+        }
+
+        assertEquals(expected, result.toList())
+    }
 }
 
 
