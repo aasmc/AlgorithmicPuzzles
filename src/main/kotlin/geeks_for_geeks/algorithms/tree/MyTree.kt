@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.tree
 
+import geeks_for_geeks.algorithms.arrays.reverseInGroups
 import java.lang.Integer.max
 import java.util.*
 import kotlin.collections.HashMap
@@ -350,7 +351,7 @@ class MyTree<T : Comparable<T>> private constructor() {
             if (root == null) return
             val queue = LinkedList<Node<T>>()
             queue.add(root)
-
+            // holds nodes in reverse order
             val stack = Stack<Node<T>>()
             var reverse = false
             while (queue.isNotEmpty()) {
@@ -379,28 +380,88 @@ class MyTree<T : Comparable<T>> private constructor() {
     fun levelOrderTraversalSpiralFormUsingStackEfficient(visit: (T) -> Unit) {
         fun helper(root: Node<T>?) {
             if (root == null) return
-            val queue = Stack<Node<T>>()
-            queue.push(root)
-            val stack = Stack<Node<T>>()
+            val leftToRight = Stack<Node<T>>()
+            leftToRight.push(root)
+            val rightToLeft = Stack<Node<T>>()
 
-            while (queue.isNotEmpty() || stack.isNotEmpty()) {
-                while (queue.isNotEmpty()) {
-                    val current = queue.pop()
+            while (leftToRight.isNotEmpty() || rightToLeft.isNotEmpty()) {
+                while (leftToRight.isNotEmpty()) {
+                    val current = leftToRight.pop()
                     visit(current.data)
-                    current.left?.let { stack.push(it) }
-                    current.right?.let { stack.push(it) }
+                    current.left?.let { rightToLeft.push(it) }
+                    current.right?.let { rightToLeft.push(it) }
                 }
-                while (stack.isNotEmpty()) {
-                    val current = stack.pop()
+                while (rightToLeft.isNotEmpty()) {
+                    val current = rightToLeft.pop()
                     visit(current.data)
-                    current.right?.let { queue.push(it) }
-                    current.left?.let { queue.push(it) }
+                    current.right?.let { leftToRight.push(it) }
+                    current.left?.let { leftToRight.push(it) }
                 }
             }
         }
         helper(root)
     }
 
+    /**
+     * Returns the number of nodes on the longest path between two leaf nodes.
+     * The problem can be solved using the following approach:
+     * the diameter = currentRoot.left.height + currentRoot.right.height + 1
+     *
+     * Time Complexity O(N^2)
+     */
+    fun getDiameterNaive(): Int {
+        fun helper(root: Node<T>?): Int {
+            if (root == null) return 0
+            // diameter of the current root
+            val d1 = 1 + heightRecHelper(root.left) + heightRecHelper(root.right)
+            // diameter of the left child
+            val d2 = helper(root.left)
+            // diameter of the right child
+            val d3 = helper(root.right)
+            return max(d1, max(d2, d3))
+        }
+        return helper(root)
+    }
+
+    fun getDiameterUsingHashMap(): Int {
+        val heights = hashMapOf<Node<T>, Int>()
+
+        // precompute heights for all the nodes
+        fun fillHeights(root: Node<T>?): Int {
+            if (root == null) return 0
+            val lh = fillHeights(root.left)
+            val rh = fillHeights(root.right)
+            val height = max(lh, rh) + 1
+            heights[root] = height
+            return height
+        }
+        fillHeights(root)
+        fun helper(root: Node<T>?): Int {
+            if (root == null) {
+                return 0
+            }
+            val lh = heights[root.left] ?: 0
+            val rh = heights[root.right] ?: 0
+            val d1 = 1 + lh + rh
+            val d2 = helper(root.left)
+            val d3 = helper(root.right)
+            return max(d1, max(d2, d3))
+        }
+        return helper(root)
+    }
+
+    fun getDiameterEfficient(): Int {
+        var result = 0
+        fun helper(root: Node<T>?): Int {
+            if (root == null) return 0
+            val lh = helper(root.left)
+            val rh = helper(root.right)
+            result = max(result, 1 + lh + rh)
+            return 1 + max(lh, rh)
+        }
+        helper(root)
+        return result
+    }
 
     fun clear() {
         root = null
@@ -420,7 +481,7 @@ class MyTree<T : Comparable<T>> private constructor() {
          *
          * Time Complexity O(N^2)
          */
-        fun<T> constructFromInorderAndPreOrder(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
+        fun <T> constructFromInorderAndPreOrder(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
             var preOrderIdx = 0
             fun helper(inOrder: Array<T>, preOrder: Array<T>, inStart: Int, inEnd: Int): Node<T>? {
                 if (inStart > inEnd) return null
@@ -436,7 +497,8 @@ class MyTree<T : Comparable<T>> private constructor() {
                 root.right = helper(inOrder, preOrder, inIdx + 1, inEnd)
                 return root
             }
-            return helper(inOrder, preOrder, 0, preOrder.size - 1) ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
+            return helper(inOrder, preOrder, 0, preOrder.size - 1)
+                ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
         }
 
         /**
@@ -448,14 +510,20 @@ class MyTree<T : Comparable<T>> private constructor() {
          *
          * Time Complexity O(N)
          */
-        fun<T> constructFromInorderAndPreOrderWithHash(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
+        fun <T> constructFromInorderAndPreOrderWithHash(inOrder: Array<T>, preOrder: Array<T>): Node<T> {
             var preOrderIdx = 0
             val hash_ = hashMapOf<T, Int>()
             inOrder.forEachIndexed { idx, value ->
                 hash_[value] = idx
             }
 
-            fun helper(inOrder: Array<T>, preOrder: Array<T>, inStart: Int, inEnd: Int, hash: HashMap<T, Int>): Node<T>? {
+            fun helper(
+                inOrder: Array<T>,
+                preOrder: Array<T>,
+                inStart: Int,
+                inEnd: Int,
+                hash: HashMap<T, Int>
+            ): Node<T>? {
                 if (inStart > inEnd) return null
                 val root = Node(preOrder[preOrderIdx++])
                 val inIdx = hash[root.data]
@@ -464,7 +532,8 @@ class MyTree<T : Comparable<T>> private constructor() {
                 root.right = helper(inOrder, preOrder, inIdx + 1, inEnd, hash)
                 return root
             }
-            return helper(inOrder, preOrder, 0, preOrder.size - 1, hash_) ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
+            return helper(inOrder, preOrder, 0, preOrder.size - 1, hash_)
+                ?: throw IllegalArgumentException("Cannot construct a tree from $inOrder $preOrder")
         }
     }
 }

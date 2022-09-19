@@ -259,6 +259,21 @@ internal class MyTreeTest {
 
         assertEquals(expected, result.toList())
     }
+
+    @Test
+    fun getDiameter_correct() {
+        assertEquals(4, tree.getDiameterNaive())
+    }
+
+    @Test
+    fun getDiameterUsingHashMap_correct() {
+        assertEquals(4, tree.getDiameterUsingHashMap())
+    }
+
+    @Test
+    fun getDiameterEfficient_correct() {
+        assertEquals(4, tree.getDiameterEfficient())
+    }
 }
 
 
