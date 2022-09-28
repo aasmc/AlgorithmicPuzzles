@@ -316,6 +316,38 @@ internal class MyTreeTest {
     fun distanceToFarthestNodeFromLeaf_correct() {
         assertEquals(3, tree.distanceToFarthestNodeFromLeaf(50))
     }
+
+    @Test
+    fun countNodesInCompleteTree_correct() {
+        val completeTree = buildCompleteTree()
+        val result = countNodesInCompleteTree(completeTree)
+        val expected = 13
+        assertEquals(expected, result)
+    }
+
+    /**
+     * Builds a complete binary tree of the form:
+     *                          10
+     *                    20          90
+     *             30      40      100   110
+     *          50  60  70  80  120  130
+     */
+    private fun buildCompleteTree(): MyTree<Int> {
+        val root = MyTree.Node(10)
+        val l = MyTree.Node(
+            data = 20,
+            left = MyTree.Node(data = 30, left = MyTree.Node(50), right = MyTree.Node(60)),
+            right = MyTree.Node(data = 40, left = MyTree.Node(70), right = MyTree.Node(80))
+        )
+        val r = MyTree.Node(
+            data = 90,
+            left = MyTree.Node(data = 100, left = MyTree.Node(120), right = MyTree.Node(130)),
+            right = MyTree.Node(110)
+        )
+        root.left = l
+        root.right = r
+        return MyTree(root)
+    }
 }
 
 

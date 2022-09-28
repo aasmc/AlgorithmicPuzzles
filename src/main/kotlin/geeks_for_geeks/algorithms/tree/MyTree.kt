@@ -6,13 +6,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.abs
+import kotlin.math.pow
 
 /**
  * A simple binary tree.
  */
 class MyTree<T : Comparable<T>> private constructor() {
 
-    private var root: Node<T>? = null
+    var root: Node<T>? = null
+        private set
 
     constructor(data: T) : this() {
         root = Node(data)
@@ -540,6 +542,7 @@ class MyTree<T : Comparable<T>> private constructor() {
      */
     fun distanceToFarthestNodeFromLeaf(leaf: T): Int {
         var result = 0
+
         /**
          * This function returns the height of the given [root], as well as
          * sets [Distance] from the given [root] to [leaf] if [leaf] is
@@ -577,6 +580,7 @@ class MyTree<T : Comparable<T>> private constructor() {
             // return height of the current root
             return max(leftHeight, rightHeight) + 1
         }
+
         val initialDistance = Distance(-1)
         helper(root, leaf, initialDistance)
         return result
@@ -659,7 +663,39 @@ class MyTree<T : Comparable<T>> private constructor() {
     }
 }
 
+/**
+ * Time complexity O(logN * logN)
+ */
+fun <T : Comparable<T>> countNodesInCompleteTree(tree: MyTree<T>): Int {
+    // Returns the height of the leftMost or rightMost branch of the tree
+    fun getHeight(root: MyTree.Node<T>?, useLeft: Boolean): Int {
+        var h = 0
+        var current = root
+        while (current != null) {
+            ++h
+            current = if (useLeft) {
+                current.left
+            } else {
+                current.right
+            }
+        }
+        return h
+    }
 
+    fun helper(root: MyTree.Node<T>?): Int {
+        val leftHeight = getHeight(root, true)
+        val rightHeight = getHeight(root, false)
+        // if we have a perfect binary tree, then
+        // use formula
+        if (leftHeight == rightHeight) {
+            return 2.0.pow(leftHeight).toInt() - 1
+        }
+        return 1 + helper(root?.left) + helper(root?.right)
+    }
+
+
+    return helper(tree.root)
+}
 
 
 
