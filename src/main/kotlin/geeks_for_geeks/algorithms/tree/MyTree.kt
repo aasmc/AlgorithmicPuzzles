@@ -534,6 +534,56 @@ class MyTree<T : Comparable<T>> private constructor() {
         return helper(root, left, right)
     }
 
+    /**
+     * Returns the number of nodes that lie between a given [leaf] and
+     * the farthest [Node] from it.
+     */
+    fun distanceToFarthestNodeFromLeaf(leaf: T): Int {
+        var result = 0
+        /**
+         * This function returns the height of the given [root], as well as
+         * sets [Distance] from the given [root] to [leaf] if [leaf] is
+         * a descendant of the current [root]. If [leaf] is not a descendant
+         * of the given [root], then [Distance] is kept as -1.
+         */
+        fun helper(root: Node<T>?, leaf: T, distance: Distance): Int {
+            // height of an empty tree is 0, and we don't update Distance
+            if (root == null) return 0
+            // if current root is the leaf node we are burning the tree from,
+            // then update distance to 0 and return height as 1.
+            if (root.data == leaf) {
+                distance.distance = 0
+                return 1
+            }
+            val leftDistance = Distance(-1)
+            val rightDistance = Distance(-1)
+            val leftHeight = helper(root.left, leaf, leftDistance)
+            val rightHeight = helper(root.right, leaf, rightDistance)
+            // if leaf is in the left subtree of the current root
+            if (leftDistance.distance != -1) {
+                // update current distance
+                distance.distance = leftDistance.distance + 1
+                // compute the result as max of the previous result
+                // and height of the right subtree and distance to the leaf
+                result = max(result, rightHeight + distance.distance)
+                // if leaf is in the right subtree of the current root
+            } else if (rightDistance.distance != -1) {
+                // update current distance
+                distance.distance = rightDistance.distance + 1
+                // compute the result as max of the previous result
+                // and height of the left subtree and distance to the leaf
+                result = max(result, leftHeight + distance.distance)
+            }
+            // return height of the current root
+            return max(leftHeight, rightHeight) + 1
+        }
+        val initialDistance = Distance(-1)
+        helper(root, leaf, initialDistance)
+        return result
+    }
+
+    data class Distance(var distance: Int)
+
     fun clear() {
         root = null
     }

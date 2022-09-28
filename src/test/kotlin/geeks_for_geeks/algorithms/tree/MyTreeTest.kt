@@ -311,6 +311,11 @@ internal class MyTreeTest {
         assertNotNull(res4)
         assertEquals(expected2, res4!!.data)
     }
+
+    @Test
+    fun distanceToFarthestNodeFromLeaf_correct() {
+        assertEquals(3, tree.distanceToFarthestNodeFromLeaf(50))
+    }
 }
 
 
