@@ -3,6 +3,7 @@ package geeks_for_geeks.algorithms.tree
 import geeks_for_geeks.algorithms.arrays.reverseInGroups
 import java.lang.Integer.max
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.abs
 
@@ -405,7 +406,7 @@ class MyTree<T : Comparable<T>> private constructor() {
     /**
      * Returns the number of nodes on the longest path between two leaf nodes.
      * The problem can be solved using the following approach:
-     * the diameter = currentRoot.left.height + currentRoot.right.height + 1
+     * diameter = currentRoot.left.height + currentRoot.right.height + 1
      *
      * Time Complexity O(N^2)
      */
@@ -461,6 +462,76 @@ class MyTree<T : Comparable<T>> private constructor() {
         }
         helper(root)
         return result
+    }
+
+    fun lowestCommonAncestorInefficient(left: T, right: T): Node<T>? {
+        val leftPath = findPath(root, left)
+        val rightPath = findPath(root, right)
+        if (leftPath.isEmpty() || rightPath.isEmpty()) return null
+        var i = 0
+        // corner case when either of the paths contains only root element
+        if (leftPath.size == 1 || rightPath.size == 1) {
+            return if (leftPath[0] == rightPath[0]) {
+                leftPath[0]
+            } else {
+                null
+            }
+        }
+        while (i < leftPath.size - 1 && i < rightPath.size - 1) {
+            if (leftPath[i + 1] != rightPath[i + 1]) {
+                return leftPath[i]
+            }
+            ++i
+        }
+        return null
+    }
+
+    private fun findPath(root: Node<T>?, data: T): List<Node<T>> {
+        val result = arrayListOf<Node<T>>()
+        fun helper(root: Node<T>?, path: ArrayList<Node<T>>, data: T): Boolean {
+            if (root == null) return false
+            path.add(root)
+            if (root.data == data) return true
+            if (helper(root.left, path, data) || helper(root.right, path, data)) {
+                return true
+            }
+            // current root is not on the path, so remove it.
+            result.removeAt(result.size - 1)
+            return false
+        }
+        helper(root, result, data)
+        return result
+    }
+
+    /**
+     * Returns the lowest common ancestor of the two given nodes.
+     * This algorithm assumes that both the nodes are present in the tree.
+     */
+    fun lowestCommonAncestorEfficient(left: T, right: T): Node<T>? {
+        fun helper(root: Node<T>?, left: T, right: T): Node<T>? {
+            if (root == null) return null
+            // case 1. current root contains either left or right value
+            // we assume that both right and left values are in the tree,
+            // so here we return current root
+            if (root.data == left || root.data == right) {
+                return root
+            }
+            val leftLca = helper(root.left, left, right)
+            val rightLca = helper(root.right, left, right)
+            // case 2. both leftLca and rightLca are not null, means that
+            // either leftLca contains left value and rightLca contains right value
+            // or vice versa, this means current root is the lca of left and right
+            if (leftLca != null && rightLca != null) {
+                return root
+            }
+            // case 3. leftLca is not null, means both the values are
+            // in the left subtree, so we return leftLca
+            // case 4. either rightLca is not null, then both the values
+            // are in the right subtree, so we return it,
+            // or rightLca is null then we have no lca, so return null
+            return leftLca ?: rightLca
+        }
+        return helper(root, left, right)
     }
 
     fun clear() {

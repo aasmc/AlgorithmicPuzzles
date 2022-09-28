@@ -274,6 +274,43 @@ internal class MyTreeTest {
     fun getDiameterEfficient_correct() {
         assertEquals(4, tree.getDiameterEfficient())
     }
+
+    @Test
+    fun lowestCommonAncestorInefficient_correct() {
+        val expected1 = 30
+        val res1 = tree.lowestCommonAncestorInefficient(40, 50)
+        assertNotNull(res1)
+        assertEquals(expected1, res1!!.data)
+
+        val expected2 = 10
+        val res2 = tree.lowestCommonAncestorInefficient(20, 50)
+        assertNotNull(res2)
+        assertEquals(expected2, res2!!.data)
+
+        val res3 = tree.lowestCommonAncestorInefficient(70, 100)
+        assertNull(res3)
+
+        val res4 = tree.lowestCommonAncestorInefficient(10, 40)
+        assertNotNull(res4)
+        assertEquals(expected2, res4!!.data)
+    }
+
+    @Test
+    fun lowestCommonAncestorEfficient_correct() {
+        val expected1 = 30
+        val res1 = tree.lowestCommonAncestorEfficient(40, 50)
+        assertNotNull(res1)
+        assertEquals(expected1, res1!!.data)
+
+        val expected2 = 10
+        val res2 = tree.lowestCommonAncestorEfficient(20, 50)
+        assertNotNull(res2)
+        assertEquals(expected2, res2!!.data)
+
+        val res4 = tree.lowestCommonAncestorEfficient(10, 40)
+        assertNotNull(res4)
+        assertEquals(expected2, res4!!.data)
+    }
 }
 
 
