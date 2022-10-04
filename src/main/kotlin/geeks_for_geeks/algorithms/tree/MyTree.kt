@@ -616,6 +616,52 @@ class MyTree<T : Comparable<T>> private constructor() {
         }
     }
 
+    /**
+     * Time Complexity O(N)
+     * Space Complexity O(N)
+     */
+    fun preOrderTraversalIterativeSimple(visit: (T) -> Unit) {
+        if (root == null) return
+        // keeps track of left and right nodes of the current node
+        // in LIFO order, and we first put current element, then
+        // its right child, then its left child, to make sure,
+        // that a left child always comes before a right child
+        val stack = Stack<Node<T>>()
+        stack.push(root)
+        while (stack.isNotEmpty()) {
+            val current = stack.pop()
+            visit(current.data)
+            current.right?.let { stack.push(it) }
+            current.left?.let { stack.push(it) }
+        }
+    }
+
+    /**
+     * Time Complexity O(N)
+     * Space Complexity O(height of the tree)
+     */
+    fun preOrderTraversalIterativeOptimized(visit: (T) -> Unit) {
+        if (root == null) return
+        val stack = Stack<Node<T>>()
+        var current = root
+        while (current != null || stack.isNotEmpty()) {
+            // keep on going to the left of the tree, processing subtree roots, and
+            // pushing their right children onto the stack
+            while (current != null) {
+                visit(current.data)
+                current.right?.let { stack.push(it) }
+                current = current.left
+            }
+            // get the right child of the previously processed Node
+            // and trigger its processing in the same manner
+            // first go to the left of the child, while at the same time
+            // saving its right children to the stack for further processing
+            if (stack.isNotEmpty()) {
+                current = stack.pop()
+            }
+        }
+    }
+
     fun clear() {
         root = null
     }
@@ -748,7 +794,7 @@ fun <T : Comparable<T>> serialize(tree: MyTree<T>): List<T?> {
     return result.toList()
 }
 
-fun <T: Comparable<T>> deserialize(list: List<T?>): MyTree<T> {
+fun <T : Comparable<T>> deserialize(list: List<T?>): MyTree<T> {
     // keeps track of how many elements we have processed
     var index = 0
     fun helper(): MyTree.Node<T>? {

@@ -356,6 +356,32 @@ internal class MyTreeTest {
         assertEquals(expected, result.toList())
     }
 
+    @Test
+    fun preOrderTraversalIterativeSimple_correct() {
+        val t = buildCompleteTree()
+        val result = mutableListOf<Int>()
+        t.preOrderTraversalIterativeSimple {
+            result.add(it)
+        }
+        val expected = listOf(
+            10, 20, 30, 50, 60, 40, 70, 80, 90, 100, 120, 130, 110
+        )
+        assertEquals(expected, result.toList())
+    }
+
+    @Test
+    fun preOrderTraversalIterativeOptimized_correct() {
+        val t = buildCompleteTree()
+        val result = mutableListOf<Int>()
+        t.preOrderTraversalIterativeOptimized {
+            result.add(it)
+        }
+        val expected = listOf(
+            10, 20, 30, 50, 60, 40, 70, 80, 90, 100, 120, 130, 110
+        )
+        assertEquals(expected, result.toList())
+    }
+
     /**
      * Builds a complete binary tree of the form:
      *                          10
