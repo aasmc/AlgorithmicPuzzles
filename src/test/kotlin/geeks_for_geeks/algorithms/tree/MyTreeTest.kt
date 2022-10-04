@@ -325,6 +325,24 @@ internal class MyTreeTest {
         assertEquals(expected, result)
     }
 
+    @Test
+    fun serialize_correct() {
+        val result = serialize(tree)
+        val expected = listOf<Int?>(10, 20, null, null, 30, 40, null, null, 50, null, null)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun deserialize_correct() {
+        val given = listOf(10, 20, null, null, 30, 40, null, null, 50, null, null)
+        val result = deserialize(given)
+        assertEquals(result.root, tree.root)
+        assertEquals(result.root?.left, tree.root?.left)
+        assertEquals(result.root?.right, tree.root?.right)
+        assertEquals(result.root?.right?.left, tree.root?.right?.left)
+        assertEquals(result.root?.right?.right, tree.root?.right?.right)
+    }
+
     /**
      * Builds a complete binary tree of the form:
      *                          10

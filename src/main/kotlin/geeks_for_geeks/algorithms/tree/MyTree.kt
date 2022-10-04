@@ -1,6 +1,5 @@
 package geeks_for_geeks.algorithms.tree
 
-import geeks_for_geeks.algorithms.arrays.reverseInGroups
 import java.lang.Integer.max
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,7 +19,7 @@ class MyTree<T : Comparable<T>> private constructor() {
         root = Node(data)
     }
 
-    constructor(root: Node<T>) : this() {
+    constructor(root: Node<T>?) : this() {
         this.root = root
     }
 
@@ -697,7 +696,55 @@ fun <T : Comparable<T>> countNodesInCompleteTree(tree: MyTree<T>): Int {
     return helper(tree.root)
 }
 
+/**
+ * Serializes a given [tree] to a [List<T?>], where null values indicate
+ * null children of [MyTree.Node]s. Pre-order traversal is used in the algorithm.
+ *
+ * Time Complexity O(N)
+ * Space Complexity O(N), we will have exactly 2*N + 1 elements in the resulting list.
+ */
+fun <T : Comparable<T>> serialize(tree: MyTree<T>): List<T?> {
+    fun helper(root: MyTree.Node<T>?, list: MutableList<T?>) {
+        if (root == null) {
+            list.add(null)
+            return
+        }
+        list.add(root.data)
+        helper(root.left, list)
+        helper(root.right, list)
+    }
 
+    val result = mutableListOf<T?>()
+    helper(tree.root, result)
+    return result.toList()
+}
+
+fun <T: Comparable<T>> deserialize(list: List<T?>): MyTree<T> {
+    // keeps track of how many elements we have processed
+    var index = 0
+    fun helper(): MyTree.Node<T>? {
+        // if we have processed all the elements, return null
+        if (index == list.size) return null
+        // get data at current index
+        val data = list[index]
+        // !! increment current index
+        ++index
+        // if current data is null, then we are processing a child of a leaf node,
+        // which is null
+        if (data == null) return null
+        // construct root of a tree on first iteration, and
+        // root of a subtree on all the following iterations
+        val root = MyTree.Node(data)
+        // recursively traverse the left subtree
+        root.left = helper()
+        // recursively traverse the right subtree
+        root.right = helper()
+        return root
+    }
+
+    val result = helper()
+    return MyTree(result)
+}
 
 
 
