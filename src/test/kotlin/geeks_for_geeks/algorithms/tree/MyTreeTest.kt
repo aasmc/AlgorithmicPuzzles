@@ -343,6 +343,19 @@ internal class MyTreeTest {
         assertEquals(result.root?.right?.right, tree.root?.right?.right)
     }
 
+    @Test
+    fun inOrderTraversalIterative_correct() {
+        val t = buildCompleteTree()
+        val result = mutableListOf<Int>()
+        t.inOrderTraversalIterative {
+            result.add(it)
+        }
+        val expected = listOf(
+            50, 30, 60, 20, 70, 40, 80, 10, 120, 100, 130, 90, 110
+        )
+        assertEquals(expected, result.toList())
+    }
+
     /**
      * Builds a complete binary tree of the form:
      *                          10

@@ -587,6 +587,35 @@ class MyTree<T : Comparable<T>> private constructor() {
 
     data class Distance(var distance: Int)
 
+    /**
+     * Time Complexity O(N)
+     * Space Complexity O(height of the tree)
+     */
+    fun inOrderTraversalIterative(visit: (T) -> Unit) {
+        var current = root
+        // keeps track of left nodes of a subtree
+        val stack = Stack<Node<T>>()
+        // we iterate while current element is not null,
+        // or while the stack is not empty (which means, we have processed all
+        // current left elements of a subtree)
+        // if both conditions hold, then we have processed the entire tree
+        while (current != null || stack.isNotEmpty()) {
+            // move to the leftmost node of a current node
+            // at the same time push the current node and all its left
+            // children to the stack.
+            while (current != null) {
+                stack.push(current)
+                current = current.left
+            }
+            // retrieve the last left element from the stack
+            current = stack.pop()
+            // visit the element
+            visit(current.data)
+            // move to the right of the current node
+            current = current.right
+        }
+    }
+
     fun clear() {
         root = null
     }
