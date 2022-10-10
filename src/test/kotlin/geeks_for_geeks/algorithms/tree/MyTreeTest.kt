@@ -382,6 +382,30 @@ internal class MyTreeTest {
         assertEquals(expected, result.toList())
     }
 
+    @Test
+    fun mirror_correct() {
+        val t = buildCompleteTree()
+        t.mirror()
+        assertEquals(90, t.root!!.left!!.data)
+        assertEquals(20, t.root!!.right!!.data)
+        assertEquals(110, t.root!!.left!!.left!!.data)
+        assertEquals(100, t.root!!.left!!.right!!.data)
+        assertEquals(40, t.root!!.right!!.left!!.data)
+        assertEquals(30, t.root!!.right!!.right!!.data)
+        assertEquals(60, t.root!!.right!!.right!!.left!!.data)
+        assertEquals(50, t.root!!.right!!.right!!.right!!.data)
+        assertEquals(80, t.root!!.right!!.left!!.left!!.data)
+        assertEquals(70, t.root!!.right!!.left!!.right!!.data)
+        assertEquals(130, t.root!!.left!!.right!!.left!!.data)
+        assertEquals(120, t.root!!.left!!.right!!.right!!.data)
+
+        val root = MyTree.Node(1, left = MyTree.Node(2), right = MyTree.Node(3))
+        val tt = MyTree(root)
+        tt.mirror()
+        assertEquals(tt.root!!.left!!.data, 3)
+        assertEquals(tt.root!!.right!!.data, 2)
+    }
+
     /**
      * Builds a complete binary tree of the form:
      *                          10

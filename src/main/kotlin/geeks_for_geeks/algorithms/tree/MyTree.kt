@@ -662,6 +662,26 @@ class MyTree<T : Comparable<T>> private constructor() {
         }
     }
 
+    fun mirror() {
+        fun mirrorHelper(root: Node<T>?) {
+            if (root == null) return
+            val queue = LinkedList<Node<T>?>()
+            queue.add(root)
+            while (queue.isNotEmpty()) {
+                val size = queue.size
+                for (i in 0 until size) {
+                    val current = queue.poll()
+                    val curLeft = current?.left
+                    current?.left = current?.right
+                    current?.right = curLeft
+                    current?.left?.let { queue.add(it) }
+                    current?.right?.let { queue.add(it) }
+                }
+            }
+        }
+        mirrorHelper(root)
+    }
+
     fun clear() {
         root = null
     }
