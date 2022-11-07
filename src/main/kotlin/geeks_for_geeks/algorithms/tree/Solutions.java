@@ -364,6 +364,7 @@ public class Solutions {
      * traversal (leftmost node in BT) must be the head node of the DLL.
      */
     private Node prev = null;
+
     Node bToDLL(Node root) {
         if (root == null) return null;
         Node head = bToDLL(root.left);
@@ -391,6 +392,148 @@ public class Solutions {
         bTToDLLHelper(root.right, prev);
         return head;
     }
+
+    /**
+     * Given a Binary Tree of N edges. The task is to convert this to
+     * a Circular Doubly Linked List(CDLL) in-place. The left and right
+     * pointers in nodes are to be used as previous and next pointers
+     * respectively in converted CDLL. The order of nodes in CDLL must
+     * be same as Inorder of the given Binary Tree. The first node of
+     * Inorder traversal (left most node in BT) must be head node of
+     * the CDLL.
+     */
+    Node previous = null, last = null, head = null;
+
+    Node bTreeToClist(Node root) {
+        if (root == null) return null;
+        bTreeToClist(root.left);
+        if (previous == null) head = root;
+        else {
+            previous.right = root;
+            root.left = previous;
+        }
+        previous = root;
+        last = previous;
+        bTreeToClist(root.right);
+        last.right = head;
+        head.left = last;
+        return head;
+    }
+
+    /**
+     * Given an array of size N that can be used to represent a tree.
+     * The array indices are values in tree nodes and array values give
+     * the parent node of that particular index (or node). The value
+     * of the root node index would always be -1 as there is no parent
+     * for root. Construct the standard linked representation of Binary
+     * Tree from this array representation.
+     * <p>
+     * Note: If two elements have the same parent, the one that appears
+     * first in the array will be the left child and the other is the right child.
+     */
+    public static Node createTree(int parent[], int N) {
+        Node root = null;
+        Node[] tree = new Node[N];
+        for (int i = 0; i < N; i++) {
+            tree[i] = new Node(i);
+        }
+        for (int i = 0; i < N; i++) {
+            if (parent[i] == -1) {
+                root = tree[i];
+            } else {
+                // grab index of the parent for current position
+                int parenIndex = parent[i];
+                // grab the parent from the array
+                Node p = tree[parenIndex];
+                if (p.left == null) {
+                    // set current Node as the left node of the parent
+                    p.left = tree[i];
+                } else {
+                    p.right = tree[i];
+                }
+            }
+        }
+
+        return root;
+    }
+
+    /**
+     * Given inorder and postorder traversals of a Binary Tree in the arrays
+     * in[] and post[] respectively. The task is to construct the binary
+     * tree from these traversals.
+     */
+    int postOrderIndex = 0;
+
+    Node buildTree(int in[], int post[], int n) {
+        // Your code here
+        postOrderIndex = n - 1;
+        return buildTreeHelper(in, post, 0, n - 1);
+    }
+
+    Node buildTreeHelper(int[] in, int[] post, int inStart, int inEnd) {
+        if (inStart > inEnd) return null;
+        Node root = new Node(post[postOrderIndex--]);
+        int inIndex = 0;
+        for (int i = inStart; i <= inEnd; ++i) {
+            if (in[i] == root.data) {
+                inIndex = i;
+                break;
+            }
+        }
+        root.right = buildTreeHelper(in, post, inIndex + 1, inEnd);
+        root.left = buildTreeHelper(in, post, inStart, inIndex - 1);
+        return root;
+    }
+
+    /**
+     * Given a binary tree, check if the tree can be folded or not.
+     * A tree can be folded if left and right subtrees of the tree
+     * are structure wise mirror image of each other. An empty tree
+     * is considered as foldable.
+     */
+    boolean IsFoldable(Node node) {
+        if (node == null) return true;
+        return helperFoldable(node, node);
+    }
+
+    private boolean helperFoldable(Node first, Node second) {
+        if (first == null && second == null) {
+            return true;
+        }
+        if (first == null || second == null) {
+            return false;
+        }
+        return helperFoldable(first.left, second.right) && helperFoldable(first.right, second.left);
+    }
+
+    /**
+     * Given a binary tree, the task is to find the maximum path sum.
+     * The path may start and end at any node in the tree.
+     */
+    int max = Integer.MIN_VALUE;
+
+    int findMaxSum(Node node) {
+        //your code goes here
+        int temp = solve(node);
+        return max;
+    }
+
+    int solve(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftMax = solve(root.left);
+        int rightMax = solve(root.right);
+        // eliminate negative values
+        leftMax = Math.max(0, leftMax);
+        rightMax = Math.max(0, rightMax);
+        // compute max path with this root as the point of split
+        // of the path
+        max = Math.max(max, root.data + leftMax + rightMax);
+        // return the max path from this root without split
+        return root.data + Math.max(leftMax, rightMax);
+    }
+
 }
 
 
