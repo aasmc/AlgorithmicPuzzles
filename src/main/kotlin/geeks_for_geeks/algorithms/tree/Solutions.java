@@ -293,13 +293,6 @@ public class Solutions {
         return 1 + Math.max(lh, rh);
     }
 
-    class Result {
-        int value;
-
-        Result(int value) {
-            this.value = value;
-        }
-    }
 
     /**
      * Given a Binary Tree of N nodes. Find the vertical width of the tree.
@@ -534,6 +527,223 @@ public class Solutions {
         return root.data + Math.max(leftMax, rightMax);
     }
 
+    /**
+     * Given a Binary Tree, you need to find the maximum value which you
+     * can get by subtracting the value of node B from the value of node
+     * A, where A and B are two nodes of the binary tree and A is an ancestor
+     * of B.
+     */
+    int maxDiff(Node root) {
+        Result result = new Result(Integer.MIN_VALUE);
+        solveMaxDiff(root, result);
+        return result.value;
+    }
+
+
+    private int solveMaxDiff(Node root, Result result) {
+        // if we are at the leaf node, return the maximum possible value
+        if (root == null) {
+            return Integer.MAX_VALUE;
+        }
+        // recursively call for left and right subtrees
+        int leftResult = solveMaxDiff(root.left, result);
+        int rightResult = solveMaxDiff(root.right, result);
+        // this is the most important line: we select the maximum value between:
+        //    - current result
+        //    - root.data - leftResult
+        //    - root.data - rightResult
+        // basically this is what we need to find - the maximum difference between
+        // an ancestor and a child
+        result.value =
+                Math.max(result.value, Math.max(root.data - leftResult, root.data - rightResult));
+
+        // this line may seem counterintuitive: we return the minimum value between:
+        //    - leftResult
+        //    - rightResult
+        //    - root.data
+        // This is so, because we use the mininum value to maximize the difference
+        // when we subtract root.data - leftResult or root.data - rightResult.
+        return Math.min(leftResult, Math.min(root.data, rightResult));
+    }
+
+    /**
+     * Given a binary tree and an integer X. Your task is to complete the function
+     * countSubtreesWithSumX() that returns the count of the number of subtrees
+     * having total node’s data sum equal to the value X.
+     */
+    int countSubtreesWithSumX(Node root, int X) {
+        Result result = new Result(0);
+        countSubtreesHelper(root, result, X);
+        return result.value;
+    }
+
+    int countSubtreesHelper(Node root, Result result, int sum) {
+        if (root == null) return 0;
+        int leftResult = countSubtreesHelper(root.left, result, sum);
+        int rightResult = countSubtreesHelper(root.right, result, sum);
+        if (root.data + leftResult + rightResult == sum) {
+            result.value += 1;
+        }
+        return leftResult + rightResult + root.data;
+    }
+
+    public void serialize(Node root, ArrayList<Integer> A) {
+        if (root == null) {
+            A.add(null);
+            return;
+        }
+        A.add(root.data);
+        serialize(root.left, A);
+        serialize(root.right, A);
+    }
+
+    class Index {
+        int value;
+
+        Index(int value) {
+            this.value = value;
+        }
+    }
+
+    //Function to deserialize a list and construct the tree.
+    public Node deSerialize(ArrayList<Integer> A) {
+        Index index = new Index(0);
+        return deSerializeHelper(A, index);
+    }
+
+    private Node deSerializeHelper(ArrayList<Integer> list, Index index) {
+        if (index.value == list.size()) {
+            return null;
+        }
+        Integer data = list.get(index.value);
+        index.value += 1;
+        if (data == null) return null;
+        Node root = new Node(data);
+        root.left = deSerializeHelper(list, index);
+        root.right = deSerializeHelper(list, index);
+        return root;
+    }
+
+    class Result {
+        int value;
+
+        Result(int value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * Given a Binary Tree and a positive integer k. The task is to count
+     * all distinct nodes that are distance k from a leaf node. A node is
+     * at k distance from a leaf if it is present k levels above the leaf
+     * and also, is a direct ancestor of this leaf node. If k is more than
+     * the height of Binary Tree, then nothing should be counted.
+     */
+    int printKDistantfromLeaf(Node root, int k) {
+        Set<Node> set = new HashSet<>();
+        Map<Integer, Node> map = new HashMap<>();
+        dfs(root, 0, k, map, set);
+        return set.size();
+    }
+
+    void dfs(Node root, int level, int k, Map<Integer, Node> map, Set<Node> set) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) { // we are at the leaf node
+            // if k is larger than the leaf node's distance from root, do nothing
+            if (k > level) return;
+            // get the node at k-th distance from the current leaf node.
+            Node n = map.get(level - k);
+            // save it to the set
+            set.add(n);
+        }
+        map.put(level, root);
+        dfs(root.left, level + 1, k, map, set);
+        dfs(root.right, level + 1, k, map, set);
+    }
+
+    ArrayList<Integer> zigZagTraversal(Node root) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+        Stack<Node> ltr = new Stack<>();
+        ltr.push(root);
+        Stack<Node> rtl = new Stack<>();
+        while (!ltr.isEmpty() || !rtl.isEmpty()) {
+            while (!ltr.isEmpty()) {
+                Node current = ltr.pop();
+                result.add(current.data);
+                if (current.left != null) {
+                    rtl.push(current.left);
+                }
+                if (current.right != null) {
+                    rtl.push(current.right);
+                }
+            }
+            while (!rtl.isEmpty()) {
+                Node current = rtl.pop();
+                result.add(current.data);
+                if (current.right != null) {
+                    ltr.push(current.right);
+                }
+                if (current.left != null) {
+                    ltr.push(current.left);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Given a binary tree with a value associated with each node, we need
+     * to choose a subset of these nodes such that sum of chosen nodes is
+     * maximum under a constraint that no two chosen node in subset should
+     * be directly connected that is, if we have taken a node in our sum then
+     * we can’t take its any children or parents in consideration and vice versa.
+     * <p>
+     * Solution to the problem lies in the recursion. We need to recursively check
+     * whether we take current's root value into consideration or not. So we make
+     * several recursive calls:
+     * - with this root's value (i.e. we can't take direct children
+     * into consideration, but we can consider grand children:
+     * root, root.left.left, root.left.right, root.right.left, root.right.right)
+     * - without this root's value (i.e. we can take direct children
+     * into consideration:
+     * root.left, root.right)
+     * then we choose the maximum value from the two calls.
+     * <p>
+     * This recursive approach has a problem of making too many recursive calls.
+     * To optimize it, we use a HashMap to store previously computed max values for
+     * current roots.
+     */
+    static int getMaxSum(Node root) {
+        // add your code here
+        Map<Node, Integer> cache = new HashMap<>();
+        return getMaxSumHelper(root, cache);
+    }
+
+    static int getMaxSumHelper(Node root, Map<Node, Integer> cache) {
+        if (root == null) return 0;
+        if (cache.get(root) != null) {
+            return cache.get(root);
+        }
+        // Case 1: we take this root + its grandchildren
+        int withNode = root.data;
+        if (root.left != null) {
+            withNode += getMaxSumHelper(root.left.left, cache);
+            withNode += getMaxSumHelper(root.left.right, cache);
+        }
+        if (root.right != null) {
+            withNode += getMaxSumHelper(root.right.left, cache);
+            withNode += getMaxSumHelper(root.right.right, cache);
+        }
+
+        // Case 2: we don't take this root, but take its children
+        int withoutNode = getMaxSumHelper(root.left, cache) +
+                getMaxSumHelper(root.right, cache);
+
+        int max = Math.max(withNode, withoutNode);
+        cache.put(root, max);
+        return max;
+    }
 }
 
 
