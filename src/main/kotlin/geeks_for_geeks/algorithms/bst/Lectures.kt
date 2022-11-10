@@ -112,7 +112,7 @@ class BstTree<T : Comparable<T>> private constructor() {
             } else if (root.data < value) {
                 root.right = helper(root.right, value)
                 // this branch is about deleting the found key, if it is there
-            } else {
+            } else { // we are at the node we want to delete
                 // if the left child of current root is null, then return
                 // its right child (if that happens, that the right child
                 // is also null, then we are at the leaf node, so this is also
@@ -141,6 +141,32 @@ class BstTree<T : Comparable<T>> private constructor() {
             curr = curr.left
         }
         return curr
+    }
+
+    /**
+     * Returns the largest value that is less than or equal to [value].
+     * If there's no such value (i.e. the [value] is smaller than the
+     * smallest value in the tree) then returns [null].
+     *
+     * Time Complexity O(height of the tree)
+     * Space Complexity O(1)
+     */
+    fun floor(value: T): T? {
+        if (root == null) return null
+        var currentRoot = root
+        var currentResult: T? = null
+        while (currentRoot != null) {
+            if (currentRoot.data == value) {
+                currentResult = currentRoot.data
+                break
+            } else if (currentRoot.data > value) {
+                currentRoot = currentRoot.left
+            } else {
+                currentResult = currentRoot.data
+                currentRoot = currentRoot.right
+            }
+        }
+        return currentResult
     }
 }
 

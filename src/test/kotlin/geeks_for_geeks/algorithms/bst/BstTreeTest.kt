@@ -100,6 +100,24 @@ internal class BstTreeTest {
         tree.deleteRecursive(25)
         assertEquals(30, tree.root!!.data)
     }
+
+    @Test
+    fun floor_correct() {
+        val expected = 25
+        val actual = tree.floor(27) ?: throw Exception()
+        assertEquals(expected, actual)
+
+        val ex2 = 30
+        val ac2 = tree.floor(30) ?: throw Exception()
+        assertEquals(ex2, ac2)
+
+        val ac3 = tree.floor(4)
+        assertNull(ac3)
+
+        val ex4 = 35
+        val ac4 = tree.floor(100) ?: throw Exception()
+        assertEquals(ex4, ac4)
+    }
 }
 
 
