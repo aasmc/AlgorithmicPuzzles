@@ -168,6 +168,32 @@ class BstTree<T : Comparable<T>> private constructor() {
         }
         return currentResult
     }
+
+    /**
+     * Returns the smallest value that is greater than or equal to [value].
+     * If there's no such value (i.e. the [value] is greater than the
+     * largest value in the tree) then returns [null].
+     *
+     * Time Complexity O(height of the tree)
+     * Space Complexity O(1)
+     */
+    fun ceiling(value: T): T? {
+        if (root == null) return null
+        var currentRoot = root
+        var currentResult: T? = null
+        while (currentRoot != null) {
+            if (currentRoot.data == value) {
+                return currentRoot.data
+            }
+            if (currentRoot.data < value) {
+                currentRoot = currentRoot.right
+            } else {
+                currentResult = currentRoot.data
+                currentRoot = currentRoot.left
+            }
+        }
+        return currentResult
+    }
 }
 
 

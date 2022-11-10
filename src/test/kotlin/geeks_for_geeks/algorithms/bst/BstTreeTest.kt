@@ -118,6 +118,24 @@ internal class BstTreeTest {
         val ac4 = tree.floor(100) ?: throw Exception()
         assertEquals(ex4, ac4)
     }
+
+    @Test
+    fun ceiling_correct() {
+        val ex1 = 30
+        val ac1 = tree.ceiling(26)
+        assertEquals(ex1, ac1)
+
+        val ac2 = tree.ceiling(36)
+        assertNull(ac2)
+
+        val ex3 = 5
+        val ac3 = tree.ceiling(1)
+        assertEquals(ex3, ac3)
+
+        val ex4 = 10
+        val ac4 = tree.ceiling(10)
+        assertEquals(ex4, ac4)
+    }
 }
 
 
