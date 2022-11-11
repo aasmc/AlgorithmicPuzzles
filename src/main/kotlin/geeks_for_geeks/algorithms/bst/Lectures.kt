@@ -200,6 +200,11 @@ fun findAndSwapTwoElementsInArrayToMakeItSorted(arr: IntArray) {
     }
 }
 
+/**
+ * Given a root of the binary tree and a sum, find if there are
+ * two elements in the tree with the sum of data fields equal
+ * to the given sum.
+ */
 fun findPairSumUsingHashMap(root: TreeNode<Int>?, sum: Int): Boolean {
     if (root == null) return false
     val cache = hashMapOf<Int, Int>()
