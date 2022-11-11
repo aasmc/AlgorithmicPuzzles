@@ -33,4 +33,79 @@ internal class BstLecturesTest {
 
     }
 
+    @Test
+    fun findKthSmallestElement_correct() {
+        val root = buildAugmentedBST()
+        val ex1 = 10
+        val ac1 = findKthSmallestElement(root, 2)
+        assertEquals(ex1, ac1)
+
+        assertNull(findKthSmallestElement(root, 100))
+
+        val ex2 = 50
+        val ac2 = findKthSmallestElement(root, 5)
+        assertEquals(ex2, ac2)
+
+        val ex3 = 70
+        val ac3 = findKthSmallestElement(root, 7)
+        assertEquals(ex3, ac3)
+    }
+
+    private fun buildAugmentedBST(): LCountNode<Int> {
+        return LCountNode(
+            data = 50,
+            lCount = 4,
+            left = LCountNode(
+                data = 20,
+                lCount = 2,
+                left = LCountNode(
+                    data = 10,
+                    lCount = 1,
+                    left = LCountNode(
+                        data = 5
+                    )
+                ),
+                right = LCountNode(
+                    data = 40
+                )
+            ),
+            right = LCountNode(
+                data = 100,
+                lCount = 3,
+                left = LCountNode(
+                    data = 70,
+                    lCount = 1,
+                    left = LCountNode(60),
+                    right = LCountNode(80)
+                ),
+                right = LCountNode(120)
+            )
+        )
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
