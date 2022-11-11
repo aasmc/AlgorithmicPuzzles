@@ -200,7 +200,38 @@ fun findAndSwapTwoElementsInArrayToMakeItSorted(arr: IntArray) {
     }
 }
 
+fun findPairSumUsingHashMap(root: TreeNode<Int>?, sum: Int): Boolean {
+    if (root == null) return false
+    val cache = hashMapOf<Int, Int>()
+    fun helper(root: TreeNode<Int>?) {
+        if (root != null) {
+            helper(root.left)
+            cache[root.data] = sum - root.data
+            helper(root.right)
+        }
+    }
+    helper(root)
+    for (v in cache.values) {
+        if (cache.containsKey(v)) return true
+    }
+    return false
+}
 
+fun findPairSumUsingHashSet(root: TreeNode<Int>?, sum: Int): Boolean {
+    if (root == null) return false
+    val cache = hashSetOf<Int>()
+    fun helper(root: TreeNode<Int>?): Boolean {
+        if (root == null) return false
+        if (helper(root.left)) return true
+        if (cache.contains(sum - root.data)) {
+            return true
+        } else {
+            cache.add(root.data)
+        }
+        return helper(root.right)
+    }
+    return helper(root)
+}
 
 
 

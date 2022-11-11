@@ -1,6 +1,5 @@
 package geeks_for_geeks.algorithms.bst
 
-import com.sun.source.tree.Tree
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -84,6 +83,40 @@ internal class BstLecturesTest {
         val (incorrect, correct) = buildBSTsForSwapping()
         val result = fixTreeToBSTWithTwoSwappedNodes(incorrect)
         assertEquals(result, correct)
+    }
+
+    @Test
+    fun findPairSum_correct() {
+        val (positive, negative) = buildBSTForSumPair()
+        assertTrue(findPairSumUsingHashMap(positive, 33))
+        assertFalse(findPairSumUsingHashMap(negative, 49))
+    }
+
+    @Test
+    fun findPairSumUsingHashSet_correct() {
+        val (positive, negative) = buildBSTForSumPair()
+        assertTrue(findPairSumUsingHashSet(positive, 33))
+        assertFalse(findPairSumUsingHashSet(negative, 49))
+    }
+
+    private fun buildBSTForSumPair(): List<TreeNode<Int>> {
+        val positive = TreeNode(
+            data = 10,
+            left = TreeNode(8, left = TreeNode(4), right = TreeNode(9)),
+            right = TreeNode(
+                20, left = TreeNode(11), right = TreeNode(
+                    data = 30,
+                    left = TreeNode(25)
+                )
+            )
+        )
+
+        val negative = TreeNode(
+            data = 20,
+            left = TreeNode(8),
+            right = TreeNode(40, left = TreeNode(35))
+        )
+        return listOf(positive, negative)
     }
 
     private fun buildBSTsForSwapping(): List<TreeNode<Int>> {
