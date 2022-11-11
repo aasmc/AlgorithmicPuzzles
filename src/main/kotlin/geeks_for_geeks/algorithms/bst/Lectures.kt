@@ -62,7 +62,7 @@ data class LCountNode<T : Comparable<T>>(
  *     since for the right subtree we will be looking not the k-th smallest
  *     element, but (k - lCount + 1)-th element.
  */
-tailrec fun <T: Comparable<T>> findKthSmallestElement(root: LCountNode<T>?, k: Long): T? {
+tailrec fun <T : Comparable<T>> findKthSmallestElement(root: LCountNode<T>?, k: Long): T? {
     if (root == null) return null
     val currentCount = root.lCount + 1
     return when {
@@ -73,12 +73,132 @@ tailrec fun <T: Comparable<T>> findKthSmallestElement(root: LCountNode<T>?, k: L
 }
 
 
+data class TreeNode<T : Comparable<T>>(
+    var data: T,
+    var left: TreeNode<T>? = null,
+    var right: TreeNode<T>? = null
+)
+
+/**
+ * Checks if a given [root] of the [TreeNode] represents a BST.
+ *
+ * Inefficient (Time Complexity O(N^2)) approach, is for every node of the tree:
+ *  - find max in the left subtree
+ *  - find min in right subtree
+ *  - check if the current node is greater than the max and smaller that the min.
+ *
+ *  First Efficient algo (works only for elements where we can specify MAX and MIN possible
+ *  values):
+ *  - pass a range of possible values for every node
+ *  - for root: range is -Infinity to +Infinity
+ *  - for left child of a node, in range, we change upper bound (exclusive) as the node's
+ *    value
+ *  - for right child of a node, in range we change lower bound (exclusive) as the node's value.
+ */
+fun checkForBSTEfficientOne(root: TreeNode<Int>?): Boolean {
+    fun helper(root: TreeNode<Int>?, fromExclusive: Int, toExclusive: Int): Boolean {
+        if (root == null) return true
+        val currentCorrect = root.data in (fromExclusive + 1) until toExclusive
+        // && is a shot-circuit operator, so we will not check left or right subtree,
+        // if current root is not valid
+        return currentCorrect &&
+                helper(root.left, fromExclusive, root.data) &&
+                helper(root.right, root.data, toExclusive)
+    }
+    return helper(root, Int.MIN_VALUE, Int.MAX_VALUE)
+}
+
+/**
+ * Checks if a given [root] of the [TreeNode] represents a BST.
+ *
+ * This algo takes into account the fact that a tree is a BST
+ * if and only if its inOrder traversal produces a sorted result.
+ *
+ */
+fun <T : Comparable<T>> checkForBSTEfficientTwo(root: TreeNode<T>?): Boolean {
+    var predecessor: T? = null
+    fun helper(root: TreeNode<T>?): Boolean {
+        if (root == null) return true
+        if (!helper(root.left)) return false
+        if (predecessor == null) {
+            predecessor = root.data // leftMost leaf node in inOrder traversal
+            return true
+        }
+        if (root.data <= predecessor!!) return false
+        predecessor = root.data
+        return helper(root.right)
+    }
+    return helper(root)
+}
+
+/**
+ * Given a root of a binary tree which is almost a BST, with only two nodes
+ * violating the invariants of the BST, and swapping those two nodes will
+ * turn this tree into a BST, find those two nodes and perform the swap.
+ *
+ * Return the root of the BST after swapping.
+ */
+fun <T : Comparable<T>> fixTreeToBSTWithTwoSwappedNodes(root: TreeNode<T>): TreeNode<T> {
+    // tracks the previous element in inOrder traversal
+    var prev: TreeNode<T>? = null
+    // tracks first violation of the sort order
+    var firstViolation: TreeNode<T>? = null
+    // tracks second violation of the sort order
+    var secondViolation: TreeNode<T>? = null
+
+    fun helper(root: TreeNode<T>?) {
+        if (root != null) {
+            // in inOrder traversal we first go to the left subtree
+            helper(root.left)
+
+            // then we visit current node
+            // if this node's value is less than the value of the previous node
+            // it means there's a violation of the sort order
+            if (prev != null && root.data < prev!!.data) {
+                if (firstViolation == null) {
+                    firstViolation = prev
+                }
+                secondViolation = root
+            }
+            prev = root
+            helper(root.right)
+        }
+    }
+    helper(root)
+    // since for simplicity we maintain a mutable data structure,
+    // we simply swap values in the two incorrect nodes.
+    if (firstViolation != null && secondViolation != null) {
+        val tmp = firstViolation!!.data
+        firstViolation!!.data = secondViolation!!.data
+        secondViolation!!.data = tmp
+    }
+    return root
+}
 
 
-
-
-
-
+fun findAndSwapTwoElementsInArrayToMakeItSorted(arr: IntArray) {
+    var prev = Int.MIN_VALUE
+    var firstIdx: Int? = null
+    var secondIdx: Int? = null
+    for (i in arr.indices) {
+        if (arr[i] < prev) { // if the sort order is violated
+            // if it is the first violation
+            if (firstIdx == null) {
+                // save index of the element that violates the sort order, i.e. index of
+                // the previous element
+                firstIdx = i - 1
+            }
+            // always save the index of the second element
+            secondIdx = i
+        }
+        prev = arr[i]
+    }
+    if (firstIdx != null && secondIdx != null) {
+        val tmp = arr[firstIdx]
+        arr[firstIdx] = arr[secondIdx]
+        arr[secondIdx] = tmp
+    }
+}
 
 
 
