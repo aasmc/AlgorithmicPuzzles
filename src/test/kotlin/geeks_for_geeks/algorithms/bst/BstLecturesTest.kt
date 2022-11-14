@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.bst
 
+import com.sun.source.tree.Tree
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -97,6 +98,46 @@ internal class BstLecturesTest {
         val (positive, negative) = buildBSTForSumPair()
         assertTrue(findPairSumUsingHashSet(positive, 33))
         assertFalse(findPairSumUsingHashSet(negative, 49))
+    }
+
+    @Test
+    fun verticalSumInBinaryTree_correct() {
+        val pairs = buildBSTforVerticalSum()
+        val first = pairs[0]
+        val second = pairs[1]
+
+        val firstTree = first.first
+        val firstExpected = first.second
+        val firstActual = verticalSumInBinaryTree(firstTree)
+        assertEquals(firstExpected, firstActual)
+
+        val secondTree = second.first
+        val secondExpected = second.second
+        val secondActual = verticalSumInBinaryTree(secondTree)
+        assertEquals(secondExpected, secondActual)
+    }
+
+    private fun buildBSTforVerticalSum(): List<Pair<TreeNode<Int>, List<Int>>> {
+        val first = TreeNode(
+            10,
+            left = TreeNode(20, left = TreeNode(5), right = TreeNode(15)),
+            right = TreeNode(30)
+        )
+        val firstResult = listOf(5, 20, 25, 30)
+        val firstPair = first to firstResult
+
+        val second = TreeNode(
+            10,
+            right = TreeNode(25),
+            left = TreeNode(
+                15,
+                left = TreeNode(35, left = TreeNode(40)),
+                right = TreeNode(20, right = TreeNode(75, right = TreeNode(80)))
+            )
+        )
+        val secondResult = listOf(40, 35, 15, 30, 100, 80)
+        val secondPair = second to secondResult
+        return listOf(firstPair, secondPair)
     }
 
     private fun buildBSTForSumPair(): List<TreeNode<Int>> {

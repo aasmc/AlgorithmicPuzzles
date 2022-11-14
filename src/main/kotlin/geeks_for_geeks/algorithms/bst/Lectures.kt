@@ -238,6 +238,28 @@ fun findPairSumUsingHashSet(root: TreeNode<Int>?, sum: Int): Boolean {
     return helper(root)
 }
 
+/**
+ * Computes the sum of nodes of a given BST which are on the same
+ * vertical line in the tree, i.e. they are at the same horizontal distance from
+ * root. Horizontal distance of root is 0, when moving to the left of the root,
+ * we decrement the horizontal distance, when moving to the right - we increment.
+ *
+ * @return a list of integers, representing sums of node values in the tree. The list
+ *         is ordered according to the horizontal distance from root, starging from the
+ *         leftmost node and ending in the rightmost node.
+ */
+fun verticalSumInBinaryTree(root: TreeNode<Int>?): List<Int> {
+    val distanceToSum = TreeMap<Int, Int>()
+    fun helper(root: TreeNode<Int>?, distance: Int) {
+        if (root != null) {
+            helper(root.left, distance - 1)
+            distanceToSum.merge(distance, root.data, Int::plus)
+            helper(root.right, distance + 1)
+        }
+    }
+    helper(root, 0)
+    return distanceToSum.values.toList()
+}
 
 
 
