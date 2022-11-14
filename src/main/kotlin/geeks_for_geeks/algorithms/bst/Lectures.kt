@@ -275,13 +275,12 @@ fun verticalOrderTraversal(root: TreeNode<Int>?): List<List<Int>> {
     val distanceToNodes = TreeMap<Int, MutableList<Int>>()
     // holds pairs of the tree nodes to their distance from root
     val queue = LinkedList<Pair<TreeNode<Int>, Int>>()
-    queue.push(root to 0)
+    queue.add(root to 0)
     while (queue.isNotEmpty()) {
         val (node, distance) = queue.poll()
-        if (distanceToNodes.containsKey(distance)) {
-            distanceToNodes[distance]!!.add(node.data)
-        } else {
-            distanceToNodes[distance] = mutableListOf(node.data)
+        distanceToNodes.merge(distance, mutableListOf(node.data)) {old, new ->
+            old.addAll(new)
+            old
         }
         node.left?.let { queue.add(it to distance - 1) }
         node.right?.let { queue.add(it to distance + 1) }
@@ -289,7 +288,25 @@ fun verticalOrderTraversal(root: TreeNode<Int>?): List<List<Int>> {
     return distanceToNodes.values.toList()
 }
 
+/**
+ * Returns a list of values, stored in the top view
+ * of the given tree. Top view of a tree
+ * is the list of topmost nodes in vertical lines of the tree.
+ */
+fun topViewOfBinaryTree(root: TreeNode<Int>?): List<Int> {
+    if (root == null) return emptyList()
+    val queue = LinkedList<Pair<TreeNode<Int>, Int>>()
+    queue.add(root to 0)
 
+    val distanceToNodes = TreeMap<Int, Int>()
+    while (queue.isNotEmpty()) {
+        val (node, distance) = queue.poll()
+        distanceToNodes.putIfAbsent(distance, node.data)
+        node.left?.let { queue.add(it to distance - 1) }
+        node.right?.let { queue.add(it to distance + 1) }
+    }
+    return distanceToNodes.values.toList()
+}
 
 
 
