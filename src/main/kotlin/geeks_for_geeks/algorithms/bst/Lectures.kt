@@ -278,7 +278,7 @@ fun verticalOrderTraversal(root: TreeNode<Int>?): List<List<Int>> {
     queue.add(root to 0)
     while (queue.isNotEmpty()) {
         val (node, distance) = queue.poll()
-        distanceToNodes.merge(distance, mutableListOf(node.data)) {old, new ->
+        distanceToNodes.merge(distance, mutableListOf(node.data)) { old, new ->
             old.addAll(new)
             old
         }
@@ -298,17 +298,39 @@ fun topViewOfBinaryTree(root: TreeNode<Int>?): List<Int> {
     val queue = LinkedList<Pair<TreeNode<Int>, Int>>()
     queue.add(root to 0)
 
-    val distanceToNodes = TreeMap<Int, Int>()
+    val distanceToValue = TreeMap<Int, Int>()
     while (queue.isNotEmpty()) {
         val (node, distance) = queue.poll()
-        distanceToNodes.putIfAbsent(distance, node.data)
+        distanceToValue.putIfAbsent(distance, node.data)
+        node.left?.let { queue.add(it to distance - 1) }
+        node.right?.let { queue.add(it to distance + 1) }
+    }
+    return distanceToValue.values.toList()
+}
+
+/**
+ * Returns a list of values, stored in the bottom view
+ * of the given tree. Bottom view of a tree
+ * is the list of bottommost nodes in vertical lines of the tree.
+ *
+ * If several nodes are at the same level and have the same distance,
+ * we choose the rightmost node.
+ */
+fun bottomViewOfBinaryTree(root: TreeNode<Int>?): List<Int> {
+    if (root == null) return emptyList()
+    val queue = LinkedList<Pair<TreeNode<Int>, Int>>()
+    val distanceToNodes = TreeMap<Int, Int>()
+
+    queue.add(root to 0)
+    while (queue.isNotEmpty()) {
+        val (node, distance) = queue.poll()
+        // rewrite the previous value, this way we get the last value from current level
+        distanceToNodes[distance] = node.data
         node.left?.let { queue.add(it to distance - 1) }
         node.right?.let { queue.add(it to distance + 1) }
     }
     return distanceToNodes.values.toList()
 }
-
-
 
 
 

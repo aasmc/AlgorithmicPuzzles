@@ -151,6 +151,42 @@ internal class BstLecturesTest {
         assertEquals(secondExpected, secondActual)
     }
 
+    @Test
+    fun bottomViewOfBinaryTree_correct() {
+        val pairs = buildBinaryTreeForBottomView()
+        val first = pairs[0]
+        val second = pairs[1]
+
+        val firstTree = first.first
+        val firstExpected = first.second
+        val firstActual = bottomViewOfBinaryTree(firstTree)
+        assertEquals(firstExpected, firstActual)
+
+        val secondTree = second.first
+        val secondExpected = second.second
+        val secondActual = bottomViewOfBinaryTree(secondTree)
+        assertEquals(secondExpected, secondActual)
+    }
+
+    private fun buildBinaryTreeForBottomView(): List<Pair<TreeNode<Int>, List<Int>>> {
+        val first = TreeNode(
+            10,
+            left = TreeNode(20, left = TreeNode(40), right = TreeNode(50)),
+            right = TreeNode(30)
+        )
+        val firstResult = listOf(40, 20, 50, 30)
+        val firstPair = first to firstResult
+
+        val second = TreeNode(
+            10,
+            left = TreeNode(20, right = TreeNode(50, right = TreeNode(60))),
+            right = TreeNode(30)
+        )
+        val secondResult = listOf(20, 50, 60)
+        val secondPair = second to secondResult
+        return listOf(firstPair, secondPair)
+    }
+
     private fun buildBinaryTreeForTopView(): List<Pair<TreeNode<Int>, List<Int>>> {
         val first = TreeNode(
             10,
