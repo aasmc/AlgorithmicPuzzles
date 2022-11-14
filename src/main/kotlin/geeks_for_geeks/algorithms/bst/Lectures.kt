@@ -261,7 +261,33 @@ fun verticalSumInBinaryTree(root: TreeNode<Int>?): List<Int> {
     return distanceToSum.values.toList()
 }
 
-
+/**
+ * Traverses a given tree in vertical order: according to the horizontal
+ * distances from root. Elements higher in the vertical order come first,
+ * if two elements are at the same level, then first comes the left element,
+ * then goes the right element.
+ *
+ * @return a list of lists of elements, representing the vertical levels of
+ *         the given tree.
+ */
+fun verticalOrderTraversal(root: TreeNode<Int>?): List<List<Int>> {
+    if (root == null) return emptyList()
+    val distanceToNodes = TreeMap<Int, MutableList<Int>>()
+    // holds pairs of the tree nodes to their distance from root
+    val queue = LinkedList<Pair<TreeNode<Int>, Int>>()
+    queue.push(root to 0)
+    while (queue.isNotEmpty()) {
+        val (node, distance) = queue.poll()
+        if (distanceToNodes.containsKey(distance)) {
+            distanceToNodes[distance]!!.add(node.data)
+        } else {
+            distanceToNodes[distance] = mutableListOf(node.data)
+        }
+        node.left?.let { queue.add(it to distance - 1) }
+        node.right?.let { queue.add(it to distance + 1) }
+    }
+    return distanceToNodes.values.toList()
+}
 
 
 

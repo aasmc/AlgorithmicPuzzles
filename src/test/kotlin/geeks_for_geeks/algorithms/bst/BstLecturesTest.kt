@@ -117,6 +117,52 @@ internal class BstLecturesTest {
         assertEquals(secondExpected, secondActual)
     }
 
+    @Test
+    fun verticalOrderTraversal_correct() {
+        val pairs = buildBSTforVerticalTraversal()
+        val first = pairs[0]
+        val second = pairs[1]
+
+        val firstTree = first.first
+        val firstExpected = first.second
+        val firstActual = verticalOrderTraversal(firstTree)
+        assertEquals(firstExpected, firstActual)
+
+        val secondTree = second.first
+        val secondExpected = second.second
+        val secondActual = verticalOrderTraversal(secondTree)
+        assertEquals(secondExpected, secondActual)
+    }
+
+    private fun buildBSTforVerticalTraversal(): List<Pair<TreeNode<Int>, List<List<Int>>>> {
+        val first = TreeNode(
+            10,
+            left = TreeNode(20),
+            right = TreeNode(30, left = TreeNode(40), right = TreeNode(50))
+        )
+        val firstResult = listOf(listOf(20), listOf(10, 40), listOf(30), listOf(50))
+        val firstPair = first to firstResult
+
+        val second = TreeNode(
+            1,
+            left = TreeNode(2, left = TreeNode(4), right = TreeNode(5)),
+            right = TreeNode(
+                3,
+                left = TreeNode(6),
+                right = TreeNode(
+                    7,
+                    left = TreeNode(
+                        8,
+                        left = TreeNode(9)
+                    )
+                )
+            )
+        )
+        val secondResult = listOf(listOf(4), listOf(2), listOf(1,5,6,9), listOf(3, 8), listOf(7))
+        val secondPair = second to secondResult
+        return listOf(firstPair, secondPair)
+    }
+
     private fun buildBSTforVerticalSum(): List<Pair<TreeNode<Int>, List<Int>>> {
         val first = TreeNode(
             10,
