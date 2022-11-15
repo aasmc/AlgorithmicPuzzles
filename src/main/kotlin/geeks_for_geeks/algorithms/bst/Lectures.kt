@@ -211,7 +211,10 @@ fun findPairSumUsingHashMap(root: TreeNode<Int>?, sum: Int): Boolean {
     fun helper(root: TreeNode<Int>?) {
         if (root != null) {
             helper(root.left)
-            cache[root.data] = sum - root.data
+            val toAdd = sum - root.data
+            if (toAdd !=  root.data) {
+                cache[root.data] = toAdd
+            }
             helper(root.right)
         }
     }
