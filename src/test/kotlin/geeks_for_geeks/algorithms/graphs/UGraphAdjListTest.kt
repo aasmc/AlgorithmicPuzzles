@@ -66,12 +66,64 @@ internal class UGraphAdjListTest {
         assertEquals(listOf("C", "E"), bList)
     }
 
+    @Test
+    fun bfsTest() {
+        val g = createStringGraph()
+        g.bfs("A") {
+            println(it)
+        }
+
+        val ig = createIntGraph()
+        ig.bfs(0) {
+            print("$it ")
+        }
+    }
+
+    @Test
+    fun bfsNoSourceTest() {
+        val g = createStringGraph()
+        val c = g.bfsNoSource() {
+            println(it)
+        }
+        assertEquals(2, c)
+
+        val ig = createIntGraph()
+        val ic = ig.bfsNoSource() {
+            print("$it ")
+        }
+        assertEquals(3, ic)
+    }
+
+    private fun createIntGraph(): UGraphAdjList<Int> {
+        return UGraphAdjList<Int>(10).apply {
+            addEdge(0, 1)
+            addEdge(0, 2)
+            addEdge(1, 2)
+            addEdge(1, 3)
+            addEdge(2, 3)
+            addEdge(2, 4)
+            addEdge(3, 4)
+
+            addEdge(5, 6)
+            addEdge(6, 7)
+            addEdge(5, 7)
+
+            addEdge(11, 12)
+            addEdge(12, 13)
+            addEdge(13, 14)
+        }
+    }
+
     private fun createStringGraph(): UGraphAdjList<String> {
         val g = UGraphAdjList<String>(10).apply {
             addEdge("A", "B")
             addEdge("A", "C")
             addEdge("B", "C")
             addEdge("B", "E")
+
+            addEdge("K", "M")
+            addEdge("K", "L")
+            addEdge("L", "M")
         }
         return g
     }
