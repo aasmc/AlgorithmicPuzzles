@@ -1,42 +1,62 @@
 package geeks_for_geeks.algorithms.graphs
 
-class UGraphAdjList<V>(
+class UGraphAdjList<V : Comparable<V>>(
     initialCapacity: Int = 16
 ) {
-    data class VertexHolder<V>(
-        val value: V,
-        val adjacentList: ArrayList<V> = arrayListOf()
-    )
 
-    private var storage: MutableList<VertexHolder<V>> = ArrayList(initialCapacity)
-    private val vertexToIndex = hashMapOf<V, Int>()
-    private val indexToVertex = hashMapOf<Int, V>()
+    private val mapStorage: MutableMap<V, MutableList<V>> = HashMap(initialCapacity)
 
     fun addEdge(from: V, to: V) {
-        val fromIdx = vertexToIndex[from]
-        if (fromIdx != null) {
-            storage[fromIdx].adjacentList.add(to)
-        } else {
-            storage.add(VertexHolder(from, arrayListOf(to)))
-            vertexToIndex[from] = storage.size - 1
-            indexToVertex[storage.size - 1] = from
+        mapStorage.merge(from, arrayListOf(to)) { old, new ->
+            old.addAll(new)
+            old
         }
-        val toIdx = vertexToIndex[to]
-        if (toIdx != null) {
-            storage[toIdx].adjacentList.add(from)
-        } else {
-            storage.add(VertexHolder(to, arrayListOf(from)))
-            vertexToIndex[to] = storage.size - 1
-            indexToVertex[storage.size - 1] = to
+        mapStorage.merge(to, arrayListOf(from)) { old, new ->
+            old.addAll(new)
+            old
         }
     }
 
+    fun checkEdgeExists(from: V, to: V): Boolean {
+        if (!mapStorage.containsKey(from))
+            throw IllegalArgumentException("There's no vertex in the graph: $from")
+
+        return mapStorage[from]?.let { list ->
+            list.firstOrNull { it == to } != null
+        } ?: false
+    }
+
+    fun getAdjacentFor(vertex: V): List<V> {
+        if (!mapStorage.containsKey(vertex))
+            throw IllegalArgumentException("There's no vertex in the graph: $vertex")
+
+        return mapStorage[vertex]!!.toList()
+    }
+
+    fun removeEdge(from: V, to: V): Boolean {
+        if (!mapStorage.containsKey(from))
+            throw IllegalArgumentException("There's no vertex in the graph: $from")
+
+        if (!mapStorage.containsKey(to)) {
+            throw IllegalArgumentException("There's no vertex in the graph: $to")
+        }
+
+        val removedFrom = mapStorage[from]?.remove(to) ?: false
+        val removedTo = mapStorage[to]?.remove(from) ?: false
+        if ((removedFrom && !removedTo) || (!removedFrom && removedTo)) {
+            throw IllegalStateException(
+                "This graph is in inconsistent state, because edges" +
+                        " $from and $to have not been stored correctly!"
+            )
+        }
+        return removedFrom && removedTo
+    }
+
     fun visualizeGraph() {
-        for (i in storage.indices) {
-            val vertex = storage[i]
-            print("${vertex.value} ")
-            for (adj in vertex.adjacentList) {
-                print("$adj ")
+        for ((k, v) in mapStorage) {
+            print("$k ")
+            for (vertex in v) {
+                print("$vertex ")
             }
             println()
         }
