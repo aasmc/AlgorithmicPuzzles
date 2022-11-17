@@ -603,8 +603,7 @@ public class Solution {
         Stack<Node> s1 = new Stack<>();
         Stack<Node> s2 = new Stack<>();
 
-        while (root1 != null || root2 != null
-                || !s1.isEmpty() || !s2.isEmpty()) {
+        while (root1 != null || root2 != null || !s1.isEmpty() || !s2.isEmpty()) {
             // push left view of the tree1 to stack1
             while (root1 != null) {
                 s1.push(root1);
@@ -616,16 +615,12 @@ public class Solution {
                 root2 = root2.left;
             }
 
-            if (s2.isEmpty()
-                    || (!s1.isEmpty()
-                    && s1.peek().data <= s2.peek().data)) {
-                root1 = s1.peek();
-                s1.pop();
+            if (s2.isEmpty() || (!s1.isEmpty() && s1.peek().data <= s2.peek().data)) {
+                root1 = s1.pop();
                 res.add(root1.data);
                 root1 = root1.right;
             } else {
-                root2 = s2.peek();
-                s2.pop();
+                root2 = s2.pop();
                 res.add(root2.data);
                 root2 = root2.right;
             }

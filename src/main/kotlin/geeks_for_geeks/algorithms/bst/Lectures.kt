@@ -1,5 +1,6 @@
 package geeks_for_geeks.algorithms.bst
 
+import com.sun.source.tree.Tree
 import java.util.*
 
 /**
@@ -212,7 +213,7 @@ fun findPairSumUsingHashMap(root: TreeNode<Int>?, sum: Int): Boolean {
         if (root != null) {
             helper(root.left)
             val toAdd = sum - root.data
-            if (toAdd !=  root.data) {
+            if (toAdd != root.data) {
                 cache[root.data] = toAdd
             }
             helper(root.right)
@@ -334,6 +335,57 @@ fun bottomViewOfBinaryTree(root: TreeNode<Int>?): List<Int> {
     }
     return distanceToNodes.values.toList()
 }
+
+fun <T : Comparable<T>> merge(first: TreeNode<T>?, second: TreeNode<T>?): List<T> {
+    val firstStack = Stack<TreeNode<T>>()
+    val secondStack = Stack<TreeNode<T>>()
+    val result = mutableListOf<T>()
+    var currentFirst = first
+    var currentSecond = second
+    while (
+        currentFirst != null || currentSecond != null ||
+        firstStack.isNotEmpty() || secondStack.isNotEmpty()
+    ) {
+        // move leftPointer of the first root to the leftMost node at the same time,
+        // pushing left children onto the firstStack
+        while (currentFirst != null) {
+            firstStack.push(currentFirst)
+            currentFirst = currentFirst.left
+        }
+        // do the same for the second root
+        while (currentSecond != null) {
+            secondStack.push(currentSecond)
+            currentSecond = currentSecond.left
+        }
+
+        if (secondStack.isEmpty() ||
+            (firstStack.isNotEmpty() && firstStack.peek().data <= secondStack.peek().data)
+        ) {
+            currentFirst = firstStack.pop()
+            result.add(currentFirst.data)
+            currentFirst = currentFirst.right
+        } else {
+            currentSecond = secondStack.pop()
+            result.add(currentSecond.data)
+            currentSecond = currentSecond.right
+        }
+    }
+    return result.toList()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
