@@ -14,4 +14,8 @@ interface Graph<V : Comparable<V>> {
      * number of connected components in it.
      */
     fun bfsNoSource(consume: (V) -> Unit): Int
+
+    fun dfs(source: V, consume: (V) -> Unit)
+
+    fun dfsNoSource(consume: (V) -> Unit)
 }

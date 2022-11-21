@@ -1,15 +1,16 @@
 package geeks_for_geeks.algorithms.graphs
 
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
-import kotlin.collections.HashMap
 
+/**
+ * Undirected graph with representation as adjacency list.
+ */
 class UGraphAdjList<V : Comparable<V>>(
     initialCapacity: Int = 16
 ) : Graph<V> {
 
     private val mapStorage: MutableMap<V, MutableList<V>> = HashMap(initialCapacity)
-    private val indexCreator = AtomicInteger(0)
+    private var indexCreator = 0
     private val indexStorage: MutableMap<V, Int> = hashMapOf()
 
     override fun addEdge(from: V, to: V) {
@@ -17,14 +18,20 @@ class UGraphAdjList<V : Comparable<V>>(
             mapStorage[from]!!.add(to)
         } else {
             mapStorage[from] = arrayListOf(to)
-            indexStorage[from] = indexCreator.getAndIncrement()
+            indexStorage[from] = createNextIndex()
         }
         if (mapStorage.containsKey(to)) {
             mapStorage[to]!!.add(from)
         } else {
             mapStorage[to] = arrayListOf(from)
-            indexStorage[to] = indexCreator.getAndIncrement()
+            indexStorage[to] = createNextIndex()
         }
+    }
+
+    private fun createNextIndex(): Int {
+        val current = indexCreator
+        indexCreator++
+        return current
     }
 
     override fun checkEdgeExists(from: V, to: V): Boolean {
@@ -123,6 +130,8 @@ class UGraphAdjList<V : Comparable<V>>(
     /**
      * Performs a BFS traversal of the entire graph, even if some of its edges are
      * disconnected.
+     *
+     * Returns the number of disconnected subgraphs.
      */
     override fun bfsNoSource(consume: (V) -> Unit): Int {
         val visited = BooleanArray(mapStorage.size) { false }
@@ -138,6 +147,38 @@ class UGraphAdjList<V : Comparable<V>>(
             }
         }
         return count
+    }
+
+    override fun dfs(source: V, consume: (V) -> Unit) {
+        val visited = BooleanArray(mapStorage.size) { false }
+        dfsHelper(source, visited, consume)
+    }
+
+    private fun dfsHelper(source: V, visited: BooleanArray, consume: (V) -> Unit) {
+        val idx = indexStorage[source]
+            ?: throw IllegalStateException(
+                "No index for vertex: $source has been saved " +
+                        "when it was inserted into the graph!"
+            )
+        visited[idx] = true
+        consume(source)
+        for (v in getAdjacentFor(source)) {
+            dfsHelper(v, visited, consume)
+        }
+    }
+
+    override fun dfsNoSource(consume: (V) -> Unit) {
+        val visited = BooleanArray(mapStorage.size) { false }
+        for (vertex in mapStorage.keys) {
+            val idx = indexStorage[vertex]
+                ?: throw IllegalStateException(
+                    "No index for vertex: $vertex has been saved " +
+                            "when it was inserted into the graph!"
+                )
+            if (!visited[idx]) {
+                dfsHelper(vertex, visited, consume)
+            }
+        }
     }
 }
 
