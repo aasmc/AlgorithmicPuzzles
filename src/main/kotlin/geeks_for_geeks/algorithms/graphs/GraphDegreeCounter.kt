@@ -3,7 +3,7 @@ package geeks_for_geeks.algorithms.graphs
 class GraphDegreeCounter<V: Comparable<V>>(
     private val graph: Graph<V>
 ) {
-    private val degreeList: MutableList<Int> = ArrayList(graph.getVertexNumber())
+    private val degreeList: MutableList<Int> = ArrayList(graph.getVertexCount())
     init {
         for (v in graph.vertices()) {
             val vIdx = graph.getVertexIdx(v)

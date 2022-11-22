@@ -92,106 +92,6 @@ class GraphAdjList<V : Comparable<V>>(
         }
     }
 
-    /**
-     * Breadth-first traversal of the graph:
-     *   - visit the source vertex
-     *   - visit all adjacent vertices of the source vertex
-     *   - visit all other vertices reachable from the source through its adjacent vertices
-     *
-     *   A vertex is visited only once.
-     */
-    override fun bfs(source: V, consume: (V) -> Unit) {
-        // keeps track of visited vertices
-        val visitedArr = BooleanArray(mapStorage.size) { false }
-
-        bfsHelper(source, visitedArr, consume)
-
-    }
-
-    private fun bfsHelper(source: V, visited: BooleanArray, consume: (V) -> Unit) {
-        val sourceIdx = indexStorage[source]
-            ?: throw IllegalStateException(
-                "No index for vertex: $source has been saved " +
-                        "when it was inserted into the graph!"
-            )
-        visited[sourceIdx] = true
-        val queue = LinkedList<V>()
-        queue.add(source)
-
-        while (queue.isNotEmpty()) {
-            val current = queue.poll()
-            consume(current)
-            val adjList = mapStorage[current] ?: throw IllegalStateException(
-                "Vertex $current has not been saved to the graph!"
-            )
-            for (v in adjList) {
-                val index = indexStorage[v] ?: throw IllegalStateException(
-                    "No index for vertex: $v has been saved " +
-                            "when it was inserted into the graph!"
-                )
-                if (!visited[index]) {
-                    visited[index] = true
-                    queue.add(v)
-                }
-            }
-        }
-    }
-
-    /**
-     * Performs a BFS traversal of the entire graph, even if some of its edges are
-     * disconnected.
-     *
-     * Returns the number of disconnected subgraphs.
-     */
-    override fun bfsNoSource(consume: (V) -> Unit): Int {
-        val visited = BooleanArray(mapStorage.size) { false }
-        var count = 0
-        for (vertex in mapStorage.keys) {
-            val idx = indexStorage[vertex] ?: throw IllegalStateException(
-                "No index for vertex: $vertex has been saved " +
-                        "when it was inserted into the graph!"
-            )
-            if (!visited[idx]) {
-                ++count
-                bfsHelper(vertex, visited, consume)
-            }
-        }
-        return count
-    }
-
-    override fun dfs(source: V, consume: (V) -> Unit) {
-        val visited = BooleanArray(mapStorage.size) { false }
-        dfsHelper(source, visited, consume)
-    }
-
-    private fun dfsHelper(source: V, visited: BooleanArray, consume: (V) -> Unit) {
-        val idx = indexStorage[source]
-            ?: throw IllegalStateException(
-                "No index for vertex: $source has been saved " +
-                        "when it was inserted into the graph!"
-            )
-        visited[idx] = true
-        consume(source)
-        for (v in getAdjacentFor(source)) {
-            dfsHelper(v, visited, consume)
-        }
-    }
-
-    override fun dfsNoSource(consume: (V) -> Unit) {
-        val visited = BooleanArray(mapStorage.size) { false }
-        for (vertex in mapStorage.keys) {
-            val idx = indexStorage[vertex]
-                ?: throw IllegalStateException(
-                    "No index for vertex: $vertex has been saved " +
-                            "when it was inserted into the graph!"
-                )
-            if (!visited[idx]) {
-                dfsHelper(vertex, visited, consume)
-            }
-        }
-    }
-
-
 
     override fun adjIterator(source: V): AdjIterator<V> {
         return GraphAdjListIterator(source)
@@ -224,7 +124,7 @@ class GraphAdjList<V : Comparable<V>>(
         }
     }
 
-    override fun getVertexNumber(): Int {
+    override fun getVertexCount(): Int {
         return mapStorage.size
     }
 

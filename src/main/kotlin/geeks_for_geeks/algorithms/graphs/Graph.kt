@@ -12,7 +12,7 @@ interface Graph<V : Comparable<V>> {
 
     fun visualizeGraph()
 
-    fun getVertexNumber(): Int
+    fun getVertexCount(): Int
 
     fun getEdgeNumber(): Long
 
@@ -28,18 +28,6 @@ interface Graph<V : Comparable<V>> {
      * associated with vertex that is present in the graph.
      */
     fun getVertexIdx(vertex: V): Int
-
-    fun bfs(source: V, consume: (V) -> Unit)
-
-    /**
-     * Performs a BFS traversal of the graph and returns the
-     * number of connected components in it.
-     */
-    fun bfsNoSource(consume: (V) -> Unit): Int
-
-    fun dfs(source: V, consume: (V) -> Unit)
-
-    fun dfsNoSource(consume: (V) -> Unit)
 
     fun adjIterator(source: V): AdjIterator<V>
 
