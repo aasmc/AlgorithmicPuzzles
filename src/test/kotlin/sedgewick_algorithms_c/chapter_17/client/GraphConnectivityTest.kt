@@ -5,11 +5,12 @@ import org.junit.jupiter.api.Test
 import sedgewick_algorithms_c.chapter_17.util.GraphCreator
 
 internal class GraphConnectivityTest {
-    private val g = GraphCreator.createDenseGraph()
+    private val g = GraphCreator.createUndirectedSparseGraph()
     private val sut = GraphConnectivity(g)
 
     @Test
     fun testConnectedComponentCount() {
+        GraphIO.show(g)
         assertEquals(2, sut.count())
     }
 
