@@ -2,9 +2,7 @@ package geeks_for_geeks.algorithms.graphs
 
 import java.util.*
 
-class BFSTraverser<V : Comparable<V>>(
-    private val graph: Graph<V>
-) {
+object BFSTraverser {
 
     /**
      * Performs a BFS traversal of the entire graph, even if some of its edges are
@@ -12,14 +10,14 @@ class BFSTraverser<V : Comparable<V>>(
      *
      * Returns the number of disconnected subgraphs.
      */
-    fun bfsNoSource(consume: (V) -> Unit): Int {
+    fun <V: Comparable<V>> bfsNoSource(graph: Graph<V>, consume: (V) -> Unit): Int {
         val visited = BooleanArray(graph.getVertexCount()) { false }
         var count = 0
         for (vertex in graph.vertices()) {
             val idx = graph.getVertexIdx(vertex)
             if (!visited[idx]) {
                 ++count
-                bfsHelper(vertex, visited, consume)
+                bfsHelper(graph, vertex, visited, consume)
             }
         }
         return count
@@ -34,7 +32,7 @@ class BFSTraverser<V : Comparable<V>>(
      *
      *   A vertex is visited only once.
      */
-    private fun bfsHelper(source: V, visited: BooleanArray, consume: (V) -> Unit) {
+    private fun <V: Comparable<V>> bfsHelper(graph: Graph<V>, source: V, visited: BooleanArray, consume: (V) -> Unit) {
         val sourceIdx = graph.getVertexIdx(source)
         visited[sourceIdx] = true
         val queue = LinkedList<V>()
@@ -53,9 +51,9 @@ class BFSTraverser<V : Comparable<V>>(
         }
     }
 
-    fun bfsForSource(source: V, consume: (V) -> Unit) {
+    fun <V: Comparable<V>> bfsForSource(graph: Graph<V>, source: V, consume: (V) -> Unit) {
         val visited = BooleanArray(graph.getVertexCount()) { false }
-        bfsHelper(source, visited, consume)
+        bfsHelper(graph, source, visited, consume)
     }
 
     /**
@@ -65,7 +63,7 @@ class BFSTraverser<V : Comparable<V>>(
      *
      * -1 represents, that there's no path from source to that vertex.
      */
-    fun findShortestPathsForSource(source: V): IntArray {
+    fun <V: Comparable<V>> findShortestPathsForSource(graph: Graph<V>, source: V): IntArray {
         val result = IntArray(graph.getVertexCount()) { -1 }
         val visited = BooleanArray(graph.getVertexCount())
         val queue = LinkedList<V>()

@@ -6,7 +6,7 @@ interface Graph<V : Comparable<V>> {
 
     fun checkEdgeExists(from: V, to: V): Boolean
 
-    fun getAdjacentFor(vertex: V): List<V>
+    fun getAdjacentFor(vertex: V): Iterable<V>
 
     fun removeEdge(from: V, to: V): Boolean
 
@@ -14,7 +14,7 @@ interface Graph<V : Comparable<V>> {
 
     fun getVertexCount(): Int
 
-    fun getEdgeNumber(): Long
+    fun getEdgeCount(): Long
 
     fun vertices(): Set<V>
 
@@ -30,6 +30,8 @@ interface Graph<V : Comparable<V>> {
     fun getVertexIdx(vertex: V): Int
 
     fun adjIterator(source: V): AdjIterator<V>
+
+    fun isDirected(): Boolean
 
 }
 

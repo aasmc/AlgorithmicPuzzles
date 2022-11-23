@@ -16,6 +16,18 @@ internal class GraphAdjListTest {
         graph.addEdge(1, 2)
         graph.addEdge(1, 3)
         graph.visualizeGraph()
+
+        assertEquals(4, graph.getVertexCount())
+        assertEquals(8, graph.getEdgeCount())
+
+        assertTrue(graph.checkEdgeExists(0, 1))
+        assertTrue(graph.checkEdgeExists(1, 0))
+        assertTrue(graph.checkEdgeExists(0, 2))
+        assertTrue(graph.checkEdgeExists(2, 0))
+        assertTrue(graph.checkEdgeExists(1, 2))
+        assertTrue(graph.checkEdgeExists(2, 1))
+        assertTrue(graph.checkEdgeExists(1, 3))
+        assertTrue(graph.checkEdgeExists(3, 1))
     }
 
     @Test
@@ -26,6 +38,18 @@ internal class GraphAdjListTest {
         g.addEdge("B", "C")
         g.addEdge("B", "E")
         g.visualizeGraph()
+
+        assertEquals(4, g.getVertexCount())
+        assertEquals(8, g.getEdgeCount())
+
+        assertTrue(g.checkEdgeExists("A", "B"))
+        assertTrue(g.checkEdgeExists("A", "C"))
+        assertTrue(g.checkEdgeExists("B", "A"))
+        assertTrue(g.checkEdgeExists("B", "C"))
+        assertTrue(g.checkEdgeExists("B", "E"))
+        assertTrue(g.checkEdgeExists("C", "A"))
+        assertTrue(g.checkEdgeExists("C", "B"))
+        assertTrue(g.checkEdgeExists("E", "B"))
     }
 
     @Test
@@ -54,7 +78,7 @@ internal class GraphAdjListTest {
         val removed = g.removeEdge("B", "A")
         assertTrue(removed)
         val aList = g.getAdjacentFor("A")
-        assertEquals(1, aList.size)
+        assertEquals(1, aList.count())
         assertEquals(listOf("C"), aList)
 
         assertThrows<IllegalArgumentException>() {
@@ -62,7 +86,7 @@ internal class GraphAdjListTest {
         }
 
         val bList = g.getAdjacentFor("B")
-        assertEquals(2, bList.size)
+        assertEquals(2, bList.count())
         assertEquals(listOf("C", "E"), bList)
     }
 

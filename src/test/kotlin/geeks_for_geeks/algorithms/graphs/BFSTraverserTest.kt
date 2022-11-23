@@ -8,50 +8,51 @@ internal class BFSTraverserTest {
 
     private lateinit var intGraph: Graph<Int>
     private lateinit var stringGraph: Graph<String>
-    private lateinit var intBfsTraverser: BFSTraverser<Int>
-    private lateinit var stringBfsTraverser: BFSTraverser<String>
+    private val bfsTraverser: BFSTraverser = BFSTraverser
 
     @BeforeEach
     fun setup() {
         intGraph = createIntGraph()
         stringGraph = createStringGraph()
-        intBfsTraverser = BFSTraverser(intGraph)
-        stringBfsTraverser = BFSTraverser(stringGraph)
     }
 
     @Test
     fun bfsTestInt() {
-        intBfsTraverser.bfsNoSource {
+        bfsTraverser.bfsNoSource(intGraph) {
             print("$it ")
         }
 
         println()
 
-        intBfsTraverser.bfsForSource(0) {
+        bfsTraverser.bfsForSource(intGraph, 0) {
             print("$it ")
         }
+        println()
+
     }
 
     @Test
     fun bfsTestString() {
-        stringBfsTraverser.bfsNoSource {
+        bfsTraverser.bfsNoSource(stringGraph) {
             print("$it ")
         }
 
         println()
-        stringBfsTraverser.bfsForSource("A") {
+        bfsTraverser.bfsForSource(stringGraph,"A") {
             print("$it ")
         }
+        println()
+
     }
 
     @Test
     fun shortestPathsTest() {
         val expected = intArrayOf(0, 1, 1, 2, -1, -1, -1)
-        val result = stringBfsTraverser.findShortestPathsForSource("A")
+        val result = bfsTraverser.findShortestPathsForSource(stringGraph,"A")
         assertTrue(result.contentEquals(expected))
 
         val ex = intArrayOf(-1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3)
-        val res = intBfsTraverser.findShortestPathsForSource(11)
+        val res = bfsTraverser.findShortestPathsForSource(intGraph,11)
         assertTrue(res.contentEquals(ex))
     }
 
