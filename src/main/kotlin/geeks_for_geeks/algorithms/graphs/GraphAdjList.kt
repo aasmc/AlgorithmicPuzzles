@@ -8,10 +8,10 @@ class GraphAdjList<V : Comparable<V>>(
     initialCapacity: Int = 16
 ) : Graph<V> {
 
-    private val adjStorage: MutableList<MutableList<V>> = ArrayList(initialCapacity)
+    private val adjStorage: MutableList<MutableSet<V>> = ArrayList(initialCapacity)
     private var lastVertexIndex = 0
     private val vertexToIndex: MutableMap<V, Int> = hashMapOf()
-    private var edgeNumber = 0L
+    private var edgeCount = 0L
     private val edgeSymbols: MutableSet<Int> = hashSetOf()
 
     override fun addEdge(from: V, to: V) {
@@ -24,13 +24,24 @@ class GraphAdjList<V : Comparable<V>>(
 
         if (!checkEdgeExists(from, to)) {
             val idx = vertexToIndex[from]!!
-            val fromList = adjStorage.getOrNull(idx)
-            if (fromList == null) {
-                adjStorage.add(idx, arrayListOf(to))
+            val fromSet = adjStorage.getOrNull(idx)
+            if (fromSet == null) {
+                if (directed) {
+                    // in a directed graph with unconnected components
+                    // a vertex may have an index but no adjacent (outgoing)
+                    // vertices, therefore it will initially have no set of adjacent
+                    // vertices in the storage, but since we use arraylist based storage
+                    // here, we need to ensure there's an empty set in the storage
+                    // for this vertex, otherwise we'll have IndexOutOfBoundsException
+                    for (i in 0 until idx) {
+                        adjStorage.add(hashSetOf())
+                    }
+                }
+                adjStorage.add(idx, hashSetOf(to))
             } else {
-                fromList.add(to)
+                fromSet.add(to)
             }
-            ++edgeNumber
+            ++edgeCount
             val edgeKey = getEdgeKey(from, to)
             edgeSymbols.add(edgeKey)
         }
@@ -39,13 +50,13 @@ class GraphAdjList<V : Comparable<V>>(
             if (!checkEdgeExists(to, from)) {
 
                 val idx = vertexToIndex[to]!!
-                val toList = adjStorage.getOrNull(idx)
-                if (toList == null) {
-                    adjStorage.add(idx, arrayListOf(from))
+                val toSet = adjStorage.getOrNull(idx)
+                if (toSet == null) {
+                    adjStorage.add(idx, hashSetOf(from))
                 } else {
-                    toList.add(from)
+                    toSet.add(from)
                 }
-                ++edgeNumber
+                ++edgeCount
                 val edgeKey = getEdgeKey(to, from)
                 edgeSymbols.add(edgeKey)
             }
@@ -71,15 +82,16 @@ class GraphAdjList<V : Comparable<V>>(
         return edgeSymbols.contains(edgeKey)
     }
 
-    override fun getAdjacentFor(vertex: V): Iterable<V> {
+    override fun getAdjacentFor(vertex: V): Set<V> {
         val idx = vertexToIndex[vertex]
             ?: throw IllegalArgumentException("There's no vertex in the graph: $vertex")
         val adjList = adjStorage.getOrNull(idx)
-        return adjList?.toList() ?: emptyList()
+        return adjList?.toSet() ?: emptySet()
     }
 
     override fun removeEdge(from: V, to: V): Boolean {
         if (!checkEdgeExists(from, to)) return false
+
         val fromIdx = vertexToIndex[from]
             ?: throw IllegalArgumentException("There's no vertex in the graph: $from")
 
@@ -87,7 +99,6 @@ class GraphAdjList<V : Comparable<V>>(
             ?: throw IllegalArgumentException("There's no vertex in the graph: $to")
         val fromList = adjStorage.getOrNull(fromIdx)
         val fromRemoved = fromList?.remove(to) ?: false
-        --edgeNumber
 
         if (!directed) {
             val toList = adjStorage.getOrNull(toIdx)
@@ -99,10 +110,20 @@ class GraphAdjList<V : Comparable<V>>(
                             " $from and $to have not been stored correctly!"
                 )
             }
-            --edgeNumber
+            if (toRemoved && fromRemoved) {
+                val fromToKey = getEdgeKey(from, to)
+                val toFromKey = getEdgeKey(to, from)
+                edgeSymbols.remove(toFromKey)
+                edgeSymbols.remove(fromToKey)
+                edgeCount -= 2
+            }
             return toRemoved && fromRemoved
         }
-
+        if (fromRemoved) {
+            val fromToKey = getEdgeKey(from, to)
+            edgeSymbols.remove(fromToKey)
+            --edgeCount
+        }
         return fromRemoved
     }
 
@@ -130,7 +151,7 @@ class GraphAdjList<V : Comparable<V>>(
     }
 
     override fun getEdgeCount(): Long {
-        return edgeNumber
+        return edgeCount
     }
 
     override fun vertices(): Set<V> {
@@ -146,19 +167,16 @@ class GraphAdjList<V : Comparable<V>>(
     ) : AdjIterator<V> {
         private val sourceIdx = vertexToIndex[source]
             ?: throw IllegalArgumentException("Called adjIterator for vertex $source that is not in the graph!")
-        private val currentAdjList = adjStorage.getOrNull(sourceIdx)
-
-        private var currentIdx = 0
+        private val currentAdjSet = adjStorage.getOrNull(sourceIdx)
+        val iterator = currentAdjSet?.iterator()
 
         override fun next(): V {
-            currentAdjList?.let { list ->
-                return list[currentIdx++]
-            } ?: throw IllegalAccessException("You should call hasNext before calling next to ensure iterator validity")
+            return iterator?.next()
+                ?: throw IllegalAccessException("You should call hasNext before calling next to ensure iterator validity")
         }
 
         override fun hasNext(): Boolean {
-            if (currentAdjList.isNullOrEmpty()) return false
-            return currentIdx < currentAdjList.size
+            return iterator?.hasNext() ?: false
         }
     }
 }

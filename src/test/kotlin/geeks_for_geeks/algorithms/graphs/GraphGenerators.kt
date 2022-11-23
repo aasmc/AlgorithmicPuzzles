@@ -2,6 +2,29 @@ package geeks_for_geeks.algorithms.graphs
 
 object GraphGenerators {
 
+    fun createDirectedGraphNoCycle6Vertices5Edges(): GraphAdjList<Int> {
+        return GraphAdjList<Int>(directed = true).apply {
+            addEdge(1, 3)
+            addEdge(1, 4)
+            addEdge(3, 4)
+            addEdge(4, 2)
+
+            addEdge(5, 6)
+        }
+    }
+
+    fun createDirectedGraphWithCycle6Vertices6Edges(): GraphAdjList<Int> {
+        return GraphAdjList<Int>(directed = true).apply {
+            addEdge(1, 3)
+            addEdge(1, 4)
+            addEdge(3, 4)
+            addEdge(4, 2)
+            addEdge(2, 1)
+
+            addEdge(5, 6)
+        }
+    }
+
     fun createStringGraphAdjListNoCycle(): GraphAdjList<String> {
         return GraphAdjList<String>(false, 10).apply {
             addEdge("a", "b")

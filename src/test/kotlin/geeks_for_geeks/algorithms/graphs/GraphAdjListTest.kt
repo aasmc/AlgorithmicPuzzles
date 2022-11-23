@@ -31,6 +31,30 @@ internal class GraphAdjListTest {
     }
 
     @Test
+    fun addEdgeDirected() {
+        val g = GraphGenerators.createDirectedGraphWithCycle6Vertices6Edges()
+        assertEquals(6, g.getVertexCount())
+        assertEquals(6, g.getEdgeCount())
+
+        // same edge, no addition
+        g.addEdge(5, 6)
+        assertEquals(6, g.getVertexCount())
+        assertEquals(6, g.getEdgeCount())
+
+        // new edge
+        g.addEdge(6, 7)
+        assertEquals(7, g.getVertexCount())
+        assertEquals(7, g.getEdgeCount())
+
+        g.addEdge(7, 6)
+        assertEquals(7, g.getVertexCount())
+        assertEquals(8, g.getEdgeCount())
+        assertTrue(g.checkEdgeExists(7, 6))
+        assertTrue(g.checkEdgeExists(6, 7))
+        assertFalse(g.checkEdgeExists(6, 1))
+    }
+
+    @Test
     fun addEdgeTestStringGraph() {
         val g = GraphAdjList<String>(false,10)
         g.addEdge("A", "B")
@@ -64,7 +88,7 @@ internal class GraphAdjListTest {
     fun getAdjacentForTest() {
         val g = createStringGraph()
         val adj = g.getAdjacentFor("B")
-        val expected = listOf("A", "C", "E")
+        val expected = setOf("A", "C", "E")
         assertEquals(expected, adj)
 
         assertThrows<IllegalArgumentException>(){
@@ -73,21 +97,87 @@ internal class GraphAdjListTest {
     }
 
     @Test
-    fun removeEdgeTest() {
+    fun getAdjacentDirectedGraph() {
+        val g = GraphGenerators.createDirectedGraphNoCycle6Vertices5Edges()
+        val ex = setOf(3, 4)
+        val ac = g.getAdjacentFor(1)
+        assertEquals(ex, ac)
+
+        val ex1 = setOf<Int>()
+        val ac1 = g.getAdjacentFor(2)
+        assertEquals(ex1, ac1)
+
+        val ex2 = setOf(6)
+        val ac2 = g.getAdjacentFor(5)
+        assertEquals(ex2, ac2)
+    }
+
+    @Test
+    fun testDirectedIterator() {
+        val g = GraphGenerators.createDirectedGraphWithCycle6Vertices6Edges()
+        val iterator = g.adjIterator(1)
+        val result = mutableSetOf<Int>()
+        while (iterator.hasNext()) {
+            result.add(iterator.next())
+        }
+        val ex = setOf(3, 4)
+        assertEquals(result.toSet(), ex)
+    }
+
+    @Test
+    fun removeEdgeTestUndirected() {
         val g = createStringGraph()
+        assertEquals(7, g.getVertexCount())
+        assertEquals(14, g.getEdgeCount())
+
         val removed = g.removeEdge("B", "A")
         assertTrue(removed)
+        assertEquals(12, g.getEdgeCount())
+
         val aList = g.getAdjacentFor("A")
-        assertEquals(1, aList.count())
-        assertEquals(listOf("C"), aList)
+        assertEquals(1, aList.size)
+        assertEquals(setOf("C"), aList)
 
         assertThrows<IllegalArgumentException>() {
             g.removeEdge("A", "U")
         }
 
         val bList = g.getAdjacentFor("B")
-        assertEquals(2, bList.count())
-        assertEquals(listOf("C", "E"), bList)
+        assertEquals(2, bList.size)
+        assertEquals(setOf("C", "E"), bList)
+
+        assertEquals(7, g.getVertexCount())
+
+        assertTrue(g.removeEdge("K", "M"))
+        assertEquals(10, g.getEdgeCount())
+
+        assertTrue(g.removeEdge("M", "L"))
+        assertEquals(8, g.getEdgeCount())
+
+        assertTrue(g.removeEdge("L", "K"))
+        assertEquals(6, g.getEdgeCount())
+
+        assertFalse(g.removeEdge("K", "M"))
+        assertEquals(6, g.getEdgeCount())
+
+        assertFalse(g.removeEdge("M", "L"))
+        assertEquals(6, g.getEdgeCount())
+
+        assertFalse(g.removeEdge("L", "K"))
+        assertEquals(6, g.getEdgeCount())
+
+        assertEquals(7, g.getVertexCount())
+    }
+
+    @Test
+    fun removeEdgeTestDirected() {
+        val g = GraphGenerators.createDirectedGraphNoCycle6Vertices5Edges()
+        assertEquals(6, g.getVertexCount())
+        assertEquals(5, g.getEdgeCount())
+
+        assertTrue(g.removeEdge(5, 6))
+        assertEquals(6, g.getVertexCount())
+        assertEquals(4, g.getEdgeCount())
     }
 
 
