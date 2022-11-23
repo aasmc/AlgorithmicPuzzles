@@ -6,7 +6,7 @@ interface Graph<V : Comparable<V>> {
 
     fun checkEdgeExists(from: V, to: V): Boolean
 
-    fun getAdjacentFor(vertex: V): Iterable<V>
+    fun getAdjacentFor(vertex: V): Collection<V>
 
     fun removeEdge(from: V, to: V): Boolean
 

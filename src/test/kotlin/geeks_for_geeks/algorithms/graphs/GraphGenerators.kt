@@ -2,7 +2,7 @@ package geeks_for_geeks.algorithms.graphs
 
 object GraphGenerators {
 
-    fun createDirectedGraphNoCycle6Vertices5Edges(): GraphAdjList<Int> {
+    fun createDirectedGraphNoCycle6Vertices5Edges(): Graph<Int> {
         return GraphAdjList<Int>(directed = true).apply {
             addEdge(1, 3)
             addEdge(1, 4)
@@ -13,7 +13,7 @@ object GraphGenerators {
         }
     }
 
-    fun createDirectedGraphWithCycle6Vertices6Edges(): GraphAdjList<Int> {
+    fun createDirectedGraphWithCycle6Vertices6Edges(): Graph<Int> {
         return GraphAdjList<Int>(directed = true).apply {
             addEdge(1, 3)
             addEdge(1, 4)
@@ -25,7 +25,7 @@ object GraphGenerators {
         }
     }
 
-    fun createStringGraphAdjListNoCycle(): GraphAdjList<String> {
+    fun createStringGraphAdjListNoCycle(): Graph<String> {
         return GraphAdjList<String>(false, 10).apply {
             addEdge("a", "b")
             addEdge("b", "c")
@@ -35,7 +35,7 @@ object GraphGenerators {
         }
     }
 
-    fun createStringGraphAdjListWithCycle(): GraphAdjList<String> {
+    fun createStringGraphAdjListWithCycle(): Graph<String> {
         val g = GraphAdjList<String>(false,10).apply {
             addEdge("A", "B")
             addEdge("A", "C")
@@ -49,7 +49,7 @@ object GraphGenerators {
         return g
     }
 
-    fun createIntGraphAdjListWithCycle(): GraphAdjList<Int> {
+    fun createIntGraphAdjListWithCycle(): Graph<Int> {
         return GraphAdjList<Int>(false,10).apply {
             addEdge(0, 1)
             addEdge(0, 2)
