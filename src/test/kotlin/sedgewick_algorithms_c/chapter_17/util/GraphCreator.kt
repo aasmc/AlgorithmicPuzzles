@@ -46,6 +46,18 @@ object GraphCreator {
         }
     }
 
+    fun createDirectedSparseGraphLinkedList(): Graph {
+        return SparseMultiGraph(7, true).apply {
+            insert(Edge(0, 1))
+            insert(Edge(2, 1))
+            insert(Edge(2, 3))
+            insert(Edge(3, 4))
+            insert(Edge(3, 5))
+            insert(Edge(3, 6))
+            insert(Edge(6, 0))
+        }
+    }
+
     fun createUndirectedEmptySparseGraph(): Graph {
         return SparseMultiGraph(7, false)
     }

@@ -3,23 +3,29 @@ package sedgewick_algorithms_c.chapter_17.client
 import sedgewick_algorithms_c.chapter_17.adt.Graph
 
 class DegreeCounter(
-    private val graph: Graph
+    graph: Graph
 ) {
-    private val degree: MutableList<Int> = arrayListOf()
+    private val outDegree: MutableList<Int> = arrayListOf()
+    private val inDegree: MutableMap<Int, Int> = hashMapOf()
 
     init {
         for (i in 0 until graph.vertexCount()) {
-            degree.add(i, 0)
+            outDegree.add(i, 0)
             val iterator = graph.adjIterator(i)
             var next = iterator.beg()
             while (!iterator.end()) {
-                degree[i]++
+                inDegree.merge(next, 1, Int::plus)
+                outDegree[i]++
                 next = iterator.nxt()
             }
         }
     }
 
-    operator fun get(vertex: Int): Int {
-        return degree[vertex]
+    fun getOutDegree(vertex: Int): Int {
+        return outDegree[vertex]
+    }
+
+    fun getInDegree(vertex: Int): Int {
+        return inDegree[vertex] ?: 0
     }
 }
