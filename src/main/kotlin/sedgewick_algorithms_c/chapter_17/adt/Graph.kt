@@ -13,6 +13,8 @@ interface Graph {
     fun remove(edge: Edge)
     fun checkEdgeExists(edge: Edge): Boolean
     fun adjIterator(v: Int): AdjIterator
+
+    fun countIsolatedVertices(): Int
 }
 
 interface AdjIterator {

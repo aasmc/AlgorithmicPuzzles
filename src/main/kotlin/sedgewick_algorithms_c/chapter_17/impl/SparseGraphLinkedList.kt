@@ -142,6 +142,10 @@ class SparseGraphLinkedList(
         return AdjListAdjIterator(v)
     }
 
+    override fun countIsolatedVertices(): Int {
+        return adjStorage.count { it == null }
+    }
+
     private fun computeEdgeKey(from: Int, to: Int): Int {
         return from * vertexCount + to
     }

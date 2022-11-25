@@ -105,6 +105,10 @@ class SparseMultiGraph(
         return AdjListAdjIterator(v)
     }
 
+    override fun countIsolatedVertices(): Int {
+        return adjStorage.count { it == null }
+    }
+
     private inner class AdjListAdjIterator(
         val vertex: Int
     ) : AdjIterator {

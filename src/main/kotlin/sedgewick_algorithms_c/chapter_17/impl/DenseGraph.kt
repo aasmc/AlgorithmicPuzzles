@@ -55,6 +55,18 @@ class DenseGraph(
         return MatrixAdjIterator(v)
     }
 
+    override fun countIsolatedVertices(): Int {
+        var count = 0
+        for (i in adjMatrix.indices) {
+            val list = adjMatrix[i]
+            val isolated = list.count { it } == 0
+            if (isolated) {
+                ++count
+            }
+        }
+        return count
+    }
+
     private inner class MatrixAdjIterator(
         private val vertex: Int
     ): AdjIterator {
