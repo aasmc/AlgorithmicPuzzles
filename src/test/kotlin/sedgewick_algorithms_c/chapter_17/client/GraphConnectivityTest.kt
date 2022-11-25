@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import sedgewick_algorithms_c.chapter_17.util.GraphCreator
 
 internal class GraphConnectivityTest {
-    private val g = GraphCreator.createUndirectedSparseGraph()
+    private val g = GraphCreator.createUndirectedSparseGraphLinkedList()
     private val sut = GraphConnectivity(g)
 
     @Test
