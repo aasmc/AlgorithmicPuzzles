@@ -13,6 +13,16 @@ object GraphGenerators {
         }
     }
 
+    fun createDAGForTopologicalSort(): Graph<Int> {
+        return GraphAdjList<Int>(directed = true).apply {
+            addEdge(0, 2)
+            addEdge(0, 3)
+            addEdge(2, 3)
+            addEdge(1, 3)
+            addEdge(1, 4)
+        }
+    }
+
     fun createDirectedGraphWithCycle6Vertices6Edges(): Graph<Int> {
         return GraphAdjList<Int>(directed = true).apply {
             addEdge(1, 3)

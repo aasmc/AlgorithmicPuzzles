@@ -29,7 +29,7 @@ object UndirectedGraphCycleDetector {
                     return true
                 }
              // we already visited the vertex, but need to make sure it is not
-             // our parent, because we are in undirected graph, this vertex has parent
+             // our parent, because we are in undirected graph, this vertex (source) has parent
              // among its adjacent vertices as well.
             } else if (parent != null && v.compareTo(parent) != 0) {
                 return true

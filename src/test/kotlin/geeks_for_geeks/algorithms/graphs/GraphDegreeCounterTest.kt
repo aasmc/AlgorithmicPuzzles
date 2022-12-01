@@ -32,17 +32,17 @@ internal class GraphDegreeCounterTest {
 
     @Test
     fun testPositiveScenario() {
-        assertEquals(4, sut[Vertex(0)])
-        assertEquals(3, sut[Vertex(3)])
-        assertEquals(3, sut[Vertex(4)])
-        assertEquals(2, sut[Vertex(2)])
-        assertEquals(2, sut[Vertex(1)])
+        assertEquals(4, sut.getOutDegree(Vertex(0)))
+        assertEquals(3, sut.getOutDegree(Vertex(3)))
+        assertEquals(3, sut.getOutDegree(Vertex(4)))
+        assertEquals(2, sut.getOutDegree(Vertex(2)))
+        assertEquals(2, sut.getOutDegree(Vertex(1)))
     }
 
     @Test
     fun testNoVertexThrows() {
         assertThrows(IllegalArgumentException::class.java) {
-            sut[Vertex(10)]
+            sut.getOutDegree(Vertex(10))
         }
     }
 }
