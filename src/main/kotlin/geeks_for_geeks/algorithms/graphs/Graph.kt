@@ -2,7 +2,7 @@ package geeks_for_geeks.algorithms.graphs
 
 interface Graph<V : Comparable<V>> {
 
-    fun addEdge(from: V, to: V)
+    fun addEdge(from: V, to: V, weight: Double = 0.0)
 
     fun checkEdgeExists(from: V, to: V): Boolean
 
@@ -32,6 +32,8 @@ interface Graph<V : Comparable<V>> {
     fun adjIterator(source: V): AdjIterator<V>
 
     fun isDirected(): Boolean
+
+    fun getWeight(from: V, to: V): Double
 
 }
 

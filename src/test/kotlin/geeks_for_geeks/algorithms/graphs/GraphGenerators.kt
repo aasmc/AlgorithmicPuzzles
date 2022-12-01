@@ -59,6 +59,18 @@ object GraphGenerators {
         return g
     }
 
+    fun createWeightedDirectedAcyclicGraph(): Graph<Int> {
+        return GraphAdjList<Int>(directed = true).apply {
+            addEdge(0, 1, 2.0)
+            addEdge(1, 2, 3.0)
+            addEdge(0, 4, 1.0)
+            addEdge(4, 2, 2.0)
+            addEdge(4, 5, 4.0)
+            addEdge(2, 3, 6.0)
+            addEdge(5, 3, 1.0)
+        }
+    }
+
     fun createIntGraphAdjListWithCycle(): Graph<Int> {
         return GraphAdjList<Int>(false,10).apply {
             addEdge(0, 1)

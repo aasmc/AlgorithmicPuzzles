@@ -13,8 +13,9 @@ class GraphAdjList<V : Comparable<V>>(
     private val vertexToIndex: MutableMap<V, Int> = hashMapOf()
     private var edgeCount = 0L
     private val edgeSymbols: MutableSet<Int> = hashSetOf()
+    private val edgeWeights: MutableMap<Int, Double> = hashMapOf()
 
-    override fun addEdge(from: V, to: V) {
+    override fun addEdge(from: V, to: V, weight: Double) {
         vertexToIndex.computeIfAbsent(from) { _ ->
             createNextIndex()
         }
@@ -44,6 +45,7 @@ class GraphAdjList<V : Comparable<V>>(
             ++edgeCount
             val edgeKey = getEdgeKey(from, to)
             edgeSymbols.add(edgeKey)
+            edgeWeights[edgeKey] = weight
         }
 
         if (!directed) {
@@ -59,6 +61,7 @@ class GraphAdjList<V : Comparable<V>>(
                 ++edgeCount
                 val edgeKey = getEdgeKey(to, from)
                 edgeSymbols.add(edgeKey)
+                edgeWeights[edgeKey] = weight
             }
         }
     }
@@ -160,6 +163,11 @@ class GraphAdjList<V : Comparable<V>>(
 
     override fun isDirected(): Boolean {
         return directed
+    }
+
+    override fun getWeight(from: V, to: V): Double {
+        val edgeKey = getEdgeKey(from, to)
+        return edgeWeights[edgeKey] ?: throw IllegalArgumentException("Graph doesn't contain edge from $from to $to")
     }
 
     private inner class GraphAdjListIterator(
