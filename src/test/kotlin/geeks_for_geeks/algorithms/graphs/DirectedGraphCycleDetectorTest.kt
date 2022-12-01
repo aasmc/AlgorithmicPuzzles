@@ -11,10 +11,12 @@ internal class DirectedGraphCycleDetectorTest {
     @Test
     fun correctlyDeterminesNoCycle_whenNoCycleInGraph() {
         assertFalse(sut.detectCycleViaDFS(noCycleGraph))
+        assertFalse(sut.detectCycleViaBFS(noCycleGraph))
     }
 
     @Test
     fun correctlyIdentifiesCycle_whenCycleInGraph() {
         assertTrue(sut.detectCycleViaDFS(cycleGraph))
+        assertTrue(sut.detectCycleViaBFS(cycleGraph))
     }
 }

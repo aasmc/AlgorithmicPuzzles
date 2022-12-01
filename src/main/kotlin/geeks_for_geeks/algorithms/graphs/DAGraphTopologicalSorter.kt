@@ -9,7 +9,7 @@ object DAGraphTopologicalSorter {
      * Sorts vertices of the given directed acyclic graph in topological order:
      * dependent vertices go after the vertices they depend upon.
      *
-     * Algorithm:
+     * Algorithm (Kahn's Algorithm):
      *   1. Store inDegree of every vertex
      *   2. Create a queue
      *   3. Add all 0-inDegree vertices to the queue in any order
