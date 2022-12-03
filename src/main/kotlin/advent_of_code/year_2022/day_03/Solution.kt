@@ -3,7 +3,7 @@ package advent_of_code.year_2022.day_03
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val rucksacks = readLinesFromFile("year_2022/day_03")
+    val rucksacks = readLinesFromFile("year_2022/day_03", )
         .map(Rucksack::fromString)
 
     val priorities = rucksacks
@@ -41,12 +41,7 @@ data class Rucksack(
     val total = left + right
 
     fun findSameItem(): Item? {
-        for (i in left) {
-            if (right.contains(i)) {
-                return i
-            }
-        }
-        return null
+        return left.intersect(right.toSet()).firstOrNull()
     }
 
     companion object {
