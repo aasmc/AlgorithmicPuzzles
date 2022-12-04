@@ -91,4 +91,16 @@ object GraphGenerators {
         }
     }
 
+    fun createGraphForMSTFinderResult16(): Graph<Int> {
+        return GraphAdjList<Int>(directed = false).apply {
+            addEdge(0, 1, 2.0)
+            addEdge(0, 3, 6.0)
+            addEdge(1, 2, 3.0)
+            addEdge(1, 3, 8.0)
+            addEdge(1, 4, 5.0)
+            addEdge(3, 4, 9.0)
+            addEdge(4, 2, 7.0)
+        }
+    }
+
 }
