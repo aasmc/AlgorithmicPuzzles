@@ -103,4 +103,17 @@ object GraphGenerators {
         }
     }
 
+    fun createGraphForMST13(): Graph<Int> {
+        return GraphAdjList<Int>(directed = false).apply {
+            addEdge(0, 1, 5.0)
+            addEdge(0, 3, 3.0)
+            addEdge(0, 4, 1.0)
+            addEdge(3, 4, 4.0)
+            addEdge(4, 1, 2.0)
+            addEdge(4, 2, 10.0)
+            addEdge(3, 2, 15.0)
+            addEdge(1, 2, 7.0)
+        }
+    }
+
 }
