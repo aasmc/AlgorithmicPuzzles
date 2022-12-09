@@ -5,8 +5,8 @@ import kotlin.math.abs
 
 fun main() {
     val lines = readLinesFromFile("year_2022/day_09", )
-    val tail = Tail()
-    val head = Head()
+    val tail = Knot()
+    val head = Knot()
     val rope = Rope(head, tail)
     lines.forEach { line ->
         val (dir, countStr) = line.split(" ")
@@ -37,16 +37,63 @@ fun main() {
             }
         }
     }
+
     val resultOne = rope.countUniqueTailMoves()
     println(resultOne)
+    val ropes: Ropes = buildRopes()
+    lines.forEach { line ->
+        val (dir, countStr) = line.split(" ")
+        val count = countStr.toInt()
+        when {
+            dir == "R" -> {
+                for (i in 0 until count) {
+                    ropes.moveHeadRight()
+                }
+            }
+
+            dir == "U" -> {
+                for (i in 0 until count) {
+                    ropes.moveHeadUp()
+                }
+            }
+
+            dir == "L" -> {
+                for (i in 0 until count) {
+                    ropes.moveHeadLeft()
+                }
+            }
+
+            dir == "D" -> {
+                for (i in 0 until count) {
+                    ropes.moveHeadDown()
+                }
+            }
+        }
+    }
+    val res2 = ropes.countUniqueTailMoves()
+    println(res2)
+
 }
 
-data class Tail(
-    var xPos: Int = 0,
-    var yPos: Int = 0
-)
+fun buildRopes(): Ropes {
+    return Ropes(
+        knots = listOf(
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+            Knot(0, 0),
+        )
+    )
+}
 
-data class Head(
+
+data class Knot(
     var xPos: Int = 0,
     var yPos: Int = 0
 )
@@ -56,9 +103,142 @@ data class Pos(
     val yPos: Int
 )
 
+data class Ropes(
+    val knots: List<Knot>
+) {
+    private val head = knots.first()
+    private val visitedPositions = hashSetOf<Pos>()
+
+    init {
+        visitedPositions.add(Pos(0, 0))
+    }
+
+    private fun addVisitedPosOfTail() {
+        visitedPositions.add(Pos(knots.last().xPos, knots.last().yPos))
+    }
+
+    fun countUniqueTailMoves(): Int {
+        return visitedPositions.size
+    }
+
+    fun moveHeadRight() {
+        head.xPos++
+        ensureKnots()
+    }
+
+    fun moveHeadLeft() {
+        head.xPos--
+        ensureKnots()
+    }
+
+    fun moveHeadUp() {
+        head.yPos++
+        ensureKnots()
+    }
+
+    fun moveHeadDown() {
+        head.yPos--
+        ensureKnots()
+    }
+
+    private fun ensureKnots() {
+        for (i in 1 until knots.size) {
+            val head = knots[i - 1]
+            val tail = knots[i]
+            ensureStepCorrect(head, tail)
+        }
+    }
+
+    private fun ensureStepCorrect(head: Knot, tail: Knot) {
+        val yDiff = abs(head.yPos - tail.yPos)
+        val xDiff = abs(head.xPos - tail.xPos)
+
+        if (head.xPos == tail.xPos) {
+            if (head.yPos > tail.yPos) {
+                if (yDiff > 1) {
+                    moveTailUp(tail = tail)
+                }
+            } else {
+                if (yDiff > 1) {
+                    moveTailDown(tail = tail)
+                }
+            }
+        } else if (head.yPos == tail.yPos) {
+            if (head.xPos > tail.xPos) {
+                if (xDiff > 1) {
+                    moveTailRight(tail)
+                }
+            } else {
+                if (xDiff > 1) {
+                    moveTailLeft(tail)
+                }
+            }
+        } else if (head.yPos > tail.yPos && head.xPos > tail.xPos) {
+            if (xDiff > 1 || yDiff > 1) {
+                moveTailUpRight(tail)
+            }
+        } else if (head.yPos > tail.yPos) {
+            if (xDiff > 1 || yDiff > 1) {
+                moveTailUpLeft(tail)
+            }
+        } else if (head.xPos > tail.xPos) {
+            if (xDiff > 1 || yDiff > 1) {
+                moveTailDownRight(tail)
+            }
+        } else  {
+            if (xDiff > 1 || yDiff > 1) {
+                moveTailDownLeft(tail)
+            }
+        }
+    }
+    private fun moveTailLeft(tail: Knot) {
+        tail.xPos--
+        addVisitedPosOfTail()
+    }
+
+    private fun moveTailRight(tail: Knot) {
+        tail.xPos++
+        addVisitedPosOfTail()
+    }
+
+    private fun moveTailUp(diagonal: Boolean = false, tail: Knot) {
+        tail.yPos++
+        if (!diagonal) {
+            addVisitedPosOfTail()
+        }
+    }
+
+    private fun moveTailDown(diagonal: Boolean = false, tail: Knot) {
+        tail.yPos--
+        if (!diagonal) {
+            addVisitedPosOfTail()
+        }
+    }
+
+    private fun moveTailUpLeft(tail: Knot) {
+        moveTailUp(true, tail)
+        moveTailLeft(tail)
+    }
+
+    private fun moveTailUpRight(tail: Knot) {
+        moveTailUp(true, tail)
+        moveTailRight(tail)
+    }
+
+    private fun moveTailDownLeft(tail: Knot) {
+        moveTailDown(true, tail)
+        moveTailLeft(tail)
+    }
+
+    private fun moveTailDownRight(tail: Knot) {
+        moveTailDown(true, tail)
+        moveTailRight(tail)
+    }
+}
+
 data class Rope(
-    val head: Head,
-    val tail: Tail
+    val head: Knot,
+    val tail: Knot,
 ) {
 
     private var tailMoves = 1
