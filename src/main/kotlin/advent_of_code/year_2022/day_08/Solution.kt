@@ -3,10 +3,11 @@ package advent_of_code.year_2022.day_08
 import advent_of_code.readLinesFromFile
 
 fun main() {
-    val lines = readLinesFromFile("year_2022/day_08",)
+    val lines = readLinesFromFile("year_2022/day_08", )
     val treeHolder = TreeHolder.buildTree(lines)
     val visibleFromEdges = treeHolder.calculateVisibleTrees()
     println(visibleFromEdges)
+    println(treeHolder.highestScenicScore())
 }
 
 data class TreeHolder(
@@ -14,7 +15,89 @@ data class TreeHolder(
     val horizontalTrees: List<List<Int>>,
 ) {
 
+    private fun prepareScenicScoreMatrix(): Array<IntArray> {
+        val matrix = Array(horizontalTrees.size) {
+            IntArray(horizontalTrees[0].size) { 1 }
+        }
+        return matrix
+    }
+
+    fun highestScenicScore(): Int {
+        val scoreMatrix = prepareScenicScoreMatrix()
+        fillMatrix(scoreMatrix)
+        return getMaxScore(scoreMatrix)
+    }
+
+    private fun getMaxScore(scoreMatrix: Array<IntArray>): Int {
+        var result = Int.MIN_VALUE
+        scoreMatrix.forEach { row ->
+            val rowMax = row.max()
+            result = maxOf(result, rowMax)
+        }
+        return result
+    }
+
+    private fun fillMatrix(scoreMatrix: Array<IntArray>) {
+        for ((horizontalIdx, line) in horizontalTrees.withIndex()) {
+            if (horizontalIdx != 0 && horizontalIdx != horizontalTrees.lastIndex) {
+                for ((treeIdx, _) in line.withIndex()) {
+                    if (treeIdx != 0 && treeIdx != line.lastIndex) {
+                        val startCount = countFromStart(treeIdx, line)
+                        val endCount = countFromEnd(treeIdx, line)
+                        scoreMatrix[horizontalIdx][treeIdx] *= (startCount * endCount)
+                    }
+                }
+            }
+        }
+        for ((verticalIdx, line) in verticalTrees.withIndex()) {
+            if (verticalIdx != 0 && verticalIdx != horizontalTrees[0].lastIndex) {
+                for ((treeIdx, _) in line.withIndex()) {
+                    if (treeIdx != 0 && treeIdx != horizontalTrees[0].lastIndex) {
+                        val startCount = countFromStart(treeIdx, line)
+                        val endCount = countFromEnd(treeIdx, line)
+                        scoreMatrix[treeIdx][verticalIdx] *= (startCount * endCount)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun countFromStart(fromIdx: Int, line: List<Int>): Int {
+        val tree = line[fromIdx]
+        var count = 0
+        for (i in fromIdx - 1 downTo 0) {
+            val prevTree = line[i]
+            ++count
+            if (tree <= prevTree) break
+        }
+        if (count == 0) ++count
+        return count
+    }
+
+    private fun countFromEnd(fromIdx: Int, line: List<Int>): Int {
+        val tree = line[fromIdx]
+        var count = 0
+        for (i in fromIdx + 1 until line.size) {
+            val nextTree = line[i]
+            ++count
+            if (tree <= nextTree) break
+        }
+        return count
+    }
+
+
     fun calculateVisibleTrees(): Int {
+        val visibilities = buildVisibilities()
+        var count = 0
+        for (visibility in visibilities) {
+            for (isVisible in visibility) {
+                if (isVisible) ++count
+            }
+        }
+        return count
+    }
+
+    private fun buildVisibilities(): List<BooleanArray> {
         val visibilities = MutableList(horizontalTrees.size) { BooleanArray(horizontalTrees[0].size) { false } }
         for ((idx, horizontal) in horizontalTrees.withIndex()) {
             val visibility = visibilities[idx]
@@ -30,13 +113,7 @@ data class TreeHolder(
                 markVerticalVisible(idx, vertical, visibilities)
             }
         }
-        var count = 0
-        for (visibility in visibilities) {
-            for (isVisible in visibility) {
-                if (isVisible) ++count
-            }
-        }
-        return count
+        return visibilities
     }
 
     private fun markVerticalVisible(idx: Int, line: List<Int>, visibilities: List<BooleanArray>) {
