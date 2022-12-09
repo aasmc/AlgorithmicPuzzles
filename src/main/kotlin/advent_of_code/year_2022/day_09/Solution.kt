@@ -1,6 +1,7 @@
 package advent_of_code.year_2022.day_09
 
 import advent_of_code.readLinesFromFile
+import kotlin.math.abs
 
 fun main() {
     val lines = readLinesFromFile("year_2022/day_09", )
@@ -50,27 +51,29 @@ data class Head(
     var yPos: Int = 0
 )
 
+data class Pos(
+    val xPos: Int,
+    val yPos: Int
+)
+
 data class Rope(
     val head: Head,
     val tail: Tail
 ) {
-    private val visitedMatrix = MutableList<MutableList<Boolean>>(1) {
-        mutableListOf()
-    }
-
-    init {
-        visitedMatrix[0].add(true)
-    }
 
     private var tailMoves = 1
+    private val visitedPositions = hashSetOf<Pos>()
+
+    init {
+        addVisitedPosOfTail()
+    }
+
+    private fun addVisitedPosOfTail() {
+        visitedPositions.add(Pos(tail.xPos, tail.yPos))
+    }
 
     fun countUniqueTailMoves(): Int {
-        var count = 0
-        for (row in visitedMatrix) {
-            val rowCount = row.count { it }
-            count += rowCount
-        }
-        return count
+        return visitedPositions.size
     }
 
     fun moveHeadRight() {
@@ -94,135 +97,149 @@ data class Rope(
     }
 
     private fun ensureTailStepDown() {
-        val yDiff = tail.yPos - head.yPos
-        if (tail.xPos == head.yPos) {
-            if (yDiff > 1) moveTailDown()
+        val yDiff = abs(tail.yPos - head.yPos)
+
+        if (tail.xPos == head.xPos) {
+            if (tail.yPos > head.yPos) {
+                if (yDiff > 1) moveTailDown()
+            } else {
+                if (yDiff > 1) moveTailUp()
+            }
         } else if (tail.xPos > head.xPos) {
-            if (yDiff > 1) moveTailDownLeft()
+            if (tail.yPos > head.yPos) {
+                if (yDiff > 1) moveTailDownLeft()
+            } else {
+                if (yDiff > 1) moveTailUpLeft()
+            }
         } else {
-            if (yDiff > 1) moveTailDownRight()
+            if (tail.yPos > head.yPos) {
+                if (yDiff > 1) moveTailDownRight()
+            } else {
+                if (yDiff > 1) moveTailUpRight()
+            }
         }
     }
 
     private fun ensureTailStepUp() {
-        val yDiff = head.yPos - tail.yPos
+        val yDiff = abs(head.yPos - tail.yPos)
         if (tail.xPos == head.xPos) {
-            if (yDiff > 1) moveTailUp()
+            if (head.yPos > tail.yPos) {
+                if (yDiff > 1) moveTailUp()
+            } else {
+                if (yDiff > 1) moveTailDown()
+            }
         } else if (tail.xPos < head.xPos) {
-            if (yDiff > 1) moveTailUpRight()
+            if (head.yPos > tail.yPos) {
+                if (yDiff > 1) moveTailUpRight()
+            } else {
+                if (yDiff > 1) moveTailDownRight()
+            }
         } else {
-            if (yDiff > 1) moveTailUpLeft()
+            if (head.yPos > tail.yPos) {
+                if (yDiff > 1) moveTailUpLeft()
+            } else {
+                if (yDiff > 1) moveTailDownLeft()
+            }
         }
     }
 
     private fun ensureTailStepLeft() {
-        val xDiff = tail.xPos - head.xPos
+        val xDiff = abs(tail.xPos - head.xPos)
         if (tail.yPos == head.yPos) {
-            if (xDiff > 1) moveTailLeft()
+            if (tail.xPos > head.xPos) {
+                if (xDiff > 1) moveTailLeft()
+            } else {
+                if (xDiff > 1) moveTailRight()
+            }
         } else if (head.yPos > tail.yPos) {
-            if (xDiff > 1) {
-                moveTailUpLeft()
+            if (tail.xPos > head.xPos) {
+                if (xDiff > 1) moveTailUpLeft()
+            } else {
+                if (xDiff > 1) moveTailDownLeft()
             }
         } else {
-            if (xDiff > 1) {
-                moveTailDownLeft()
+            if (tail.xPos > head.xPos) {
+                if (xDiff > 1) moveTailDownLeft()
+            } else {
+                if (xDiff > 1) moveTailUpLeft()
             }
         }
     }
-
 
     private fun ensureTailStepRight() {
-        val xDiff = head.xPos - tail.xPos
+        val xDiff = abs(head.xPos - tail.xPos)
         if (tail.yPos == head.yPos) {
-            if (xDiff > 1) moveTailRight()
-        } else if (head.yPos > tail.yPos) {
-            if (xDiff > 1) {
-                moveTailUpRight()
+            if (head.xPos > tail.xPos) {
+                if (xDiff > 1) moveTailRight()
+            } else {
+                if (xDiff > 1) moveTailLeft()
             }
+        } else if (head.yPos > tail.yPos) {
+            if (head.xPos > tail.xPos) {
+                if (xDiff > 1) moveTailUpRight()
+            } else {
+                if (xDiff > 1) moveTailDownRight()
+            }
+
         } else {
-            if (xDiff > 1) {
-                moveTailDownRight()
+            if (head.xPos > tail.xPos) {
+                if (xDiff > 1) moveTailDownRight()
+            } else {
+                if (xDiff > 1) moveTailUpRight()
             }
         }
     }
 
-    private fun moveTailLeft(diagonal: Boolean = false) {
+    private fun moveTailLeft() {
         tail.xPos--
         ++tailMoves
-        visitedMatrix[tail.yPos][tail.xPos] = true
+        addVisitedPosOfTail()
     }
 
-    private fun moveTailRight(diagonal: Boolean = false) {
+    private fun moveTailRight() {
         tail.xPos++
         ++tailMoves
-        if (diagonal) {
-            if (tail.yPos == visitedMatrix.size) {
-                val toAdd = mutableListOf<Boolean>()
-                for (i in 0 until tail.xPos) {
-                    toAdd.add(false)
-                }
-                visitedMatrix.add(toAdd)
-            }
-        }
-        if (tail.xPos == visitedMatrix[tail.yPos].size) {
-            visitedMatrix[tail.yPos].add(true)
-        } else {
-            visitedMatrix[tail.yPos][tail.xPos] = true
-        }
-
+        addVisitedPosOfTail()
     }
 
     private fun moveTailUp(diagonal: Boolean = false) {
         tail.yPos++
-        ++tailMoves
-        if (tail.yPos == visitedMatrix.size) {
-            val toAdd = mutableListOf<Boolean>()
-            for (i in 0 until tail.xPos) {
-                toAdd.add(false)
-            }
-            if (!diagonal) {
-                toAdd.add(true)
-            } else {
-                toAdd.add(false)
-            }
-            visitedMatrix.add(toAdd)
-        } else {
-            if (!diagonal) {
-                visitedMatrix[tail.yPos][tail.xPos] = true
-            }
+        if (!diagonal) {
+            ++tailMoves
+            addVisitedPosOfTail()
         }
     }
 
     private fun moveTailDown(diagonal: Boolean = false) {
         tail.yPos--
-        ++tailMoves
         if (!diagonal) {
-            visitedMatrix[tail.yPos][tail.xPos] = true
+            ++tailMoves
+            addVisitedPosOfTail()
         }
     }
 
     private fun moveTailUpLeft() {
         moveTailUp(true)
         moveTailLeft()
-        tailMoves += 2
+        tailMoves++
     }
 
     private fun moveTailUpRight() {
         moveTailUp(true)
-        moveTailRight(true)
-        tailMoves += 2
+        moveTailRight()
+        tailMoves++
     }
 
     private fun moveTailDownLeft() {
         moveTailDown(true)
         moveTailLeft()
-        tailMoves += 2
+        tailMoves++
     }
 
     private fun moveTailDownRight() {
         moveTailDown(true)
         moveTailRight()
-        tailMoves += 2
+        tailMoves++
     }
 }
 
