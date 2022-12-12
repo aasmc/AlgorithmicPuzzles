@@ -19,6 +19,8 @@ object UndirectedWeightedConnectedGraphMSTFinder {
         // Stores weights of vertices that have not been added to the MST
         val weights = PriorityQueue<Pair<Double, V>>(Comparator.comparing { it.first })
         // initially we add first vertex, although we could choose a random one
+        // its weight we set to 0.0, since we don't need to go anywhere to get to
+        // the same vertex.
         weights.add(Pair(0.0, graph.vertices().first()))
 
         // Stores indices of the graph vertices which are included in the MST

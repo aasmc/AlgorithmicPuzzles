@@ -2,13 +2,14 @@ package advent_of_code.year_2022.day_11
 
 import advent_of_code.readTextFromFile
 import java.util.LinkedList
+import kotlin.math.sqrt
 
 fun main() {
     val lines = readTextFromFile("year_2022/day_11", "test.txt")
         .split("\n\n")
 
     val monkeys = createMonkeys(lines)
-    for (i in 0 until 20) {
+    for (i in 0 until 10000) {
         monkeys.forEach { monkey ->
             monkeyPlayRound(monkey, monkeys)
         }
@@ -52,7 +53,6 @@ fun monkeyPlayRound(monkey: Monkey, otherMonkeys: List<Monkey>) {
                 }
             }
         }
-        item /= 3
         val toMonkey = if (item % monkey.test == 0L) {
             monkey.ifTestPasses
         } else {

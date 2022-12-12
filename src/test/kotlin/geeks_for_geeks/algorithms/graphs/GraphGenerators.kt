@@ -116,4 +116,31 @@ object GraphGenerators {
         }
     }
 
+    fun createUndirectedWeightedGraphForDijkstras(): Graph<Int> {
+        return GraphAdjList<Int>(directed = false).apply {
+            addEdge(0, 1, 5.0)
+            addEdge(0, 2, 10.0)
+            addEdge(1, 2, 3.0)
+            addEdge(1, 3, 20.0)
+            addEdge(2, 3, 2.0)
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
