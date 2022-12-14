@@ -35,6 +35,8 @@ interface Graph<V : Comparable<V>> {
 
     fun getWeight(from: V, to: V): Double
 
+    fun getEdges(): Set<GraphEdge<V>>
+
 }
 
 interface AdjIterator<V : Comparable<V>> {

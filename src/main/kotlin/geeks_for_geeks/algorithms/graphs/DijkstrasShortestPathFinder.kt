@@ -8,6 +8,9 @@ data class ShortestPath<V : Comparable<V>>(
 )
 
 object DijkstrasShortestPathFinder {
+    /**
+     * Dijkstra's algorithm doesn't work for graphs with negative weights.
+     */
     fun <V : Comparable<V>> findShortestPathsForSource(source: V, graph: Graph<V>): List<ShortestPath<V>> {
         if (graph.isDirected()) {
             throw UnsupportedOperationException("Dijkstras algorithm works for undirected graphs!")

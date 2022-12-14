@@ -2,6 +2,32 @@ package geeks_for_geeks.algorithms.graphs
 
 object GraphGenerators {
 
+    fun createGraphForBellmanFord(): Graph<Int> {
+        return GraphAdjList<Int>(directed = true).apply {
+            addEdge(0, 1, 5.0)
+
+            addEdge(1, 2, 20.0)
+            addEdge(1, 5, 30.0)
+            addEdge(1, 6, 60.0)
+
+            addEdge(2, 3, 10.0)
+            addEdge(2, 4, 75.0)
+
+            addEdge(3, 2, -15.0)
+
+            addEdge(4, 9, 100.0)
+
+            addEdge(5, 4, 25.0)
+            addEdge(5, 6, 5.0)
+            addEdge(5, 8, 50.0)
+
+            addEdge(6, 7, -50.0)
+
+            addEdge(7, 8, -10.0)
+
+        }
+    }
+
     fun createDirectedGraphNoCycle6Vertices5Edges(): Graph<Int> {
         return GraphAdjList<Int>(directed = true).apply {
             addEdge(1, 3)

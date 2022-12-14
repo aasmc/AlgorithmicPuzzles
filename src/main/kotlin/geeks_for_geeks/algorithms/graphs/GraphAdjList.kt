@@ -165,6 +165,17 @@ class GraphAdjList<V : Comparable<V>>(
         return directed
     }
 
+    override fun getEdges(): Set<GraphEdge<V>> {
+        val result = hashSetOf<GraphEdge<V>>()
+        for (v in vertices()) {
+            for (u in getAdjacentFor(v)) {
+                val weight = getWeight(v, u)
+                result.add(GraphEdge(v, u, weight))
+            }
+        }
+        return result
+    }
+
     override fun getWeight(from: V, to: V): Double {
         val edgeKey = getEdgeKey(from, to)
         return edgeWeights[edgeKey] ?: throw IllegalArgumentException("Graph doesn't contain edge from $from to $to")
