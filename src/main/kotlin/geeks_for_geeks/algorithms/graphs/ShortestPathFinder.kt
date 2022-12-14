@@ -30,6 +30,15 @@ object ShortestPathFinder {
         return dist
     }
 
+    /**
+     * Time Complexity O(V*E).
+     * Dynamic programming approach - try all possible solutions and pick up
+     * the best one.
+     *
+     * Idea: relax all edges of the graph V - 1 times. V - 1 because it is
+     * the maximum possible length of a shortest path between two vertices
+     * in the graph.
+     */
     fun <V : Comparable<V>> bellmanFordSSSP(graph: Graph<V>, source: V): List<ShortestPath<V>> {
         val distances = mutableListOf<ShortestPath<V>>()
         for (v in graph.vertices()) {
