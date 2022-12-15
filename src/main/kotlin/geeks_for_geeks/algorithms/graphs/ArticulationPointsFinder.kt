@@ -62,8 +62,11 @@ object ArticulationPointsFinder {
 
                     lowValues[sourceIdx] = minOf(lowValues[sourceIdx], lowValues[uIdx])
 
+                    // If root of the recursion tree and has more than 1 child
                     if (parents[sourceIdx] == null && children > 1) {
                         articulationPoints.add(source)
+                        // if not root of the recursion tree and has a low value that is
+                        // greater than or equal to the parent's discovery time
                     } else if (parents[sourceIdx] != null && lowValues[uIdx] >= discoveryTimes[sourceIdx]) {
                         articulationPoints.add(source)
                     }
