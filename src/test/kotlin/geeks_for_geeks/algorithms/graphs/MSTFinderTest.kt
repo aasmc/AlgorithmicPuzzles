@@ -8,12 +8,15 @@ internal class MSTFinderTest {
     val graph16 = GraphGenerators.createGraphForMSTFinderResult16()
     val graph13 = GraphGenerators.createGraphForMST13()
     val sut = UndirectedWeightedConnectedGraphMSTFinder
+    val kruskals = KruskalsMSTFinder
 
     @Test
     fun findMST16_correct() {
         val expected = 16.0
         val result = sut.findMST(graph16)
         assertTrue(expected.equalsDelta(result))
+        val kruskalsRes = kruskals.findMST(graph16)
+        assertTrue(kruskalsRes.equalsDelta(expected))
     }
 
     @Test
@@ -21,6 +24,8 @@ internal class MSTFinderTest {
         val expected = 13.0
         val result = sut.findMST(graph13)
         assertTrue(result.equalsDelta(expected))
+        val kruskalsRes = kruskals.findMST(graph13)
+        assertTrue(kruskalsRes.equalsDelta(expected))
     }
 
     @Test
@@ -34,6 +39,8 @@ internal class MSTFinderTest {
 
         val result = sut.findMST(graph)
         assertTrue(result.equalsDelta(40.0))
+        var kruskalsRes = kruskals.findMST(graph)
+        assertTrue(kruskalsRes.equalsDelta(40.0))
 
         val g = GraphAdjList<Int>(directed = false).apply {
             addEdge(0, 1, 5.0)
@@ -44,6 +51,8 @@ internal class MSTFinderTest {
         }
         val r = sut.findMST(g)
         assertTrue(r.equalsDelta(28.0))
+        kruskalsRes = kruskals.findMST(g)
+        assertTrue(kruskalsRes.equalsDelta(28.0))
 
         val gg = GraphAdjList<Int>(directed = false).apply {
             addEdge(0, 1, 4.0)
@@ -57,6 +66,8 @@ internal class MSTFinderTest {
 
         val rr = sut.findMST(gg)
         assertTrue(rr.equalsDelta(14.0))
+        kruskalsRes = kruskals.findMST(gg)
+        assertTrue(kruskalsRes.equalsDelta(14.0))
     }
 }
 

@@ -16,6 +16,7 @@ object BridgesFinder {
         val lowValues = IntArray(graph.getVertexCount()) { 0 }
         val parents = MutableList<V?>(graph.getVertexCount()) { null }
         val result = mutableListOf<Bridge<V>>()
+
         fun <V : Comparable<V>> DFSHelper(
             source: V,
             graph: Graph<V>,
