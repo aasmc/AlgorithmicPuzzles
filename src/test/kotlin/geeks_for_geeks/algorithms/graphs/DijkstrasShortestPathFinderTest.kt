@@ -1,6 +1,8 @@
 package geeks_for_geeks.algorithms.graphs
 
 import geeks_for_geeks.algorithms.graphs.GraphGenerators.createUndirectedWeightedGraphForDijkstras
+import geeks_for_geeks.algorithms.graphs.kotlin.DijkstrasShortestPathFinder
+import geeks_for_geeks.algorithms.graphs.kotlin.ShortestPath
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

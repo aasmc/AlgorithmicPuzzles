@@ -1,5 +1,8 @@
 package geeks_for_geeks.algorithms.graphs
 
+import geeks_for_geeks.algorithms.graphs.kotlin.Bridge
+import geeks_for_geeks.algorithms.graphs.kotlin.BridgesFinder
+import geeks_for_geeks.algorithms.graphs.kotlin.GraphAdjList
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

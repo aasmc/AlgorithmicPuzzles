@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 object DFSTraverser {
     fun <V : Comparable<V>> dfsNoSource(graph: Graph<V>, consume: (V) -> Unit) {

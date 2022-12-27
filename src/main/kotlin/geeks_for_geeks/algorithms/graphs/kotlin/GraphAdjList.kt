@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 /**
  * Graph with representation as adjacency list.

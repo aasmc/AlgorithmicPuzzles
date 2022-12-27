@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 interface Graph<V : Comparable<V>> {
 

@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 import java.util.Comparator
 import java.util.PriorityQueue

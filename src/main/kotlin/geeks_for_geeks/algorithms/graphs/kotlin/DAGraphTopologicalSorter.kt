@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 import java.lang.IllegalArgumentException
 import java.lang.UnsupportedOperationException

@@ -1,5 +1,7 @@
 package geeks_for_geeks.algorithms.graphs
 
+import geeks_for_geeks.algorithms.graphs.kotlin.ArticulationPointsFinder
+import geeks_for_geeks.algorithms.graphs.kotlin.GraphAdjList
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

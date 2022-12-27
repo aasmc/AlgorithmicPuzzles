@@ -1,4 +1,4 @@
-package geeks_for_geeks.algorithms.graphs
+package geeks_for_geeks.algorithms.graphs.kotlin
 
 object UndirectedGraphCycleDetector {
     fun <V: Comparable<V>> detectCycle(graph: Graph<V>): Boolean {

@@ -1,5 +1,8 @@
 package geeks_for_geeks.algorithms.graphs
 
+import geeks_for_geeks.algorithms.graphs.kotlin.Graph
+import geeks_for_geeks.algorithms.graphs.kotlin.GraphAdjList
+
 object GraphGenerators {
 
     fun createGraphForBellmanFord(): Graph<Int> {
