@@ -26,7 +26,7 @@ fun activitySelection(activities: List<IntRange>): List<IntRange> {
     result.add(last)
     for (i in 1 until sorted.size) {
         val current = sorted[i]
-        if (last.last > current.first) continue // overlaps
+        if (last.last >= current.first) continue // overlaps
         last = current
         result.add(current)
     }
