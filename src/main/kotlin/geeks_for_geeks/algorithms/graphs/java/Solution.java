@@ -1,6 +1,5 @@
 package geeks_for_geeks.algorithms.graphs.java;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -123,6 +122,47 @@ public class Solution {
         return count;
     }
 
+    /**
+     * Given an undirected graph with V vertices and E edges, check whether
+     * it contains any cycle or not. Graph is in the form of adjacency list
+     * where adj[i] contains all the nodes ith node is having edge with.
+     */
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        boolean[] visited = new boolean[adj.size()];
+        Arrays.fill(visited, false);
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                if (undirectedCycleDFSHelper(
+                        adj,
+                        i,
+                        visited,
+                        -1
+                )) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean undirectedCycleDFSHelper(
+            ArrayList<ArrayList<Integer>> graph,
+            Integer source,
+            boolean[] visited,
+            int parent
+    ) {
+        visited[source] = true;
+        for (Integer adj: graph.get(source)) {
+            if (!visited[adj]) {
+                if (undirectedCycleDFSHelper(graph, adj, visited, source)) {
+                    return true;
+                }
+            } else if (parent != adj) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
