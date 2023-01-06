@@ -32,3 +32,74 @@ fun activitySelection(activities: List<IntRange>): List<IntRange> {
     }
     return result.toList()
 }
+
+data class KnapsackItem(
+    val value: Double,
+    val weight: Double
+)
+
+/**
+ * Given a capacity of a knapsack and a list of items, each of which has a value
+ * and a weight, we need to find out the maximum value of items which can be
+ * put into the knapsack. If a complete item cannot be put into the knapsack,
+ * we can put a fraction of it.
+ *
+ * Algorithm:
+ * 1. sort all items in decreasing order of their value / weight ratio
+ * 2. initialize result to 0 and currentCapacity = capacity
+ * 3. for every item in the sorted list:
+ *    - if item can be completely put into the knapsack:
+ *       a. currentCapacity -= item weight
+ *       b. result += item value
+ *    - else result += (item value) * (currentCapacity / item weight)
+ *           return result
+ * 4. return result
+ */
+fun fractionalKnapsack(capacity: Double, items: List<KnapsackItem>): Double {
+    var result = 0.0
+    var currentCapacity = capacity
+    val sorted = items.sortedByDescending { it.value / it.weight }
+    for (itm in sorted) {
+        if (itm.weight <= currentCapacity) {
+            currentCapacity -= itm.weight
+            result += itm.value
+        } else {
+            result += itm.value * (currentCapacity / itm.weight)
+            break
+        }
+    }
+    return result
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
