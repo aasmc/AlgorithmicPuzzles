@@ -28,4 +28,68 @@ internal class GreedyTest {
         )
         assertEquals(expected, result, 0.00001)
     }
+
+    @Test
+    fun jobSequencing_correct() {
+        val r1 = jobSequencing(listOf(
+            JobSequence(4, 70.0),
+            JobSequence(1, 80.0),
+            JobSequence(1, 30.0),
+            JobSequence(1, 100.0),
+        ))
+        val ex1 = 170.0
+        assertEquals(ex1, r1, 0.0001)
+
+        val r2 = jobSequencing(listOf(
+            JobSequence(2, 50.0),
+            JobSequence(2, 60.0),
+            JobSequence(3, 20.0),
+            JobSequence(3, 30.0),
+        ))
+        val ex2 = 140.0
+        assertEquals(ex2, r2, 0.0001)
+
+        val r3 = jobSequencing(listOf(
+            JobSequence(2, 100.0),
+            JobSequence(1, 50.0),
+            JobSequence(2, 10.0),
+            JobSequence(1, 20.0),
+            JobSequence(3, 30.0),
+        ))
+        val ex3 = 180.0
+        assertEquals(ex3, r3, 0.0001)
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

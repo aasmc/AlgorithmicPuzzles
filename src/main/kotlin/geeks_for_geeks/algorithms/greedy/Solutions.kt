@@ -71,6 +71,34 @@ fun fractionalKnapsack(capacity: Double, items: List<KnapsackItem>): Double {
     return result
 }
 
+data class JobSequence(
+    val deadLine: Int,
+    val profit: Double
+)
+
+/**
+ * Given a list of jobs (deadlines with associated profits),
+ * find max profit taking into account the following conditions:
+ * 1. you get full profit only if the job is completed by deadline
+ * 2. every job takes one unit of time
+ * 3. only one job can be assigned at a time
+ * 4. time starts with 0
+ */
+fun jobSequencing(jobs: List<JobSequence>): Double {
+    val sorted = jobs
+        .sortedByDescending { it.profit }
+    val maxDeadline = jobs.maxBy { it.deadLine }.deadLine
+    val availableSlots = Array<Double?>(maxDeadline) { null }
+    for (job in sorted) {
+        var deadline = job.deadLine - 1
+        while (deadline >= 0 && availableSlots[deadline] != null) {
+            deadline--
+        }
+        if (deadline < 0) continue
+        availableSlots[deadline] = job.profit
+    }
+    return availableSlots.filterNotNull().sumOf { it }
+}
 
 
 
