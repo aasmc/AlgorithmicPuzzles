@@ -60,6 +60,21 @@ internal class GreedyTest {
         assertEquals(ex3, r3, 0.0001)
 
     }
+
+    @Test
+    fun huffmanCompression_correct() {
+        val expected = "f->0 d->10 e->111 a->1100 b->1101"
+        val result = huffmanCompression(
+            input = arrayOf(
+                HuffmanChar('a', 10),
+                HuffmanChar('d', 50),
+                HuffmanChar('b', 20),
+                HuffmanChar('e', 40),
+                HuffmanChar('f', 80),
+            )
+        )
+        assertEquals(expected, result)
+    }
 }
 
 

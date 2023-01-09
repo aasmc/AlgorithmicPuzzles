@@ -1,5 +1,9 @@
 package geeks_for_geeks.algorithms.greedy
 
+import java.lang.StringBuilder
+import java.util.*
+import kotlin.math.min
+
 /**
  * Given a list of activities, represented by an IntRange, i.e.
  * they last from IntRange.first to IntRange.last,
@@ -100,7 +104,74 @@ fun jobSequencing(jobs: List<JobSequence>): Double {
     return availableSlots.filterNotNull().sumOf { it }
 }
 
+data class HuffmanChar(
+    val char: Char,
+    val frequency: Int
+)
 
+/**
+ * Lossless compression of a given array of characters and their frequencies.
+ *
+ * Huffman Algorithm:
+ * 1. Build a Binary Tree (Huffman Tree):
+ *  - every input character is a leaf
+ *  - every left child edge is labelled as 0 and right edge as 1
+ *  - every root to leaf path represents Huffman code of the leaf
+ *  - input characters with higher frequencies are closer to the root, i.e.
+ *    they will have smaller binary code
+ * 2. Traverse the binary tree and collect the code.
+ */
+fun huffmanCompression(input: Array<HuffmanChar>): String {
+    val tree = buildHuffmanTree(input)
+    return collectCode(tree)
+}
+
+private fun collectCode(root: HuffmanNode): String {
+    val result = mutableListOf<String>()
+    fun helper(root: HuffmanNode?, str: String) {
+        if (root == null) {
+            return
+        }
+        if (root.left == null && root.right == null) { // leaf node
+            result.add("${root.char}->$str")
+        }
+        helper(root.left, str + "0")
+        helper(root.right, str + "1")
+
+    }
+    helper(root, "")
+    return result.sortedBy { it.length }.joinToString(separator = " ")
+}
+
+private fun buildHuffmanTree(input: Array<HuffmanChar>): HuffmanNode {
+    val minHeap = PriorityQueue<HuffmanNode>(Comparator.comparing { it.frequency })
+    input.map {
+        HuffmanNode(
+            char = it.char,
+            frequency = it.frequency,
+        )
+    }.forEach { minHeap.add(it) }
+    while (minHeap.size > 1) {
+        val left = minHeap.poll()
+        val right = minHeap.poll()
+        val parent = HuffmanNode(
+            frequency = left.frequency + right.frequency,
+            left = left,
+            right = right
+        )
+        minHeap.add(parent)
+    }
+    return minHeap.poll()
+}
+
+private const val DUMMY = '$'
+
+private data class HuffmanNode(
+    val char: Char = DUMMY,
+    val frequency: Int,
+    var left: HuffmanNode? = null,
+    var right: HuffmanNode? = null,
+)
 
 
 
