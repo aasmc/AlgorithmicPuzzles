@@ -395,8 +395,8 @@ fun tappingWaterEfficient(bars: IntArray): Int {
     for (i in 1 until lMaxes.size) {
         lMaxes[i] = max(bars[i], lMaxes[i - 1])
     }
-    rMaxes[lMaxes.lastIndex] = bars[bars.lastIndex]
-    for (i in lMaxes.lastIndex - 1 downTo 0) {
+    rMaxes[rMaxes.lastIndex] = bars[bars.lastIndex]
+    for (i in rMaxes.lastIndex - 1 downTo 0) {
         rMaxes[i] = max(bars[i], rMaxes[i + 1])
     }
     var res = 0
