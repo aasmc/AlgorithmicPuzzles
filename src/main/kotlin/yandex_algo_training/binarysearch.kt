@@ -1,6 +1,7 @@
 package yandex_algo_training
 
 import kotlin.math.min
+import kotlin.math.pow
 
 /**
  * Left binary search. Finds first value from left to right inclusive that is acceptable.
@@ -211,17 +212,6 @@ fun countNumberOfX(list: List<Int>, number: Int): Int {
     }
     return greater - greaterOrEqual
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
