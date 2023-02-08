@@ -30,7 +30,7 @@ object KruskalsMSTFinder {
             }
         }
         if (unionFind.componentSize(0) != graph.getVertexCount()) {
-            throw IllegalStateException("The graph: $graph doesn't have an MST! The graph is possibly" +
+            throw IllegalStateException("The graph: $graph doesn't have an MST! The graph is possibly " +
                     "disconnected.")
         }
         return result
