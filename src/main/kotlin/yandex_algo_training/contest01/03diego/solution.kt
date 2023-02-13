@@ -1,9 +1,9 @@
-package yandex_algo_training.contest01.diego
+package yandex_algo_training.contest01.`03diego`
 
 fun main() {
     val diegoNum = readLine()!!.toInt()
     val diegoStickers = readLine()!!.split(" ")
-        .map { it.toInt() }.sorted()
+        .map { it.toInt() }.toSet().sorted()
     val numCollectionaires = readLine()!!.toInt()
     val collectionaireStickers = readLine()!!.split(" ").map { it.toInt() }
     val answer = countNeededStickers(collectionaireStickers, diegoStickers)
@@ -13,12 +13,12 @@ fun main() {
 private fun countNeededStickers(collectionaireStickers: List<Int>, diegoStickers: List<Int>): List<Int> {
     val result = mutableListOf<Int>()
     collectionaireStickers.forEach { s ->
-        if (s < diegoStickers[0]) {
+        if (s <= diegoStickers[0]) {
             result.add(0)
         } else if (s > diegoStickers[diegoStickers.lastIndex]) {
             result.add(diegoStickers.size)
         } else {
-            val index = rightBinSearch(0, diegoStickers.size - 1, emptyList<Int>()) { idx, _ ->
+            val index = leftBinSearch<Int>(0, diegoStickers.size - 1) { idx ->
                 diegoStickers[idx] > s
             }
 
@@ -28,21 +28,19 @@ private fun countNeededStickers(collectionaireStickers: List<Int>, diegoStickers
     return result
 }
 
-fun <T> rightBinSearch(
+fun <T> leftBinSearch(
     left: Int,
     right: Int,
-    checkParams: List<T>,
-    check: (Int, List<T>) -> Boolean
+    check: (Int) -> Boolean
 ): Int {
     var l = left
     var r = right
     while (l < r) {
-        // round to upper
-        val m = l + 1 + (r - l) / 2
-        if (check(m, checkParams)) { // acceptable
-            l = m
+        val m = l + (r - l) / 2
+        if (check(m)) { // acceptable
+            r = m
         } else { // not acceptable
-            r = m - 1
+            l = m + 1
         }
     }
     return l
