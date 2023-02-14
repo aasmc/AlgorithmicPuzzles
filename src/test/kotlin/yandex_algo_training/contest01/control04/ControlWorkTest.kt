@@ -25,4 +25,18 @@ internal class ControlWorkTest {
         assertEquals(res.first, 3)
         assertEquals(res.second, 1)
     }
+
+    @Test
+    fun control_work_two_seats_two_variants() {
+        val res = findPlaceForVasya(2, 2, 1, 1)
+        assertEquals(res.first, -1)
+        assertEquals(res.second, -1)
+    }
+
+    @Test
+    fun six_seats_three_variants() {
+        val res = findPlaceForVasya(6, 3, 2, 1)
+        assertEquals(res.first, 3)
+        assertEquals(res.second, 2)
+    }
 }

@@ -1,0 +1,34 @@
+package yandex_algo_training.contest01.goodstring05
+
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+
+internal class StringGoodnessTest {
+    @Test
+    fun first_correct() {
+        val ex = 2
+        val res = findMaxGoodness(3, listOf(1, 1, 1))
+        assertEquals(ex, res)
+    }
+
+    @Test
+    fun second_correct() {
+        val ex = 3
+        val res = findMaxGoodness(2, listOf(3, 4))
+        assertEquals(ex, res)
+    }
+
+    @Test
+    fun third_correct() {
+        val ex = 7
+        val res = findMaxGoodness(3, listOf(3,4,5))
+        assertEquals(ex, res)
+    }
+
+    @Test
+    fun fourth_correct() {
+        val ex = 5
+        val res = findMaxGoodness(5, listOf(3,1,1,2,7))
+        assertEquals(ex, res)
+    }
+}
