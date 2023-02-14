@@ -41,4 +41,13 @@ internal class DiegoTest {
         val result = countNeededStickers(colList, diegoList)
         assertEquals(expected, result)
     }
+
+    @Test
+    fun test_five() {
+        val diegoList = listOf<Int>(1,2,3,4)
+        val collList = listOf(1,2,3,4,5)
+        val expected = listOf(0,1,2,3,4)
+        val result = countNeededStickers(collList, diegoList)
+        assertEquals(expected, result)
+    }
 }

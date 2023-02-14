@@ -1,15 +1,15 @@
 package yandex_algo_training.contest01.diego03
 
 fun main() {
-    val diegoNum = readLine()!!.toInt()
-    val diegoStr = readLine()!!.trim()
+    val diegoNum = readLine()!!.toInt() // 4
+    val diegoStr = readLine()!!.trim() // 4 3 2 1
     val diegoStickers = if (diegoNum == 0) {
         emptyList<Int>()
     } else {
-        diegoStr.split(" ").map { it.toInt() }.toSet().sorted()
+        diegoStr.split(" ").toSet().map { it.toInt() }.sorted()
     }
-    val numCollectionaires = readLine()!!.toInt()
-    val collectionairesStr = readLine()!!
+    val numCollectionaires = readLine()!!.toInt() // 5
+    val collectionairesStr = readLine()!! // 1 2 3 4 5
     val collectionaireStickers = if (numCollectionaires == 0) {
         emptyList<Int>()
     } else {
@@ -35,7 +35,7 @@ fun countNeededStickers(
             result.add(diegoStickers.size)
         } else {
             val index = leftBinSearch<Int>(0, diegoStickers.size - 1) { idx ->
-                diegoStickers[idx] > s
+                diegoStickers[idx] >= s
             }
 
             result.add(index)

@@ -10,9 +10,9 @@ fun main() {
     println(goodness)
 }
 
-fun findMaxGoodness(cnt: Int, letters: List<Int>): Int {
+fun findMaxGoodness(cnt: Int, letters: List<Int>): Long {
     if (cnt == 1) return 0
-    var maxCnt = 0
+    var maxCnt = 0L
     var prev = letters[0]
     for (i in 1 until letters.size) {
         val current = letters[i]

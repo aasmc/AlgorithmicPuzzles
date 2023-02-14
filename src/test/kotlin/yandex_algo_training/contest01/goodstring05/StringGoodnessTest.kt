@@ -31,4 +31,16 @@ internal class StringGoodnessTest {
         val res = findMaxGoodness(5, listOf(3,1,1,2,7))
         assertEquals(ex, res)
     }
+
+    @Test
+    fun test_41() {
+        val res = findMaxGoodness(4, listOf(
+            1_000_000_000,
+            1_000_000_000,
+            1_000_000_000,
+            1_000_000_000,
+        ))
+        println(res)
+        assertEquals(3_000_000_000, res)
+    }
 }

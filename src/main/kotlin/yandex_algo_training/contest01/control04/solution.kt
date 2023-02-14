@@ -38,16 +38,16 @@ fun findPlaceForVasya(numPupils: Int, numVariants: Int, petyaRow: Int, petyaChoi
 
 fun calculateVasyaRowToSeat(
     petyaSeat: Int,
-    seatToVariantNum: LinkedHashMap<Int, Int>,
+    seatToVariantNum: IntArray,
     petyaRow: Int,
 ): Pair<Int, Int> {
     var answerSeat = -1
     var answerRow = -1
-    val petyaVariant = seatToVariantNum[petyaSeat]!!
+    val petyaVariant = seatToVariantNum[petyaSeat]
     var minDistance = Int.MAX_VALUE
-    for (k in seatToVariantNum.keys) {
+    for (k in 1 until seatToVariantNum.size) {
         if (k != petyaSeat) {
-            val variant = seatToVariantNum[k]!!
+            val variant = seatToVariantNum[k]
             if (variant == petyaVariant) {
                 val currentRow = (k + 1) / 2
                 val currentDistance = abs(petyaRow - currentRow)
@@ -62,8 +62,8 @@ fun calculateVasyaRowToSeat(
     return answerRow to answerSeat
 }
 
-fun calculateSeatToVariant(numPupils: Int, numVariants: Int): LinkedHashMap<Int, Int> {
-    val result = linkedMapOf<Int, Int>()
+fun calculateSeatToVariant(numPupils: Int, numVariants: Int): IntArray {
+    val result = IntArray(numPupils + 1) { 0 }
     var currentVariant = 1
     for (i in 1..numPupils) {
         result[i] = currentVariant
