@@ -26,11 +26,11 @@ fun findPlaceForVasya(numPupils: Int, numVariants: Int, petyaRow: Int, petyaChoi
         } else {
             petyaRow * 2
         }
-        val seatToVariantNum = calculateSeatToVariant(numPupils, numVariants)
         val answer: Pair<Int, Int> = calculateVasyaRowToSeat(
             petyaSeat,
-            seatToVariantNum,
-            petyaRow
+            numVariants,
+            petyaRow,
+            numPupils
         )
         return answer
     }
@@ -38,16 +38,17 @@ fun findPlaceForVasya(numPupils: Int, numVariants: Int, petyaRow: Int, petyaChoi
 
 fun calculateVasyaRowToSeat(
     petyaSeat: Int,
-    seatToVariantNum: IntArray,
+    numVariants: Int,
     petyaRow: Int,
+    numStudents: Int
 ): Pair<Int, Int> {
     var answerSeat = -1
     var answerRow = -1
-    val petyaVariant = seatToVariantNum[petyaSeat]
+    val petyaVariant = calculateVariantBySeat(petyaSeat, numVariants)
     var minDistance = Int.MAX_VALUE
-    for (k in 1 until seatToVariantNum.size) {
+    for (k in 1..numStudents) {
         if (k != petyaSeat) {
-            val variant = seatToVariantNum[k]
+            val variant = calculateVariantBySeat(k, numVariants)
             if (variant == petyaVariant) {
                 val currentRow = (k + 1) / 2
                 val currentDistance = abs(petyaRow - currentRow)
@@ -62,15 +63,6 @@ fun calculateVasyaRowToSeat(
     return answerRow to answerSeat
 }
 
-fun calculateSeatToVariant(numPupils: Int, numVariants: Int): IntArray {
-    val result = IntArray(numPupils + 1) { 0 }
-    var currentVariant = 1
-    for (i in 1..numPupils) {
-        result[i] = currentVariant
-        currentVariant++
-        if (currentVariant > numVariants) {
-            currentVariant = 1
-        }
-    }
-    return result
+private inline fun calculateVariantBySeat(seat: Int, numVariants: Int): Int {
+    return if (seat % numVariants == 0) numVariants else seat % numVariants
 }

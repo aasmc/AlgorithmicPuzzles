@@ -39,4 +39,11 @@ internal class ControlWorkTest {
         assertEquals(res.first, 3)
         assertEquals(res.second, 2)
     }
+
+    @Test
+    fun control_test_sixteen() {
+        val res = findPlaceForVasya(987654321, 654321087, 123456789, 1)
+        assertEquals(res.first, 450617332)
+        assertEquals(res.second, 2)
+    }
 }
