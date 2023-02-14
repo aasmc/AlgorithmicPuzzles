@@ -1,4 +1,4 @@
-package yandex_algo_training.contest01.`02beautifulline`
+package yandex_algo_training.contest01.beautifulline02
 
 fun main() {
     val k = readLine()!!.toInt()

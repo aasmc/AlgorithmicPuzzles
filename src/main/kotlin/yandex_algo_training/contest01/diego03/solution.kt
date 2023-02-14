@@ -1,16 +1,32 @@
-package yandex_algo_training.contest01.`03diego`
+package yandex_algo_training.contest01.diego03
 
 fun main() {
     val diegoNum = readLine()!!.toInt()
-    val diegoStickers = readLine()!!.split(" ")
-        .map { it.toInt() }.toSet().sorted()
+    val diegoStr = readLine()!!.trim()
+    val diegoStickers = if (diegoNum == 0) {
+        emptyList<Int>()
+    } else {
+        diegoStr.split(" ").map { it.toInt() }.toSet().sorted()
+    }
     val numCollectionaires = readLine()!!.toInt()
-    val collectionaireStickers = readLine()!!.split(" ").map { it.toInt() }
+    val collectionairesStr = readLine()!!
+    val collectionaireStickers = if (numCollectionaires == 0) {
+        emptyList<Int>()
+    } else {
+        collectionairesStr.split(" ").map { it.toInt() }
+    }
     val answer = countNeededStickers(collectionaireStickers, diegoStickers)
     answer.forEach { println(it) }
 }
 
-private fun countNeededStickers(collectionaireStickers: List<Int>, diegoStickers: List<Int>): List<Int> {
+fun countNeededStickers(
+    collectionaireStickers: List<Int>,
+    diegoStickers: List<Int>
+): List<Int> {
+    if (collectionaireStickers.isEmpty()) return emptyList()
+    if (diegoStickers.isEmpty()) {
+        return List(collectionaireStickers.size) { 0 }
+    }
     val result = mutableListOf<Int>()
     collectionaireStickers.forEach { s ->
         if (s <= diegoStickers[0]) {

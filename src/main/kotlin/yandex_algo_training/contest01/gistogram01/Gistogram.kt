@@ -1,4 +1,4 @@
-package yandex_algo_training.contest01.`01gistogram`
+package yandex_algo_training.contest01.gistogram01
 
 import java.nio.file.Files
 import java.nio.file.Path
