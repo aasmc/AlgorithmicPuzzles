@@ -7,8 +7,19 @@ fun main() {
     val numVariants = readLine()!!.toInt()
     val petyaRow = readLine()!!.toInt()
     val petyaChoice = readLine()!!.toInt()
-    if (numPupils == numVariants) {
+
+    val answer: Pair<Int, Int> = findPlaceForVasya(numPupils, numVariants, petyaRow, petyaChoice)
+
+    if (answer.first == -1) {
         println(-1)
+    } else {
+        println("${answer.first} ${answer.second}")
+    }
+}
+
+fun findPlaceForVasya(numPupils: Int, numVariants: Int, petyaRow: Int, petyaChoice: Int): Pair<Int, Int> {
+    if (numPupils == numVariants) {
+        return -1 to -1
     } else {
         val petyaSeat = if (petyaChoice == 1) {
             petyaRow * 2 - 1
@@ -19,22 +30,16 @@ fun main() {
         val answer: Pair<Int, Int> = calculateVasyaRowToSeat(
             petyaSeat,
             seatToVariantNum,
-            numVariants,
-            numPupils
+            petyaRow
         )
-        if (answer.first == -1) {
-            println(-1)
-        } else {
-            println("${answer.first} ${answer.second}")
-        }
+        return answer
     }
 }
 
 fun calculateVasyaRowToSeat(
     petyaSeat: Int,
     seatToVariantNum: LinkedHashMap<Int, Int>,
-    numVariants: Int,
-    numPupils: Int
+    petyaRow: Int,
 ): Pair<Int, Int> {
     var answerSeat = -1
     var answerRow = -1
@@ -44,7 +49,8 @@ fun calculateVasyaRowToSeat(
         if (k != petyaSeat) {
             val variant = seatToVariantNum[k]!!
             if (variant == petyaVariant) {
-                val currentDistance = abs(petyaSeat - k) / 2
+                val currentRow = (k + 1) / 2
+                val currentDistance = abs(petyaRow - currentRow)
                 if (currentDistance <= minDistance) {
                     minDistance = currentDistance
                     answerSeat = if (k % 2 == 0) 2 else 1
