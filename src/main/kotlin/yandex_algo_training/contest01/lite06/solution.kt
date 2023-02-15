@@ -1,5 +1,7 @@
 package yandex_algo_training.contest01.lite06
 
+import kotlin.math.abs
+
 
 fun main() {
     val sectorCount = readLine()!!.toInt()
@@ -11,19 +13,35 @@ fun main() {
             partitions.add(p)
         }
         val sorted = partitions
-            .sortedWith(compareBy<Partition> { it.from })
+            .sortedWith(compareBy<Partition> { it.from }.then(compareBy { it.to }))
         var counter = 1
         var prev = sorted[0]
         for (i in 1 until sorted.size) {
             val current = sorted[i]
-            if (!prev.intersects(sorted[i])) {
+            if (!current.intersects(prev)) {
                 ++counter
+                prev = current
+            } else {
+                if (!prev.overlaps(current)) {
+                    prev = current
+                }
             }
-            prev = current
         }
         println(counter)
     } else {
         println(0)
+    }
+}
+
+private fun Partition.overlaps(o: Partition): Boolean {
+    return this.from <= o.from && this.to >= o.to
+}
+
+private inline fun greater(p: Partition, o: Partition): Partition {
+    return if (p.to >= o.to && p.from <= o.from) {
+        p
+    } else {
+        o
     }
 }
 
