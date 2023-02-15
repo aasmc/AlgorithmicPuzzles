@@ -1,6 +1,6 @@
 package yandex_algo_training.contest01.lite06
 
-import kotlin.math.abs
+import java.util.*
 
 
 fun main() {
@@ -9,7 +9,7 @@ fun main() {
     val partitions = hashSetOf<Partition>()
     if (partitionCount > 0) {
         repeat(partitionCount) {
-            val p = Partition.fromString(readLine()!!)
+            val p = Partition.from(readLine()!!, it)
             partitions.add(p)
         }
         val sorted = partitions
@@ -18,11 +18,11 @@ fun main() {
         var prev = sorted[0]
         for (i in 1 until sorted.size) {
             val current = sorted[i]
-            if (!current.intersects(prev)) {
+            if (!prev.intersects(current)) {
                 ++counter
                 prev = current
             } else {
-                if (!prev.overlaps(current)) {
+                if(prev.idx < current.idx && prev.to < current.from) {
                     prev = current
                 }
             }
@@ -33,34 +33,23 @@ fun main() {
     }
 }
 
-private fun Partition.overlaps(o: Partition): Boolean {
-    return this.from <= o.from && this.to >= o.to
-}
-
-private inline fun greater(p: Partition, o: Partition): Partition {
-    return if (p.to >= o.to && p.from <= o.from) {
-        p
-    } else {
-        o
-    }
-}
-
 fun Partition.intersects(other: Partition): Boolean {
-    if (this.from >= other.from && this.to <= other.to) return true
-    if (this.to <= other.to && this.to >= other.from) return true
-    if (other.from >= from && other.to <= to) return true
-    if (other.to <= to && other.to >= other.from) return true
+    if (from in other.from..other.to) return true
+    if (to in other.from..other.to) return true
+    if (other.from in from..to) return true
+    if (other.to in from..to) return true
     return false
 }
 
 data class Partition(
     val from: Int,
-    val to: Int
+    val to: Int,
+    val idx: Int
 ) {
     companion object {
-        fun fromString(string: String): Partition {
+        fun from(string: String, idx: Int): Partition {
             val (from, to) = string.split(" ").map { it.toInt() }
-            return Partition(from, to)
+            return Partition(from, to, idx)
         }
     }
 }
