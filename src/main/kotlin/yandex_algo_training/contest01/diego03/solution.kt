@@ -29,6 +29,17 @@ fun countNeededStickers(
     }
     val result = mutableListOf<Int>()
     collectionaireStickers.forEach { s ->
+//        if (s <= diegoStickers[0]) {
+//            result.add(0)
+//        } else if (s > diegoStickers[diegoStickers.lastIndex]) {
+//            result.add(diegoStickers.size)
+//        } else {
+//            val index = leftBinSearch<Int>(0, diegoStickers.size - 1) { idx ->
+//                diegoStickers[idx] >= s
+//            }
+//
+//            result.add(index)
+//        }
         if (s > diegoStickers[diegoStickers.lastIndex]) {
             result.add(diegoStickers.size)
         } else {
