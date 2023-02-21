@@ -1,12 +1,15 @@
 package yandex_algo_training.contest01.diego03
 
+import java.util.SortedSet
+import java.util.TreeSet
+
 fun main() {
     val diegoNum = readLine()!!.toInt()
     val diegoStr = readLine()!!.trim()
     val diegoStickers = if (diegoNum == 0) {
-        emptyList<Int>()
+        sortedSetOf<Int>()
     } else {
-        diegoStr.split(" ").toSet().map { it.toInt() }.sorted()
+        TreeSet(diegoStr.split(" ").map { it.toInt() }.toSortedSet())
     }
     val numCollectionaires = readLine()!!.toInt()
     val collectionairesStr = readLine()!!
@@ -21,32 +24,35 @@ fun main() {
 
 fun countNeededStickers(
     collectionaireStickers: List<Int>,
+    diegoStickers: SortedSet<Int>
+): List<Int> {
+    if (collectionaireStickers.isEmpty()) return emptyList()
+    if (diegoStickers.isEmpty()) {
+        return List(collectionaireStickers.size) { 0 }
+    }
+    val result = arrayListOf<Int>()
+    collectionaireStickers.forEach { s ->
+        result.add(diegoStickers.headSet(s).size)
+    }
+    return result
+}
+
+fun countNeededStickers(
+    collectionaireStickers: List<Int>,
     diegoStickers: List<Int>
 ): List<Int> {
     if (collectionaireStickers.isEmpty()) return emptyList()
     if (diegoStickers.isEmpty()) {
         return List(collectionaireStickers.size) { 0 }
     }
-    val result = mutableListOf<Int>()
+    val result = arrayListOf<Int>()
     collectionaireStickers.forEach { s ->
-//        if (s <= diegoStickers[0]) {
-//            result.add(0)
-//        } else if (s > diegoStickers[diegoStickers.lastIndex]) {
-//            result.add(diegoStickers.size)
-//        } else {
-//            val index = leftBinSearch<Int>(0, diegoStickers.size - 1) { idx ->
-//                diegoStickers[idx] >= s
-//            }
-//
-//            result.add(index)
-//        }
         if (s > diegoStickers[diegoStickers.lastIndex]) {
             result.add(diegoStickers.size)
         } else {
             val index = leftBinSearch<Int>(0, diegoStickers.size - 1) { idx ->
                 diegoStickers[idx] >= s
             }
-
             result.add(index)
         }
 
