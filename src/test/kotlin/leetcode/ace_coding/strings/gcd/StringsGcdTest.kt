@@ -16,4 +16,16 @@ class StringsGcdTest {
         val ex3 = ""
         assertEquals(ex3, gcdOfStringsBruteForce("LEET", "CODE"))
     }
+
+    @Test
+    fun testFastAlgo() {
+        val ex1 = "ABC"
+        assertEquals(ex1, gcdOfStrings("ABCABC", "ABC"))
+
+        val ex2 = "AB"
+        assertEquals(ex2, gcdOfStrings("ABABAB", "ABAB"))
+
+        val ex3 = ""
+        assertEquals(ex3, gcdOfStrings("LEET", "CODE"))
+    }
 }

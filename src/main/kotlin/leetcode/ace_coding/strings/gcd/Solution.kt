@@ -27,3 +27,18 @@ private fun isGcd(left: String, right: String, prefixSize: Int): Boolean {
     val base = left.substring(0, prefixSize)
     return left.replace(base, "").isEmpty() && right.replace(base, "").isEmpty()
 }
+
+fun gcdOfStrings(str1: String, str2: String): String {
+    // if strings have a common divisor, it means that both of the strings are
+    // a concatenation of that same divisor. And that also means, that if we
+    // concatenate both of the strings in any order, they will form the same
+    // string
+    if ("$str1$str2" != "$str2$str1") return ""
+    val gcdLength = gcd(str1.length, str2.length)
+    return str1.substring(0, gcdLength)
+}
+
+private tailrec fun gcd(x: Int, y: Int): Int {
+    if (y == 0) return x
+    return gcd(y, x % y)
+}
