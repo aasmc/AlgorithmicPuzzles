@@ -17,11 +17,10 @@ fun deleteAndEarn(nums: IntArray): Int {
     for (i in 1 until uniqueSorted.size) {
         // how much we earn by removing current element
         val current = uniqueSorted[i] * count[uniqueSorted[i]]!!
+        // take value from before previous (make sure we don't fall into ArrayIndexOutOfBoundsException)
         val beforePrev = if (i > 1) dp[i - 2] else 0
         // if previous value is one less, then we can't include it
         if (uniqueSorted[i] == uniqueSorted[i - 1] + 1) {
-            // take value from before previous (make sure we don't fall into ArrayIndexOutOfBoundsException)
-
             // take max of either previous value, or current value + the one before previous
             dp[i] = maxOf(beforePrev + current, dp[i - 1])
         } else {
