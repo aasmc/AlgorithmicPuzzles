@@ -19,3 +19,15 @@ fun rob(nums: IntArray): Int {
     }
     return dp[dp.lastIndex]
 }
+
+fun rob2(nums: IntArray): Int {
+    var rob1 = 0; var rob2 = 0
+
+    for (house in nums) {
+        val temp = maxOf(rob1 + house, rob2)
+        rob1 = rob2
+        rob2 = temp
+    }
+
+    return rob2
+}
