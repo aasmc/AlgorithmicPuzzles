@@ -9,13 +9,11 @@ fun rob(nums: IntArray): Int {
     }
     val dp = IntArray(nums.size) { 0 }
     dp[0] = nums[0]
-    dp[1] = nums[1]
+    dp[1] = maxOf(nums[0], nums[1])
     for (i in 2 until nums.size) {
-        var currentMax = dp[i - 1]
-        for (j in i - 2 downTo 0) {
-            currentMax = maxOf(currentMax, dp[j] + nums[i])
-        }
-        dp[i] = currentMax
+        val prevMax = dp[i - 1]
+        val prevPrevMax = dp[i - 2]
+        dp[i] = maxOf(prevMax, prevPrevMax + nums[i])
     }
     return dp[dp.lastIndex]
 }
