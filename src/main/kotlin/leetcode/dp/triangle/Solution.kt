@@ -1,6 +1,19 @@
 package leetcode.dp.triangle
 
+
 fun minimumTotal(triangle: List<List<Int>>): Int {
+    val dp = IntArray(triangle[triangle.lastIndex].size + 1) { 0 }
+    for (i in triangle.lastIndex downTo 0) {
+        val current = triangle[i]
+        for ((idx, n) in current.withIndex()) {
+            dp[idx] = n + minOf(dp[idx], dp[idx + 1])
+        }
+    }
+    return dp[0]
+}
+
+
+fun minimumTotalRec(triangle: List<List<Int>>): Int {
     return findMin(0, triangle, 0)
 }
 
