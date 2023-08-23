@@ -7,8 +7,9 @@ fun longestPalindrome(s: String): String {
     for (i in s.indices) {
         var left = i
         var right = i
-        while (left >= 0 && right < s.length && s[left] == s[right]) {
-            if ((right - left + 1) > max) {
+        // check for substrings of odd length
+        while (isPalindrome(left, right, s)) {
+            if (isCurrentSubsequenceGreater(left, right, max)) {
                 max = right - left + 1
                 from = left
                 to = right
@@ -17,10 +18,11 @@ fun longestPalindrome(s: String): String {
             ++right
         }
 
+        // check for substrings of even length
         left = i
         right = i + 1
-        while (left >= 0 && right < s.length && s[left] == s[right]) {
-            if ((right - left + 1) > max) {
+        while (isPalindrome(left, right, s)) {
+            if (isCurrentSubsequenceGreater(left, right, max)) {
                 max = right - left + 1
                 from = left
                 to = right
@@ -30,6 +32,14 @@ fun longestPalindrome(s: String): String {
         }
     }
     return s.substring(from, to + 1)
+}
+
+private fun isCurrentSubsequenceGreater(curLeftIdx: Int, curRightIdx: Int, curMax: Int): Boolean {
+    return curRightIdx - curLeftIdx + 1 > curMax
+}
+
+private fun isPalindrome(leftIdx: Int, rightIdx: Int, s: String): Boolean {
+    return leftIdx >= 0 && rightIdx < s.length && s[leftIdx] == s[rightIdx]
 }
 
 
