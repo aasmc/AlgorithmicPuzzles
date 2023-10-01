@@ -1,4 +1,4 @@
-package leetcode.ace_coding.strings.merge_strings
+package leetcode.ace_coding.strings_arrays.merge_strings
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

@@ -1,4 +1,4 @@
-package leetcode.ace_coding.strings.gcd
+package leetcode.ace_coding.strings_arrays.gcd
 
 fun gcdOfStringsBruteForce(str1: String, str2: String): String {
     var minPrefixLength = minOf(str1.length, str2.length)

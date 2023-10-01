@@ -1,4 +1,4 @@
-package leetcode.ace_coding.strings.kids_candies
+package leetcode.ace_coding.strings_arrays.kids_candies
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

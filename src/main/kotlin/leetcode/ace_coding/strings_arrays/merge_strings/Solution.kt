@@ -1,4 +1,4 @@
-package leetcode.ace_coding.strings.merge_strings
+package leetcode.ace_coding.strings_arrays.merge_strings
 
 fun mergeAlternately(word1: String, word2: String): String {
     val builder = StringBuilder()

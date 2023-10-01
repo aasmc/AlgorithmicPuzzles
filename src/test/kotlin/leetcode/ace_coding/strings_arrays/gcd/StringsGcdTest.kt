@@ -1,4 +1,4 @@
-package leetcode.ace_coding.strings.gcd
+package leetcode.ace_coding.strings_arrays.gcd
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
