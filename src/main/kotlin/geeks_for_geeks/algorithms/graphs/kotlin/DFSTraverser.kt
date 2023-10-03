@@ -1,6 +1,6 @@
 package geeks_for_geeks.algorithms.graphs.kotlin
 
-object DFSTraverser {
+object  DFSTraverser {
     fun <V : Comparable<V>> dfsNoSource(graph: Graph<V>, consume: (V) -> Unit) {
         val visited = BooleanArray(graph.getVertexCount())
         for (v in graph.vertices()) {
