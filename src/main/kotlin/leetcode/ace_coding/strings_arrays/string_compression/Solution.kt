@@ -1,6 +1,24 @@
 package leetcode.ace_coding.strings_arrays.string_compression
 
-import java.lang.StringBuilder
+fun compressEditorial(chars: CharArray): Int {
+    var i = 0
+    var res = 0
+    while (i < chars.size) {
+        var groupLength = 1
+        while (i + groupLength < chars.size && chars[i] == chars[i + groupLength]) {
+            ++groupLength
+        }
+        chars[res++] = chars[i]
+        if (groupLength > 1) {
+            for(d in groupLength.toString().toCharArray()) {
+                chars[res++] = d
+            }
+        }
+        i += groupLength
+    }
+    return res
+}
+
 
 fun compress(chars: CharArray): Int {
     if (chars.size == 1) return 1
@@ -17,7 +35,7 @@ fun compress(chars: CharArray): Int {
             val diff = secondIdx - firstIdx
             if (diff > 1) {
                 if (diff >= 10) {
-                    val digits = buildCharsFromDigit(diff)
+                    val digits = diff.toString().toCharArray()
                     for (d in digits) {
                         chars[digitInsIdx++] = d
                         ++size
@@ -39,7 +57,7 @@ fun compress(chars: CharArray): Int {
     if (diff > 1) {
         digitInsIdx = charInsIdx + 1
         if (diff >= 10) {
-            val digits = buildCharsFromDigit(diff)
+            val digits = diff.toString().toCharArray()
             for (d in digits) {
                 chars[digitInsIdx++] = d
                 ++size
@@ -53,14 +71,4 @@ fun compress(chars: CharArray): Int {
     return size
 }
 
-private fun buildCharsFromDigit(d: Int): CharArray {
-    var diff = d
-    val digitBuilder = StringBuilder()
-    while (diff > 0) {
-        digitBuilder.append(diff % 10)
-        diff /= 10
-    }
-    val digits = digitBuilder.toString().toCharArray()
-    digits.reverse()
-    return digits
-}
+
