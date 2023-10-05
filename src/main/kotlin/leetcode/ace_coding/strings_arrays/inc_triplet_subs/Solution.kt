@@ -1,11 +1,12 @@
 package leetcode.ace_coding.strings_arrays.inc_triplet_subs
 
 fun increasingTriplet(nums: IntArray): Boolean {
-    // smallest element in increasing subsequence of sequence 0..n, basically it is the start of increasing subsequence
+    // smallest element in increasing subsequence of sequence 0..n,
+    // basically it is the start of increasing subsequence
     var first = Int.MAX_VALUE
-    // element that is greatest in increasing subsequence of size 2
+    // the greatest element in increasing subsequence of size 2
     // (in the sequence from 0..n). This means, that if we find an element
-    // that is larger than the second value, than we will find a subsequence of size 3
+    // that is larger than the second value, than we will find an increasing subsequence of size 3
     var second = Int.MAX_VALUE
 
     for (elem in nums) {
