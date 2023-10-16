@@ -1,6 +1,6 @@
-package leetcode.ace_coding.bst_dfs.max_depth
+package leetcode.ace_coding.binary_tree_dfs.max_depth
 
-import leetcode.ace_coding.bst_dfs.common.TreeNode
+import leetcode.ace_coding.binary_tree_dfs.common.TreeNode
 
 class MaxDepthSolution {
 
