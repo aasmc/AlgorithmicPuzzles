@@ -1,6 +1,6 @@
 package leetcode.ace_coding.binary_tree_dfs.leaf_similar
 
-import leetcode.ace_coding.binary_tree_dfs.common.TreeNode
+import leetcode.ace_coding.common.TreeNode
 
 class LeafSimilarSolution {
 

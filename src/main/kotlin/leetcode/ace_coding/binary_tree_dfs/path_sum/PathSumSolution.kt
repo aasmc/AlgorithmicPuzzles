@@ -1,6 +1,6 @@
 package leetcode.ace_coding.binary_tree_dfs.path_sum
 
-import leetcode.ace_coding.binary_tree_dfs.common.TreeNode
+import leetcode.ace_coding.common.TreeNode
 
 class PathSumSolution {
 

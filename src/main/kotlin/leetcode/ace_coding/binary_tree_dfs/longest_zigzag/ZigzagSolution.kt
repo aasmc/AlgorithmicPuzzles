@@ -1,6 +1,6 @@
 package leetcode.ace_coding.binary_tree_dfs.longest_zigzag
 
-import leetcode.ace_coding.binary_tree_dfs.common.TreeNode
+import leetcode.ace_coding.common.TreeNode
 
 class ZigzagSolution {
 

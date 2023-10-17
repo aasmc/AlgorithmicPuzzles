@@ -1,4 +1,4 @@
-package leetcode.ace_coding.binary_tree_dfs.common
+package leetcode.ace_coding.common
 
 class TreeNode(var `val`: Int) {
     var left: TreeNode? = null

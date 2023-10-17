@@ -1,6 +1,6 @@
 package leetcode.ace_coding.binary_tree_dfs.count_good_nodes
 
-import leetcode.ace_coding.binary_tree_dfs.common.TreeNode
+import leetcode.ace_coding.common.TreeNode
 
 class CountGoodNodesSolution {
 
