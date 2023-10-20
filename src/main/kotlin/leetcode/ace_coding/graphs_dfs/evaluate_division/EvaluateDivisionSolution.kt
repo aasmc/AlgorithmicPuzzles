@@ -14,6 +14,7 @@ class EvaluateDivisionSolution {
 
         val adjList = hashMapOf<String, ArrayList<Edge>>()
         for ((i, eq) in equations.withIndex()) {
+            // e.g. a/b = 6 ==> b/a = 1/6
             adjList.computeIfAbsent(eq[0]) { ArrayList() }.add(Edge(eq[1], values[i]))
             adjList.computeIfAbsent(eq[1]) { ArrayList() }.add(Edge(eq[0], 1 / values[i]))
         }
