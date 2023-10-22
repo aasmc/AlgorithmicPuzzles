@@ -23,7 +23,7 @@ private const val EXIT_EVENT = -1
  * M number of cars arrived in the Center during the day,
  * some of the cars were long, so they occupied several parking spots.
  * We know the time of arrival and departure for every car, as well as
- * two numbers: from parking lot number and to parking long number.
+ * two numbers: "from" parking lot number and "to" parking long number.
  * If at any moment in time a car leaves the parking lot, the lot is
  * considered free, i.e. at the same time another car can occupy it.
  *
