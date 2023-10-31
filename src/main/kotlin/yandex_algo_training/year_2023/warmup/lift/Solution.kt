@@ -16,12 +16,13 @@ private fun solve(k: Int, employees: IntArray, n: Int) {
     println(res)
 }
 
-private fun solveParts(k: Int, employees: IntArray, n: Int) : Long {
-    var res = 0L
+private fun solveParts(k: Int, employees: IntArray, n: Int) : ULong {
+    var res: ULong = 0.toULong()
     var i = n
+    while (i > 0 && employees[i] == 0) i--
     while (i > 0) {
         var currentCapacity= k
-        res += i
+        res += i.toULong()
         currentCapacity -= employees[i]
         employees[i] = 0
         --i
@@ -31,44 +32,22 @@ private fun solveParts(k: Int, employees: IntArray, n: Int) : Long {
             --i
             res++
         }
-        res += (i + 1)
-        while (i > 0 && employees[i] == 0) {
-            --i
+        if(currentCapacity != 0) {
+            employees[i] -= currentCapacity
         }
+        res += (i + 1).toULong()
+
     }
     return res
 }
 
-private fun solveIntegral(k: Int, employees: IntArray, n: Int): Long {
-    var res = 0L
+private fun solveIntegral(k: Int, employees: IntArray, n: Int): ULong {
+    var res: ULong = 0.toULong()
     for (i in n downTo 1) {
-        res += (employees[i] / k) * i * 2L
-        employees[i] -= (employees[i] / k) * k
-    }
-    return res
-}
-
-private fun wrongSolution(n: Int, k: Int, employees: IntArray): Long {
-    var res = 0L
-    var i = n
-    while (i > 0) {
-        var capacity = k
-        res += (employees[i] / k) * i * 2L
-        capacity -= employees[i] % k
-        if (capacity != k) {
-            res += i * 2L
-            while (capacity > 0 && i > 0) {
-                --i
-                if (employees[i] <= capacity) {
-                    capacity -= employees[i]
-                } else {
-                    employees[i] -= capacity
-                    ++i
-                    break
-                }
-            }
+        if (employees[i] != 0) {
+            res += (employees[i] / k).toULong() * i.toULong() * 2.toULong()
+            employees[i] -= (employees[i] / k) * k
         }
-        --i
     }
     return res
 }
