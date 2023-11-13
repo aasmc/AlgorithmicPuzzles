@@ -47,6 +47,19 @@ private fun isEqual(
     if (endReal == endMirror) {
         return mirrorHash[endMirror] == realHash[endReal]
     }
+    // startMirror is always 0
+    // to check for equality of two hashes we need to find out if:
+    // realHash[endReal] - (realHash[startReal] * pows[len]) % mod ==
+    // mirrorHash[endMirror] - (mirrorHash[startMirror] * pows[len]) % mod
+    // since startMirror is always 0, the last part of the equation
+    // is reduced to mirrorHash[endMirror]
+    // mit subtracting can lead to negative numbers, therefore we can
+    // reformat the equation, because:
+    // a - b == x - y is the same as:
+    // a + y == b + x
+    // therefore our equation becomes:
+    // realHash[endReal] + mirrorHash[startMirror] (which is actually 0) ==
+    // (mirrorHash[endMirror] + realHash[startReal] * pows[len]) % mod
     val real = realHash[endReal]
     val mirror = (mirrorHash[endMirror] + (realHash[startReal] * pows[len])) % mod
     return real == mirror
