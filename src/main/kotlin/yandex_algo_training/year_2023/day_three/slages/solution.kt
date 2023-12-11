@@ -4,10 +4,10 @@ import java.util.PriorityQueue
 
 fun main() {
     val n = readln().trim().toInt()
-    val descriptions = Array<CityDescription?>(n + 1) { null }
+    val descriptions = Array<City?>(n + 1) { null }
     repeat(n) { city ->
         val (waitTime, speed) = readln().trim().split("\\s+".toRegex()).map { it.toInt() }
-        descriptions[city + 1] = CityDescription(city + 1, waitTime, speed)
+        descriptions[city + 1] = City(city + 1, waitTime, speed)
     }
     val roads = Array<MutableList<Road>>(n + 1) {
         mutableListOf()
@@ -23,7 +23,7 @@ fun main() {
     println(res.path.joinToString(separator = " "))
 }
 
-private fun solve(descriptions: Array<CityDescription?>, roads: Array<MutableList<Road>>, n: Int): ShortestPath {
+private fun solve(descriptions: Array<City?>, roads: Array<MutableList<Road>>, n: Int): ShortestPath {
     var max = findShortestTimeToCapitalFrom(n, descriptions, roads, n)
     for (i in n - 1 downTo 2) {
         val cur = findShortestTimeToCapitalFrom(i, descriptions, roads, n)
@@ -41,59 +41,59 @@ data class ShortestPath(
 
 private fun findShortestTimeToCapitalFrom(
     start: Int,
-    descriptions: Array<CityDescription?>,
+    cities: Array<City?>,
     roads: Array<MutableList<Road>>,
     n: Int
 ): ShortestPath {
-    val prev = linkedSetOf<Int>()
-    val visited = IntArray(n + 1)
     val unhandled = PriorityQueue<CityTime>(Comparator.comparingDouble { it.curTime })
     val times = DoubleArray(n + 1) { Double.POSITIVE_INFINITY }
     times[start] = 0.0
-    unhandled.offer(CityTime(start, descriptions[start]!!.waitTime.toDouble()))
+    unhandled.offer(CityTime(start, 0.0))
+    val path = mutableListOf<Int>()
     while (unhandled.isNotEmpty()) {
         val current = unhandled.poll()!!
         if (current.city == 1) {
-            prev.add(current.city)
-            break
+            path.clear()
+            times[1] = current.curTime
+            var c: CityTime? = current
+            while (c != null) {
+                path.add(c.city)
+                c = c.prev
+            }
         }
-        if (visited[current.city] < 2) {
-            visited[current.city]++
-            val adjacent = roads[current.city]
-            for (road in adjacent) {
-                if (visited[road.to] < 2) {
-                    val (cityFrom, cityTo, distance) = road
-                    val prevSpeed = current.prevSpeed
-                    val prevTime = times[current.city]
-                    val (currentNum, waitTime, currentSpeed) = descriptions[cityFrom]!!
-                    val noChangeTravelTime = distance * 1.0 / prevSpeed
-                    val withChangeTravelTime = distance * 1.0 / currentSpeed + waitTime
-                    var speed = currentSpeed.toDouble()
-                    val time = if (noChangeTravelTime <= withChangeTravelTime) {
-                        speed = prevSpeed
-                        noChangeTravelTime
-                    } else {
-                        withChangeTravelTime
-                    }
-                    if (times[cityTo] > time + times[start] || times[cityTo] == 0.0 && visited[cityTo] >= 1) {
-                        times[cityTo] = time + times[current.city]
-                        unhandled.offer(CityTime(cityTo, times[cityTo], speed))
-                        prev.add(cityFrom)
-                    }
-                }
+        if (times[current.city] < current.curTime) continue
+        val adjacent = roads[current.city]
+        for (road in adjacent) {
+            val (cityFrom, cityTo, distance) = road
+            val prevSpeed = current.prevSpeed
+            val (currentNum, waitTime, currentSpeed) = cities[cityFrom]!!
+            val noChangeTravelTime = distance * 1.0 / prevSpeed
+            val withChangeTravelTime = distance * 1.0 / currentSpeed + waitTime
+            var speed = currentSpeed.toDouble()
+            val time = if (noChangeTravelTime <= withChangeTravelTime) {
+                speed = prevSpeed
+                noChangeTravelTime
+            } else {
+                withChangeTravelTime
+            }
+            if (times[cityTo] > time + times[start]) {
+                times[cityTo] = time + times[current.city]
+                unhandled.offer(CityTime(cityTo, times[cityTo], speed, current))
             }
         }
     }
-    return ShortestPath(times[1], prev.toList())
+
+    return ShortestPath(times[1], path.reversed())
 }
 
 data class CityTime(
     val city: Int,
     val curTime: Double,
     val prevSpeed: Double = 0.0000000000000000001,
+    val prev: CityTime? = null
 )
 
-data class CityDescription(
+data class City(
     val number: Int,
     val waitTime: Int,
     val speed: Int
