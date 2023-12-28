@@ -1,6 +1,7 @@
 package yandex_algo_training.contest01.control04
 
 import org.junit.jupiter.api.Test
+import yandex_algo_training.year_2022.contest01.control04.findPlaceForVasya
 import kotlin.test.assertEquals
 
 internal class ControlWorkTest {

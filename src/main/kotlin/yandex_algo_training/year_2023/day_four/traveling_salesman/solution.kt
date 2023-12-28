@@ -18,7 +18,7 @@ fun solve(graph: Array<IntArray>, n: Int): Int {
     if (n == 2) {
         return graph[0][1] + graph[1][0]
     }
-    val allVisited = (1 shl n) - 1
+    val allVisited = (1 shl n) - 1 // all ones, e.g. n = 4 => allVisited = 0x1111
     fun helper(mask: Int, pos: Int): Int {
         if (mask == allVisited) {
             return graph[pos][0]
