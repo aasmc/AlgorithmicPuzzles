@@ -8,15 +8,13 @@ class TrappingWaterSolution {
         var maxLeft = height.first()
         var maxRight = height.last()
         var result = 0
-        while (left <= right) {
+        while (left < right) {
             if (maxLeft <= maxRight) {
-                result += maxOf(maxLeft - height[left], 0)
+                result += maxOf(maxLeft - height[left++], 0)
                 maxLeft = maxOf(maxLeft, height[left])
-                ++left
             } else {
-                result += maxOf(maxRight - height[right], 0)
+                result += maxOf(maxRight - height[right--], 0)
                 maxRight = maxOf(maxRight, height[right])
-                --right
             }
         }
         return result
