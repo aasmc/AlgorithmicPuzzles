@@ -10,7 +10,7 @@ class ThreeSumSolution {
         // element in the three sum
         for((idx, num) in nums.withIndex()) {
             // if we start from the same element, then we either found
-            // a three sum already, or there's no three sum with this element
+            // a three sum for that element already, or there's no three sum with this element
             // as the first one, so skip it
             if (idx > 0 && num == nums[idx - 1]) {
                 continue
@@ -27,6 +27,7 @@ class ThreeSumSolution {
                 } else {
                     result.add(listOf(num, nums[left], nums[right]))
                     ++left
+                    // skip same elements
                     while (nums[left] == nums[left - 1] && left < right) {
                         ++left
                     }
