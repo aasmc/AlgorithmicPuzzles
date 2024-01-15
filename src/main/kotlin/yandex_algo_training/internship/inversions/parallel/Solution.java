@@ -1,7 +1,11 @@
-package yandex_algo_training.internship.inversions;
+package yandex_algo_training.internship.inversions.parallel;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.LongAdder;
 
 public class Solution {
 
@@ -18,22 +22,34 @@ public class Solution {
     }
 
     private static long[] countAverageInversions(int[] numbers) {
-        long totalInv = 0;
+        LongAdder totalInv = new LongAdder();
         long totalRepl = 0;
-        int[] temp = new int[numbers.length];
-        int[] copy = new int[numbers.length];
+        ForkJoinPool pool = new ForkJoinPool();
+        List<Future<Long>> futures = new ArrayList<>();
         for (int i = 0; i < numbers.length; i++) {
             for (int j = i + 1; j < numbers.length; j++) {
                 swap(numbers, i, j);
+                int[] copy = new int[numbers.length];
+                int[] temp = new int[numbers.length];
                 System.arraycopy(numbers, 0, copy, 0, numbers.length);
-                totalInv += countInversions(copy, temp, numbers.length);
+                var f = pool.submit(() -> countInversions(copy, temp, numbers.length));
+                futures.add(f);
                 swap(numbers, i, j);
                 ++totalRepl;
             }
         }
-        long gcd = gcd(totalInv, totalRepl);
+        for(Future<Long> f: futures) {
+            try {
+                totalInv.add(f.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        pool.shutdownNow();
+        long invs = totalInv.sum();
+        long gcd = gcd(invs, totalRepl);
         long[] res = new long[2];
-        res[0] = totalInv / gcd;
+        res[0] = invs / gcd;
         res[1] = totalRepl / gcd;
         return res;
     }
