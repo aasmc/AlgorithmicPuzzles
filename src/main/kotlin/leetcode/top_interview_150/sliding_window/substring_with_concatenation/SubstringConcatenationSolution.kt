@@ -3,62 +3,44 @@ package leetcode.top_interview_150.sliding_window.substring_with_concatenation
 class SubstringConcatenationSolution {
 
     fun findSubstring(s: String, words: Array<String>): List<Int> {
+        if (words.isEmpty()) return emptyList()
+        val wordLength = words[0].length
+        val concatLength = wordLength * words.size
         val result = mutableListOf<Int>()
-        permutations(words).forEach { permutation ->
-            val indices = findIndices(s, permutation)
-            if (indices.isNotEmpty()) {
-                result.addAll(indices)
+        val wordToCount = hashMapOf<String, Int>()
+        words.forEach { word ->
+            wordToCount.merge(word, 1, Int::plus)
+        }
+        for (i in 0 until wordLength) {
+            var start = i
+            var end = start + concatLength
+            if (end > s.length) break
+            val used = hashMapOf<String, Int>()
+            s.substring(start, end).chunked(wordLength).forEach { w ->
+                used.merge(w, 1, Int::plus)
+            }
+            if (used == wordToCount) {
+                result.add(start)
+            }
+            while (end <= s.length - wordLength) {
+                val oldWord = s.substring(start, start + wordLength)
+                if (used[oldWord]!! > 1) {
+                    used.merge(oldWord, -1, Int::plus)
+                } else {
+                    used.remove(oldWord)
+                }
+                val newWord = s.substring(end, end + wordLength)
+                used.merge(newWord, 1, Int::plus)
+                start += wordLength
+                end += wordLength
+
+                if (used == wordToCount) {
+                    result.add(start)
+                }
             }
         }
         return result
     }
 
-    fun findIndices(s: String, permutation: String): List<Int> {
-        val result = mutableListOf<Int>()
-        val idx = s.indexOf(permutation)
-        if (idx != -1) {
-            return listOf(idx)
-        }
-        return emptyList()
-//        for (i in 0..s.length - permutation.length) {
-//            var equal = true
-//            for (j in permutation.indices) {
-//                if (s[i + j] != permutation[j]) {
-//                    equal = false
-//                    break
-//                }
-//            }
-//            if (equal) {
-//                result.add(i)
-//            }
-//        }
-//        return result
-    }
-
-    fun permutations(words: Array<String>): Sequence<String> = sequence {
-        val wordToCount = hashMapOf<String, Int>()
-        words.forEach { word ->
-            wordToCount.merge(word, 1, Int::plus)
-        }
-        val permutation = mutableListOf<String>()
-
-        suspend fun SequenceScope<String>.backTrack() {
-            if (words.size == permutation.size) {
-                val permString = permutation.joinToString(separator = "")
-                yield(permString)
-            } else {
-                for ((word, count) in wordToCount) {
-                    if (count > 0) {
-                        permutation.add(word)
-                        wordToCount[word] = wordToCount[word]!! - 1
-                        backTrack()
-                        wordToCount[word] = wordToCount[word]!! + 1
-                        permutation.removeAt(permutation.lastIndex)
-                    }
-                }
-            }
-        }
-        backTrack()
-    }
 
 }
