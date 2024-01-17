@@ -89,22 +89,3 @@ fun minCarsOnFullParking(cars: List<Car>, n: Int): Int {
 
     return minCars
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
