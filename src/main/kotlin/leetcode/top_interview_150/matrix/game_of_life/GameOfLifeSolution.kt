@@ -37,10 +37,14 @@ class GameOfLifeSolution {
                     if (neighbours == 2 || neighbours == 3) { // if the number of neighbours
                         // is enough for the cell to stay alive, then update the cell
                         board[row][col] = ONE_TO_ONE
-                    }
+                    } // if the number of cells is not enough, we leave the value as
+                    // it is, i.e. [1], and it will signify that the cell died, but was
+                    // previously alive.
                 } else if (neighbours == 3) { // we are transitioning from [0]
                     // and in this case the cell has enough neighbours to resurrect
                     board[row][col] = ZERO_TO_ONE
+                    // if the [0] cell doesn't have enough neighbours to resurrect,
+                    // then its value will stay the same - [0], i.e. transition from 0 to 0
                 }
             }
         }
