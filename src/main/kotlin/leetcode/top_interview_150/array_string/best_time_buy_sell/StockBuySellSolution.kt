@@ -5,7 +5,7 @@ class StockBuySellSolution {
     fun maxProfit(prices: IntArray): Int {
         var min = Int.MAX_VALUE
         var profit = 0
-        for (price in prices) {
+        prices.forEach { price ->
             min = minOf(min, price)
             val currentProfit = price - min
             profit = maxOf(profit, currentProfit)
