@@ -8,7 +8,7 @@ class CandySolution {
         // left of him, if this guy's rating is greater than the rating of the guy to
         // the left of him
         for (i in 1 until ratings.size) {
-            if (ratings[i - 1] < ratings[i]) {
+            if (hasGreaterRatingThanTheLeftNeighbour(ratings, i)) {
                 candies[i] = candies[i - 1] + 1
             }
         }
@@ -19,11 +19,17 @@ class CandySolution {
         // on the first pass in the loop above), in this case we don't change the number
         // of candies of this guy
         for (i in ratings.lastIndex - 1 downTo 0) {
-            if (ratings[i] > ratings[i + 1]) {
+            if (hasGreaterRatingThanTheRightNeighbour(ratings, i)) {
                 candies[i] = maxOf(candies[i], candies[i + 1] + 1)
             }
         }
         return candies.sumOf { it }
     }
+
+    private fun hasGreaterRatingThanTheRightNeighbour(ratings: IntArray, i: Int) =
+        ratings[i] > ratings[i + 1]
+
+    private fun hasGreaterRatingThanTheLeftNeighbour(ratings: IntArray, i: Int) =
+        ratings[i - 1] < ratings[i]
 
 }
