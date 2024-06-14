@@ -9,9 +9,9 @@ class ZigzagConversionSolution {
             val baseStep = (numRows - 1) * 2
             for (i in row until s.length step baseStep) {
                 sb.append(s[i])
-                val interimStep = i + baseStep - 2 * row
-                if (isIntermediateStep(row, numRows) && interimStep < s.length) {
-                    sb.append(s[interimStep])
+                val intermediateIdx = i + baseStep - 2 * row
+                if (isIntermediateStep(row, numRows) && intermediateIdx < s.length) {
+                    sb.append(s[intermediateIdx])
                 }
             }
         }
