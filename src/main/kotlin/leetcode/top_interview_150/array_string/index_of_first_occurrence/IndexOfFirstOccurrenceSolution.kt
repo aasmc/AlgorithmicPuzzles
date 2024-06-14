@@ -2,9 +2,14 @@ package leetcode.top_interview_150.array_string.index_of_first_occurrence
 
 
 class IndexOfFirstOccurrenceSolution {
+
+    fun strStr(haystack: String, needle: String): Int {
+        return haystack.indexOf(needle)
+    }
+
     val x = 31
     val mod = 98689
-    fun strStr(haystack: String, needle: String): Int {
+    fun strStr2(haystack: String, needle: String): Int {
         if (needle.isEmpty()) return 0
         if (needle.length > haystack.length) return -1
         var highPower = 1
