@@ -1,15 +1,16 @@
 package leetcode.easy.arrays.summary_ranges
 
-import kotlin.math.abs
-
 class SummaryRangesSolution {
 
     fun summaryRanges(nums: IntArray): List<String> {
         if (nums.isEmpty()) return emptyList()
+        if (nums.size == 1) {
+            return listOf(nums[0].toString())
+        }
         var left = 0
-        val result = mutableListOf<String>()
+        val result = arrayListOf<String>()
         for (right in 1 until nums.size) {
-            if (abs(nums[right] - nums[right - 1]) > 1) {
+            if (nums[right] != nums[right - 1] + 1) {
                 // calculate interval
                 val interval = if ((right - 1) == left) {
                     "${nums[left]}"
