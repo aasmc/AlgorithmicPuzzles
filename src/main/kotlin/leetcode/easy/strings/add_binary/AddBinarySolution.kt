@@ -7,8 +7,8 @@ class AddBinarySolution {
     fun addBinary(a: String, b: String): String {
         val sb = StringBuilder()
         var carry = 0
-        val maxLex = maxOf(a.length, b.length)
-        for (i in 0 until maxLex) {
+        val maxLen = maxOf(a.length, b.length)
+        for (i in 0 until maxLen) {
             // take last digits from the strings, and if the string has no more digits,
             // then take 0 instead
             val idxA = a.lastIndex - i
