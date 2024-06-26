@@ -9,19 +9,19 @@ class RangeSumOfBstSolution {
 
     fun rangeSumBST(root: TreeNode?, low: Int, high: Int): Int {
         if (root == null) return 0
-        var sum = 0
-        fun dfs(current: TreeNode) {
+        fun dfs(current: TreeNode): Int {
+            var sum = 0
             if (current.`val` in low..high) {
                 sum += current.`val`
             }
             if (current.left != null) {
-                dfs(current.left!!)
+                sum += dfs(current.left!!)
             }
             if (current.right != null) {
-                dfs(current.right!!)
+                sum += dfs(current.right!!)
             }
+            return sum
         }
-        dfs(root)
-        return sum
+        return dfs(root)
     }
 }
