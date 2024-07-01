@@ -9,6 +9,8 @@ class SimplifyPathSolutionTest {
 
     @Test
     fun testCorrect() {
+        assertEquals("/", sut.simplifyPath("/.."))
+        assertEquals("/a/b/c", sut.simplifyPath("/a//b////c/d//././/.."))
         assertEquals("/.../b/d", sut.simplifyPath("/.../a/../b/c/../d/./"))
         assertEquals("/home", sut.simplifyPath("/home/"))
         assertEquals("/home/foo", sut.simplifyPath("/home//foo/"))
