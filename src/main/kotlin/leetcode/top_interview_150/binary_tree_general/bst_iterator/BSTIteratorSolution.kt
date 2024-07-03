@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.bst_iterator
+package leetcode.top_interview_150.binary_tree_general.bst_iterator
 
 import java.util.Stack
 

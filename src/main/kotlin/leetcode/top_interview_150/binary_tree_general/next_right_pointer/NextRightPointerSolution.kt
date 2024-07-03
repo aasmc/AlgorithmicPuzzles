@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.next_right_pointer
+package leetcode.top_interview_150.binary_tree_general.next_right_pointer
 
 import java.util.LinkedList
 

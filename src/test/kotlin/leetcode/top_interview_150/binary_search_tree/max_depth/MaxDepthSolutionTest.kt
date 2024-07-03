@@ -1,5 +1,6 @@
 package leetcode.top_interview_150.binary_search_tree.max_depth
 
+import leetcode.top_interview_150.binary_tree_general.max_depth.MaxDepthSolution
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

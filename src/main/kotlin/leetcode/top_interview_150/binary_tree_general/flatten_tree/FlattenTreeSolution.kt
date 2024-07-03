@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.flatten_tree
+package leetcode.top_interview_150.binary_tree_general.flatten_tree
 
 class FlattenTreeSolution {
 

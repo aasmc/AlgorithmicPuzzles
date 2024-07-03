@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.max_depth
+package leetcode.top_interview_150.binary_tree_general.max_depth
 
 class MaxDepthSolution {
 

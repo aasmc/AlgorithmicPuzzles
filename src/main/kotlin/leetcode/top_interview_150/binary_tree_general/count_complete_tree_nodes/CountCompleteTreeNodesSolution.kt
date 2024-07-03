@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.count_complete_tree_nodes
+package leetcode.top_interview_150.binary_tree_general.count_complete_tree_nodes
 
 class CountCompleteTreeNodesSolution {
 

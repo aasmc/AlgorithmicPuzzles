@@ -1,4 +1,4 @@
-package leetcode.top_interview_150.binary_search_tree.sum_root_to_leaf
+package leetcode.top_interview_150.binary_tree_general.sum_root_to_leaf
 
 class SumRootToLeafNumbersSolution {
 

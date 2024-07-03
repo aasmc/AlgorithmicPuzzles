@@ -1,5 +1,6 @@
 package leetcode.top_interview_150.binary_search_tree.next_right_pointer
 
+import leetcode.top_interview_150.binary_tree_general.next_right_pointer.NextRightPointerSolution
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
