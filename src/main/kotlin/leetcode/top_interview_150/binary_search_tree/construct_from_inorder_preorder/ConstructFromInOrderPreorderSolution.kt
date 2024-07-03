@@ -28,6 +28,8 @@ class ConstructFromInOrderPreorderSolution {
             while (preorder[rootIdx] != inorder[inOrderIdx]) {
                 inOrderIdx++
             }
+            // rootIdx + size + 1 - is the start of the right subtree nodes
+            // in the preorder array.
             val size = inOrderIdx - iFrom
             root.left = calculate(rootIdx + 1, iFrom, inOrderIdx - 1)
             root.right = calculate(rootIdx + size + 1, inOrderIdx + 1, iTo)
