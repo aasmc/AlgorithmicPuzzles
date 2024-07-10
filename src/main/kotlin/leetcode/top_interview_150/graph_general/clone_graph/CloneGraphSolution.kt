@@ -7,6 +7,21 @@ class CloneGraphSolution {
     }
 
     fun cloneGraph(node: Node?): Node? {
-        TODO()
+        if (node == null) return null
+        val originalToClone = hashMapOf<Node, Node>()
+        fun dfs(current: Node) {
+            originalToClone[current] = Node(current.`val`)
+
+            for (neig in current.neighbors) {
+                if (neig != null) {
+                    if (!originalToClone.containsKey(neig)) {
+                        dfs(neig)
+                    }
+                    originalToClone[current]!!.neighbors.add(originalToClone[neig])
+                }
+            }
+        }
+        dfs(node)
+        return originalToClone[node]
     }
 }
