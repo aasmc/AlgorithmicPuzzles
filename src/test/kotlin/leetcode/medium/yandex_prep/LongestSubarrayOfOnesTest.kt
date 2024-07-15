@@ -1,5 +1,6 @@
 package leetcode.medium.yandex_prep
 
+import leetcode.medium.yandex_prep.longest_subarray_of_ones.LongestSubarrayOfOnes
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

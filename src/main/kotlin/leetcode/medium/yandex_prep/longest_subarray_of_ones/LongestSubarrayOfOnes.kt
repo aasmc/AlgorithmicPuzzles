@@ -1,4 +1,4 @@
-package leetcode.medium.yandex_prep
+package leetcode.medium.yandex_prep.longest_subarray_of_ones
 
 class LongestSubarrayOfOnes {
 
