@@ -1,7 +1,5 @@
 package leetcode.medium.backtracking.split_string_consecutive
 
-import java.math.BigInteger
-
 class SplitStringConsecutiveSolution {
 
     fun splitString(s: String): Boolean {
