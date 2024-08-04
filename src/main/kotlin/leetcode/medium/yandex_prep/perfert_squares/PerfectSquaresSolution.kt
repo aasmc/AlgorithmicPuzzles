@@ -7,10 +7,12 @@ class PerfectSquaresSolution {
         dp[0] = 0
 
         for(target in 1..n) {
-            for (s in 1..target) {
+            inner@ for (s in 1..target) {
                 val square = s * s
                 if (target - square >= 0) {
                     dp[target] = minOf(dp[target], dp[target - square] + 1)
+                } else {
+                    break@inner
                 }
             }
         }
