@@ -6,19 +6,14 @@ class PartitionLabelsSolution {
         val charToLastIdx = hashMapOf<Char, Int>()
 
         s.forEachIndexed { index, ch ->
-            charToLastIdx.merge(ch, index) { _, new ->
-                new
-            }
+            charToLastIdx[ch] = index
         }
 
         val result = mutableListOf<Int>()
         var end = 0
         var size = 0
         for (i in s.indices) {
-            val ch = s[i]
-            if (end < charToLastIdx[ch]!!) {
-                end = charToLastIdx[ch]!!
-            }
+            end = maxOf(end, charToLastIdx[s[i]]!!)
             ++size
             if (i == end) {
                 result.add(size)
