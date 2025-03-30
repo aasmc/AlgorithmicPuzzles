@@ -4,12 +4,12 @@ class MajorityElementSolution {
 
     fun majorityElement(nums: IntArray): Int {
         var count = 0
-        var candidate = 0
-        for (num in nums) {
+        var candidate = nums[0]
+        for (i in 1 until nums.size) {
             if (count == 0) {
-                candidate = num
+                candidate = nums[i]
             }
-            if (num == candidate) {
+            if (candidate == nums[i]) {
                 ++count
             } else {
                 --count
