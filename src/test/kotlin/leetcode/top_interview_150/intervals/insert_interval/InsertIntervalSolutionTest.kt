@@ -28,7 +28,7 @@ class InsertIntervalSolutionTest {
 //            }
 //        }
 
-        val ex2 = arrayOf(intArrayOf(2, 7))
+        val ex2 = arrayOf(intArrayOf(1, 7))
         val res2 = sut.insert(arrayOf(intArrayOf(1, 5)), intArrayOf(2, 7))
 
         for (i in res2.indices) {

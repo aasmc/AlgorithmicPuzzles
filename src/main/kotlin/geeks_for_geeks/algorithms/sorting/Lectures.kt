@@ -1,6 +1,7 @@
 package geeks_for_geeks.algorithms.sorting
 
 import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 import kotlin.math.max
@@ -391,7 +392,8 @@ private fun quickSortHoareRecursive(arr: IntArray, start: Int, end: Int) {
 }
 
 private fun selectPivot(start: Int, end: Int): Int {
-    return Random.nextInt(start, end)
+    if(start == end) return start
+    return ThreadLocalRandom.current().nextInt(start, end)
 }
 
 /**
