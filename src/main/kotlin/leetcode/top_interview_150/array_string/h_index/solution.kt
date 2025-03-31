@@ -13,7 +13,7 @@ class HIndexSolution {
         return citations[0]
     }
 
-    fun hIndex(citations: IntArray): Int {
+    fun hIndex1(citations: IntArray): Int {
         if (citations.isEmpty()) return 0
         val size = citations.size
         val buckets = IntArray(size + 1)
@@ -36,6 +36,25 @@ class HIndexSolution {
             if (current >= left) return left
         }
         return citations[0]
+    }
+
+    fun hIndex(citations: IntArray): Int {
+        val buckets = countingSort(citations)
+        var hIdx = citations.size
+        var papers = buckets[hIdx]
+        while (papers < hIdx) {
+            hIdx--
+            papers += buckets[hIdx]
+        }
+        return hIdx
+    }
+
+    private fun countingSort(citations: IntArray): IntArray {
+        val buckets = IntArray(citations.size + 1)
+        citations.forEach { citation ->
+            buckets[minOf(citations.size, citation)]++
+        }
+        return buckets
     }
 
 }
