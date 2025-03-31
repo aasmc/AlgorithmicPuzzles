@@ -3,7 +3,7 @@ package leetcode.top_interview_150.array_string.insert_delete_random
 class RandomizedSet() {
 
     private val elemToIndex = hashMapOf<Int, Int>()
-    private val elements = arrayListOf<Int>()
+    private val elements = mutableListOf<Int>()
 
     fun insert(`val`: Int): Boolean {
         if (!elemToIndex.containsKey(`val`)) {
