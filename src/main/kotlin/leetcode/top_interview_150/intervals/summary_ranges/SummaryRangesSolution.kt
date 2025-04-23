@@ -9,8 +9,8 @@ class SummaryRangesSolution {
         var start = 0
         val result = arrayListOf<String>()
         for (end in 1..nums.lastIndex) {
-            if (abs(nums[end] - nums[end - 1]) > 1) {
-                val interval = if (start + 1 == end) {
+            if (currentElementIsStartOfNextRange(nums, end)) {
+                val interval = if (prevRangeContainsOneElement(start, end)) {
                     "${nums[start]}"
                 } else {
                     "${nums[start]}->${nums[end - 1]}"
@@ -26,5 +26,14 @@ class SummaryRangesSolution {
         }
         return result
     }
+
+    private fun prevRangeContainsOneElement(start: Int, end: Int) =
+        start + 1 == end
+
+    private fun currentElementIsStartOfNextRange(nums: IntArray, end: Int) =
+        diffBetweenCurrentAndPrevious(nums, end) > 1
+
+    private fun diffBetweenCurrentAndPrevious(nums: IntArray, end: Int) =
+        abs(nums[end] - nums[end - 1])
 
 }
