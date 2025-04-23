@@ -9,7 +9,7 @@ class MergeIntervalsSolution {
         for (i in 1..intervals.lastIndex) {
             val current = intervals[i]
             val prev = result.last()
-            if (current[0] <= prev[1] && current[1] > prev[1]) {
+            if (shouldBeMerged(current, prev)) {
                 prev[1] = current[1]
             } else if (current[0] > prev[1]) {
                 result.add(current)
@@ -17,5 +17,15 @@ class MergeIntervalsSolution {
         }
         return result.toTypedArray()
     }
+
+    private fun shouldBeMerged(current: IntArray, prev: IntArray) =
+        currentStartLessThanOrEqualToPrevEnd(current, prev)
+                && currentEndGreaterThanPrevEnd(current, prev)
+
+    private fun currentEndGreaterThanPrevEnd(current: IntArray, prev: IntArray) =
+        current[1] > prev[1]
+
+    private fun currentStartLessThanOrEqualToPrevEnd(current: IntArray, prev: IntArray) =
+        current[0] <= prev[1]
 
 }
