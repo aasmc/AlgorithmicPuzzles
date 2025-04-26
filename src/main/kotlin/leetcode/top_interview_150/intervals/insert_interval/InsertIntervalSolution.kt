@@ -14,20 +14,23 @@ class InsertIntervalSolution {
                 addRemainingIntervals(i, intervals, result)
                 return result.toTypedArray()
             } else if (newIntervalIsToRightOfCurrent(newInterval, currentInterval)) {
-                result.add(intervals[i])
+                result.add(currentInterval)
             } else {
-                newInterval[0] = minOf(newInterval[0], currentInterval[0])
-                newInterval[1] = maxOf(newInterval[1], currentInterval[1])
+                newInterval[0] = minOf(newInterval.start(), currentInterval.start())
+                newInterval[1] = maxOf(newInterval.end(), currentInterval.end())
             }
         }
         result.add(newInterval)
         return result.toTypedArray()
     }
 
+    private fun IntArray.start() = this[0]
+    private fun IntArray.end() = this[1]
+
     private fun newIntervalIsToRightOfCurrent(
         newInterval: IntArray,
         currentInterval: IntArray
-    ) = newInterval[0] > currentInterval[1]
+    ) = newInterval.start() > currentInterval.end()
 
     private fun addRemainingIntervals(
         i: Int,
@@ -42,6 +45,6 @@ class InsertIntervalSolution {
     private fun newIntervalIsToTheLeftOfCurrent(
         newInterval: IntArray,
         currentInterval: IntArray
-    ) = newInterval[1] < currentInterval[0]
+    ) = newInterval.end() < currentInterval.start()
 
 }
