@@ -5,11 +5,11 @@ class SimplifyPathSolution {
     fun simplifyPath(path: String): String {
         val stack = ArrayDeque<String>()
         for (dir in getDirectories(path)) {
-            if (dir == "..") {
+            if (isParentDirectory(dir)) {
                 if (stack.isNotEmpty()) {
                     stack.removeLast()
                 }
-            } else if (dir != ".") {
+            } else if (notCurrentDirectory(dir)) {
                 stack.addLast(dir)
             }
         }
@@ -51,11 +51,11 @@ class SimplifyPathSolution {
             if (ch == '/') {
                 if (sb.isNotEmpty()) {
                     val dir = sb.toString()
-                    if (dir == "..") {
+                    if (isParentDirectory(dir)) {
                         if (stack.isNotEmpty()) {
                             stack.removeLast()
                         }
-                    } else if (dir != ".") {
+                    } else if (notCurrentDirectory(dir)) {
                         stack.addLast(sb.toString())
                     }
                     sb.clear()
@@ -66,11 +66,11 @@ class SimplifyPathSolution {
         }
         if (sb.isNotEmpty()) {
             val dir = sb.toString()
-            if (dir == "..") {
+            if (isParentDirectory(dir)) {
                 if (stack.isNotEmpty()) {
                     stack.removeLast()
                 }
-            } else if (dir != ".") {
+            } else if (notCurrentDirectory(dir)) {
                 stack.addLast(sb.toString())
             }
         }
@@ -86,6 +86,8 @@ class SimplifyPathSolution {
         return sb.toString()
     }
 
+    private fun notCurrentDirectory(dir: String) = dir != "."
+
 
     fun simplifyPath2(path: String): String {
         val dirs = path.split("/+".toRegex())
@@ -95,7 +97,7 @@ class SimplifyPathSolution {
                 if (dir == ".") {
                     continue
                 }
-                if (dir == "..") {
+                if (isParentDirectory(dir)) {
                     if (stack.isNotEmpty()) {
                         stack.removeLast()
                     }
@@ -114,5 +116,7 @@ class SimplifyPathSolution {
         }
         return result.toString()
     }
+
+    private fun isParentDirectory(dir: String) = dir == ".."
 
 }
