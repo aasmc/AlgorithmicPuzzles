@@ -11,6 +11,30 @@ class RemoveDuplicatesSortedListTwoSolution {
 
     fun deleteDuplicates(head: ListNode?): ListNode? {
         if (head == null) return head
+        val dummy = ListNode(0)
+        dummy.next = head
+        var previous: ListNode? = dummy
+        var iterator = head
+        while (iterator != null && iterator.next != null) {
+            if (iterator.`val` == iterator.next!!.`val`) {
+                while (hasIdenticalValues(iterator)) {
+                    iterator = iterator?.next
+                }
+                previous?.next = iterator?.next
+            } else {
+                previous = previous?.next
+            }
+            iterator = iterator?.next
+        }
+        return dummy.next
+    }
+
+    private fun hasIdenticalValues(node: ListNode?): Boolean {
+        return node?.next != null && node.`val` == node.next!!.`val`
+    }
+
+    fun deleteDuplicates2(head: ListNode?): ListNode? {
+        if (head == null) return head
         val valueToCountToNode = linkedMapOf<Int, Pair<Int, ListNode>>()
         var cur = head
         while (cur != null) {
