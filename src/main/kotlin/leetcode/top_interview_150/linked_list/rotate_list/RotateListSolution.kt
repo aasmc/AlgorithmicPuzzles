@@ -8,6 +8,36 @@ class RotateListSolution {
     }
 
     fun rotateRight(head: ListNode?, k: Int): ListNode? {
+        if (head == null) return null
+        if (k == 0) return head
+        val (count, tail) = countAndGetTail(head)
+        val rotateCount = k % count
+        if (rotateCount == count || rotateCount == 0 || count == 1) {
+            return head
+        }
+        var current = head
+        var i = 0
+        while (i < count - rotateCount - 1) {
+            current = current?.next
+            ++i
+        }
+        val newHead = current?.next
+        current?.next = null
+        tail?.next = head
+        return newHead
+    }
+
+    private fun countAndGetTail(head: ListNode): Pair<Int, ListNode?> {
+        var cur: ListNode? = head
+        var count = 1
+        while (cur?.next != null) {
+            ++count
+            cur = cur.next
+        }
+        return count to cur
+    }
+
+    fun rotateRight2(head: ListNode?, k: Int): ListNode? {
         if (k == 0) return head
         if (head == null) return head
         val count = count(head)
