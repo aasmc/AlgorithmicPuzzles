@@ -9,8 +9,7 @@ class MaxDepthSolution {
 
     fun maxDepth(root: TreeNode?): Int {
         if (root == null) return 0
-        fun dfs(root: TreeNode?, sum: Int): Int {
-            if (root == null) return sum
+        fun dfs(root: TreeNode, sum: Int): Int {
             val left = root.left?.let { dfs(it, sum + 1) } ?: sum
             val right = root.right?.let { dfs(it, sum + 1) } ?: sum
             return maxOf(left, right)
