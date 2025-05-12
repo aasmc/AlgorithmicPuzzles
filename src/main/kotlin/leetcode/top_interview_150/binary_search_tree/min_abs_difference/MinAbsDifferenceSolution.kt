@@ -10,17 +10,18 @@ class MinAbsDifferenceSolution {
     }
 
     fun getMinimumDifference(root: TreeNode?): Int {
-        if (root == null) return 0
+        if (root == null || (root.left == null && root.right == null)) return 0
         var result = Int.MAX_VALUE
-        var previous: TreeNode? = null
+        var previous: Int? = null
         fun dfs(node: TreeNode?) {
-            if (node == null) return
-            dfs(node.left)
-            if (previous != null) {
-                result = minOf(result, abs(previous!!.`val` - node.`val`))
+            if (node != null) {
+                dfs(node.left)
+                previous?.let {
+                    result = minOf(result, node.`val` - it)
+                }
+                previous = node.`val`
+                dfs(node.right)
             }
-            previous = node
-            dfs(node.right)
         }
         dfs(root)
         return result
