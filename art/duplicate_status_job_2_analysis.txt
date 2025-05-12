@@ -1,0 +1,410 @@
+create table duplicate_status_job (
+  user_id                   varchar(64) primary key,
+  status duplicate_status   not null default 'NEW',
+  last_execution_time       timestamp with time zone,
+  last_activity_dt          timestamp with time zone not null,
+  user_reject_count         integer not null default 0,
+  has_duplicate             boolean
+);
+
+create index idx_duplicate_status_job on duplicate_status_job(status, last_execution_time DESC, last_activity_dt DESC);
+
+Изначальное состояние БД. 
+
+ТАБЛИЦА
+
+                                         List of relations
+ Schema |         Name         | Type  | Owner | Persistence | Access method |  Size  | Description 
+--------+----------------------+-------+-------+-------------+---------------+--------+-------------
+ public | duplicate_status_job | table | aasmc | permanent   | heap          | 178 MB | 
+
+
+ИНДЕКСЫ
+                                                       List of relations
+ Schema |           Name            | Type  | Owner |        Table         | Persistence | Access method |  Size  | Description 
+--------+---------------------------+-------+-------+----------------------+-------------+---------------+--------+-------------
+ public | duplicate_status_job_pkey | index | aasmc | duplicate_status_job | permanent   | btree         | 145 MB | 
+ public | idx_duplicate_status_job  | index | aasmc | duplicate_status_job | permanent   | btree         | 103 MB | 
+
+
+Все записи в статусе NEW.
+
+set max_parallel_workers_per_gather = 2;
+
+explain analyze
+select * from duplicate_status_job where status = 'NEW' order by last_activity_dt DESC limit 200;
+
+                                                                       QUERY PLAN                                                                        
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=70160.74..70184.08 rows=200 width=62) (actual time=79.255..80.204 rows=200 loops=1)
+   ->  Gather Merge  (cost=70160.74..264618.69 rows=1666666 width=62) (actual time=79.253..80.194 rows=200 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Sort  (cost=69160.72..71244.05 rows=833333 width=62) (actual time=69.455..69.466 rows=159 loops=3)
+               Sort Key: last_activity_dt DESC
+               Sort Method: top-N heapsort  Memory: 70kB
+               Worker 0:  Sort Method: top-N heapsort  Memory: 69kB
+               Worker 1:  Sort Method: top-N heapsort  Memory: 70kB
+               ->  Parallel Seq Scan on duplicate_status_job  (cost=0.00..33144.67 rows=833333 width=62) (actual time=0.185..43.806 rows=666667 loops=3)
+                     Filter: (status = 'NEW'::duplicate_status)
+ Planning Time: 1.189 ms
+ Execution Time: 80.229 ms
+(13 rows)
+
+set max_parallel_workers_per_gather = 0;
+
+                                                                 QUERY PLAN                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=134166.56..134167.06 rows=200 width=62) (actual time=157.404..157.416 rows=200 loops=1)
+   ->  Sort  (cost=134166.56..139166.56 rows=2000000 width=62) (actual time=157.403..157.410 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 70kB
+         ->  Seq Scan on duplicate_status_job  (cost=0.00..47728.00 rows=2000000 width=62) (actual time=0.095..99.668 rows=2000000 loops=1)
+               Filter: (status = 'NEW'::duplicate_status)
+ Planning Time: 0.200 ms
+ Execution Time: 159.069 ms
+
+ Наш индекс вообще неиспользуется, так как он имеет крайне низкую селективность по статусу - все записи в статусе NEW. 
+
+
+Добавляем индекс 
+
+create index idx_duplicate_status_job_last_activity_dt on duplicate_status_job(last_activity_dt DESC) where status = 'NEW';
+
+                                                               List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |  Size  | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+--------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 145 MB | 
+ public | idx_duplicate_status_job                  | index | aasmc | duplicate_status_job | permanent   | btree         | 103 MB | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 43 MB  | 
+
+
+explain analyze
+select * from duplicate_status_job where status = 'NEW' order by last_activity_dt DESC limit 200;
+
+                                                                                      QUERY PLAN                                                                                     
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..14.71 rows=200 width=62) (actual time=0.071..1.952 rows=200 loops=1)
+   ->  Index Scan using idx_duplicate_status_job_last_activity_dt on duplicate_status_job  (cost=0.43..142851.69 rows=2000000 width=62) (actual time=0.069..1.926 rows=200 loops=1)
+ Planning Time: 1.242 ms
+ Execution Time: 1.986 ms
+
+Вывод. Для записей в статусе NEW необходим отдельный индекс. 
+
+Имитируем работу планировщика в течение недели с 1 тпс:
+
+Из обработанных записей 95% в статусе SUCCESS из них 50% имеют has_duplicate=true, другие - false. 30% записей в статусе ERROR имеют признак has_duplicate в true/false 50/50.
+
+                                         List of relations
+ Schema |         Name         | Type  | Owner | Persistence | Access method |  Size  | Description 
+--------+----------------------+-------+-------+-------------+---------------+--------+-------------
+ public | duplicate_status_job | table | aasmc | permanent   | heap          | 236 MB | 
+
+
+                                                                List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |  Size  | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+--------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 159 MB | 
+ public | idx_duplicate_status_job                  | index | aasmc | duplicate_status_job | permanent   | btree         | 134 MB | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 43 MB  | 
+
+explain analyze
+select * from duplicate_status_job where status = 'NEW' order by last_activity_dt DESC limit 200;
+
+                                                                                     QUERY PLAN                                                                                     
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..18.14 rows=200 width=62) (actual time=0.116..1.715 rows=200 loops=1)
+   ->  Index Scan using idx_duplicate_status_job_last_activity_dt on duplicate_status_job  (cost=0.43..123470.40 rows=1394220 width=62) (actual time=0.114..1.701 rows=200 loops=1)
+ Planning Time: 0.204 ms
+ Execution Time: 1.735 ms
+(4 rows)
+
+
+explain analyze
+select * from duplicate_status_job where status = 'ERROR' and last_execution_time < now() - interval '10 minutes'  order by last_activity_dt desc limit 200;
+
+                                                                               QUERY PLAN                                                                               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=14410.51..14411.01 rows=200 width=62) (actual time=48.553..48.572 rows=200 loops=1)
+   ->  Sort  (cost=14410.51..14432.41 rows=8760 width=62) (actual time=48.551..48.558 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 51kB
+         ->  Index Scan using idx_duplicate_status_job on duplicate_status_job  (cost=0.43..14031.91 rows=8760 width=62) (actual time=0.054..45.855 rows=30240 loops=1)
+               Index Cond: ((status = 'ERROR'::duplicate_status) AND (last_execution_time < (now() - '00:10:00'::interval)))
+ Planning Time: 0.228 ms
+ Execution Time: 48.611 ms
+
+
+explain analyze
+select * from duplicate_status_job where status = 'SUCCESS' and last_execution_time < now() - interval '30 days' order by last_activity_dt desc LIMIT 200;
+
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=37.31..37.35 rows=17 width=62) (actual time=0.115..0.116 rows=0 loops=1)
+   ->  Sort  (cost=37.31..37.35 rows=17 width=62) (actual time=0.113..0.114 rows=0 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  Index Scan using idx_duplicate_status_job on duplicate_status_job  (cost=0.43..36.96 rows=17 width=62) (actual time=0.107..0.107 rows=0 loops=1)
+               Index Cond: ((status = 'SUCCESS'::duplicate_status) AND (last_execution_time < (now() - '30 days'::interval)))
+ Planning Time: 0.212 ms
+ Execution Time: 0.150 ms
+
+ Отрабатывает быстро, так как в выборке нет ни одной строки.
+
+
+Имитируем работу планировщика в течение 40 дней (чтобы были записи в статусе SUCCESS старше 1 месяца) с 1 тпс. 
+
+100% записей обработано. 95% имеют статус SUCCESS, остальные ERROR. У SUCCESS has_duplicate распределено пополам. У ERROR 45% has_duplicate=false, 45% = true, 10% - null.
+
+                                         List of relations
+ Schema |         Name         | Type  | Owner | Persistence | Access method |  Size  | Description 
+--------+----------------------+-------+-------+-------------+---------------+--------+-------------
+ public | duplicate_status_job | table | aasmc | permanent   | heap          | 375 MB | 
+
+
+                                                               List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |  Size  | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+--------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB | 
+ public | idx_duplicate_status_job                  | index | aasmc | duplicate_status_job | permanent   | btree         | 235 MB | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 43 MB  | 
+
+Проводим ручную реиндексацию индекса idx_duplicate_status_job_last_activity_dt:
+
+reindex index idx_duplicate_status_job_last_activity_dt;
+
+                                                                 List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |    Size    | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+------------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB     | 
+ public | idx_duplicate_status_job                  | index | aasmc | duplicate_status_job | permanent   | btree         | 235 MB     | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 8192 bytes | 
+
+ Размер индекса сокращается в сотни раз
+
+ Вывод: через месяц надо проверить размер индекса и в случае необходимости провести реиндексацию.
+
+explain analyze
+select * from duplicate_status_job where status = 'SUCCESS' and last_execution_time < now() - interval '30 days' order by last_activity_dt desc LIMIT 200;
+
+                                                                 QUERY PLAN                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=108454.47..108454.97 rows=200 width=62) (actual time=213.258..213.269 rows=200 loops=1)
+   ->  Sort  (cost=108454.47..109638.98 rows=473804 width=62) (actual time=213.256..213.262 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 51kB
+         ->  Seq Scan on duplicate_status_job  (cost=0.00..87977.00 rows=473804 width=62) (actual time=10.851..203.686 rows=400226 loops=1)
+               Filter: ((status = 'SUCCESS'::duplicate_status) AND (last_execution_time < (now() - '30 days'::interval)))
+               Rows Removed by Filter: 1599774
+ Planning Time: 2.743 ms
+ Execution Time: 213.291 ms
+
+ Происходит Sec Scan! Индекс вообще не подхватывается, так как его селективность для записей в статусе SUCCESS крайне низкая.
+
+ Создаем индекс без статуса.
+
+                                                                 List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |    Size    | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+------------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB     | 
+ public | idx_duplicate_status_job                  | index | aasmc | duplicate_status_job | permanent   | btree         | 235 MB     | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 8192 bytes | 
+ public | idx_duplicate_status_job_no_status        | index | aasmc | duplicate_status_job | permanent   | btree         | 60 MB      | 
+
+
+explain analyze
+select * from duplicate_status_job where status = 'SUCCESS' and last_execution_time < now() - interval '30 days' order by last_activity_dt desc LIMIT 200;
+
+
+                                                                              QUERY PLAN                                                                               
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=90015.01..90015.51 rows=200 width=62) (actual time=115.311..115.321 rows=200 loops=1)
+   ->  Sort  (cost=90015.01..91199.76 rows=473898 width=62) (actual time=115.310..115.314 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 51kB
+         ->  Bitmap Heap Scan on duplicate_status_job  (cost=11559.70..69533.48 rows=473898 width=62) (actual time=45.957..105.108 rows=400333 loops=1)
+               Recheck Cond: (last_execution_time < (now() - '30 days'::interval))
+               Filter: (status = 'SUCCESS'::duplicate_status)
+               Rows Removed by Filter: 100000
+               Heap Blocks: exact=24970
+               ->  Bitmap Index Scan on idx_duplicate_status_job_no_status  (cost=0.00..11441.23 rows=499839 width=0) (actual time=42.725..42.725 rows=500333 loops=1)
+                     Index Cond: (last_execution_time < (now() - '30 days'::interval))
+ Planning Time: 1.562 ms
+ Execution Time: 115.505 ms
+
+
+explain analyze
+select * from duplicate_status_job where status = 'ERROR' and last_execution_time < now() - interval '10 minutes'  order by last_activity_dt desc limit 200;
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=61839.54..61840.04 rows=200 width=62) (actual time=70.816..70.829 rows=200 loops=1)
+   ->  Sort  (cost=61839.54..62099.04 rows=103800 width=62) (actual time=70.814..70.819 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 76kB
+         ->  Bitmap Heap Scan on duplicate_status_job  (cost=7300.38..57353.38 rows=103800 width=62) (actual time=17.031..67.055 rows=100000 loops=1)
+               Recheck Cond: ((status = 'ERROR'::duplicate_status) AND (last_execution_time < (now() - '00:10:00'::interval)))
+               Heap Blocks: exact=12778
+               ->  Bitmap Index Scan on idx_duplicate_status_job  (cost=0.00..7274.43 rows=103800 width=0) (actual time=14.945..14.946 rows=100000 loops=1)
+                     Index Cond: ((status = 'ERROR'::duplicate_status) AND (last_execution_time < (now() - '00:10:00'::interval)))
+ Planning Time: 1.034 ms
+ Execution Time: 70.869 ms
+
+Тут подхватывается индекс со status, last_execution_time, last_activity_dt, так как он еще достаточно селективный, но время выполнения оставляет желать лучшего. 
+
+Итого: мы так или иначе имеем 3 индекса:
+
+idx_duplicate_status_job (status, last_execution_time DESC, last_activity_dt DESC) вес 235 Мб
+
+idx_duplicate_status_job_last_activity_dt (last_activity_dt DESC) where status = 'NEW' вес после реиндексации 8192 байта
+
+idx_duplicate_status_job_no_status (last_execution_time DESC, last_activity_dt DESC) вес 60 Мб
+
+
+Дропаем индексы:
+
+- idx_duplicate_status_job
+- idx_duplicate_status_job_no_status
+
+Вместо них создаем два частичных индекса на статусы SUCCESS, ERROR:
+
+create index idx_duplicate_status_job_success on duplicate_status_job(last_execution_time DESC, last_activity_dt DESC) where status = 'SUCCESS';
+
+create index idx_duplicate_status_job_error on duplicate_status_job(last_execution_time DESC, last_activity_dt DESC) where status = 'ERROR';
+
+                                                                 List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |    Size    | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+------------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB     | 
+ public | idx_duplicate_status_job_error            | index | aasmc | duplicate_status_job | permanent   | btree         | 3104 kB    | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 8192 bytes | 
+ public | idx_duplicate_status_job_success          | index | aasmc | duplicate_status_job | permanent   | btree         | 57 MB      | 
+
+Вес индексов очень мал.
+
+
+explain analyze
+select * from duplicate_status_job where status = 'ERROR' and last_execution_time < now() - interval '10 minutes'  order by last_activity_dt desc limit 200;
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=56866.90..56867.40 rows=200 width=62) (actual time=40.320..40.345 rows=200 loops=1)
+   ->  Sort  (cost=56866.90..57126.37 rows=103790 width=62) (actual time=40.318..40.328 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 76kB
+         ->  Bitmap Heap Scan on duplicate_status_job  (cost=2328.37..52381.17 rows=103790 width=62) (actual time=13.746..32.975 rows=100000 loops=1)
+               Recheck Cond: ((last_execution_time < (now() - '00:10:00'::interval)) AND (status = 'ERROR'::duplicate_status))
+               Heap Blocks: exact=12778
+               ->  Bitmap Index Scan on idx_duplicate_status_job_error  (cost=0.00..2302.42 rows=103790 width=0) (actual time=11.492..11.492 rows=100000 loops=1)
+                     Index Cond: (last_execution_time < (now() - '00:10:00'::interval))
+ Planning Time: 2.026 ms
+ Execution Time: 40.393 ms
+
+ Время выполнения по сравнению с предыдущими индексами сократилось на 30 мс на холодную.
+
+
+explain analyze
+select * from duplicate_status_job where status = 'SUCCESS' and last_execution_time < now() - interval '30 days' order by last_activity_dt desc LIMIT 200;
+                                                                             QUERY PLAN                                                                              
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=88938.73..88939.23 rows=200 width=62) (actual time=96.389..96.398 rows=200 loops=1)
+   ->  Sort  (cost=88938.73..90124.50 rows=474308 width=62) (actual time=96.386..96.391 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 51kB
+         ->  Bitmap Heap Scan on duplicate_status_job  (cost=10976.32..68439.48 rows=474308 width=62) (actual time=41.546..85.317 rows=400812 loops=1)
+               Recheck Cond: ((last_execution_time < (now() - '30 days'::interval)) AND (status = 'SUCCESS'::duplicate_status))
+               Heap Blocks: exact=23568
+               ->  Bitmap Index Scan on idx_duplicate_status_job_success  (cost=0.00..10857.74 rows=474308 width=0) (actual time=38.192..38.192 rows=400812 loops=1)
+                     Index Cond: (last_execution_time < (now() - '30 days'::interval))
+ Planning Time: 0.260 ms
+ Execution Time: 96.471 ms
+
+ Время выполнения по сравнению с предыдущим индексом сократилось на 20 мс.
+
+ Добавляем 2000 записей в статусе NEW.
+
+                                                                 List of relations
+ Schema |                   Name                    | Type  | Owner |        Table         | Persistence | Access method |  Size   | Description 
+--------+-------------------------------------------+-------+-------+----------------------+-------------+---------------+---------+-------------
+ public | duplicate_status_job_pkey                 | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB  | 
+ public | idx_duplicate_status_job_error            | index | aasmc | duplicate_status_job | permanent   | btree         | 3104 kB | 
+ public | idx_duplicate_status_job_last_activity_dt | index | aasmc | duplicate_status_job | permanent   | btree         | 88 kB   | 
+ public | idx_duplicate_status_job_success          | index | aasmc | duplicate_status_job | permanent   | btree         | 57 MB   | 
+
+ Вес индекса вырос до 88 кБ.
+
+
+explain analyze
+select * from duplicate_status_job where status = 'NEW' order by last_activity_dt DESC limit 200;
+                                                                               QUERY PLAN                                                                                
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.28..8.29 rows=1 width=62) (actual time=0.030..0.177 rows=200 loops=1)
+   ->  Index Scan using idx_duplicate_status_job_last_activity_dt on duplicate_status_job  (cost=0.28..8.29 rows=1 width=62) (actual time=0.028..0.165 rows=200 loops=1)
+ Planning Time: 0.164 ms
+ Execution Time: 0.198 ms
+
+ Выборка моментальная.
+
+
+Дропаем индексы:
+- idx_duplicate_status_job_error
+- idx_duplicate_status_job_success
+
+И создаем один индекс на last_execution_time, last_activity_dt.
+
+create index idx_duplicate_status_job_execution_activity on duplicate_status_job(last_execution_time DESC, last_activity_dt DESC);
+
+                                                                List of relations
+ Schema |                    Name                     | Type  | Owner |        Table         | Persistence | Access method |  Size  | Description 
+--------+---------------------------------------------+-------+-------+----------------------+-------------+---------------+--------+-------------
+ public | duplicate_status_job_pkey                   | index | aasmc | duplicate_status_job | permanent   | btree         | 192 MB | 
+ public | idx_duplicate_status_job_execution_activity | index | aasmc | duplicate_status_job | permanent   | btree         | 60 MB  | 
+ public | idx_duplicate_status_job_last_activity_dt   | index | aasmc | duplicate_status_job | permanent   | btree         | 88 kB  | 
+
+explain analyze
+select * from duplicate_status_job where status = 'SUCCESS' and last_execution_time < now() - interval '30 days' order by last_activity_dt desc LIMIT 200;
+
+
+                                                                                   QUERY PLAN                                                                                   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=90117.43..90117.93 rows=200 width=62) (actual time=111.747..111.757 rows=200 loops=1)
+   ->  Sort  (cost=90117.43..91305.02 rows=475035 width=62) (actual time=111.745..111.749 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 51kB
+         ->  Bitmap Heap Scan on duplicate_status_job  (cost=11588.98..69586.76 rows=475035 width=62) (actual time=46.322..100.736 rows=401110 loops=1)
+               Recheck Cond: (last_execution_time < (now() - '30 days'::interval))
+               Filter: (status = 'SUCCESS'::duplicate_status)
+               Rows Removed by Filter: 100000
+               Heap Blocks: exact=24983
+               ->  Bitmap Index Scan on idx_duplicate_status_job_execution_activity  (cost=0.00..11470.23 rows=501039 width=0) (actual time=43.289..43.289 rows=501110 loops=1)
+                     Index Cond: (last_execution_time < (now() - '30 days'::interval))
+ Planning Time: 1.244 ms
+ Execution Time: 111.793 ms
+
+ Время выполнения выросло на 15 мс.
+
+explain analyze
+select * from duplicate_status_job where status = 'ERROR' and last_execution_time < now() - interval '10 minutes'  order by last_activity_dt desc limit 200;
+
+                                                                QUERY PLAN                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=92507.66..92508.16 rows=200 width=62) (actual time=119.603..119.613 rows=200 loops=1)
+   ->  Sort  (cost=92507.66..92767.42 rows=103904 width=62) (actual time=119.601..119.605 rows=200 loops=1)
+         Sort Key: last_activity_dt DESC
+         Sort Method: top-N heapsort  Memory: 76kB
+         ->  Seq Scan on duplicate_status_job  (cost=0.00..88017.00 rows=103904 width=62) (actual time=7.802..116.070 rows=100000 loops=1)
+               Filter: ((status = 'ERROR'::duplicate_status) AND (last_execution_time < (now() - '00:10:00'::interval)))
+               Rows Removed by Filter: 1902000
+ Planning Time: 1.026 ms
+ Execution Time: 119.644 ms
+
+Время выполнения выросло в 3 раза!
+Суммарный размер частичных индексов на SUCCESS и ERROR примерно такой же как и размер общего индекса. 
+
+Если у нас будет 3 частичных индекса на каждый статус, то при вставке будет обновляться только 1 индекс с нужным статусом.
+
+Вывод: считаю целесообразным сделать 3 индекса:
+
+create index idx_duplicate_status_job_last_activity_dt on duplicate_status_job(last_activity_dt DESC) where status = 'NEW';
+
+create index idx_duplicate_status_job_success on duplicate_status_job(last_execution_time DESC, last_activity_dt DESC) where status = 'SUCCESS';
+
+create index idx_duplicate_status_job_error on duplicate_status_job(last_execution_time DESC, last_activity_dt DESC) where status = 'ERROR';
