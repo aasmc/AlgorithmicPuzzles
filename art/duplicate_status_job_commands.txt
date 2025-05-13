@@ -1,0 +1,131 @@
+Все записи NEW
+
+BEGIN;
+SET LOCAL synchronous_commit = OFF;   
+
+INSERT INTO duplicate_status_job (user_id, last_activity_dt)
+
+SELECT
+    gen_random_uuid()::text                            AS user_id,
+    now() - (random() * interval '365 days')           AS last_activity_dt
+FROM generate_series(1, 2000000);                     
+
+COMMIT;
+
+Имитация недели работы планировщика с 1 тпс. Обработано 604800 строк. 95% SUCCESS, 5% ERROR.
+has_duplicate 50/50 для статуса SUCCESS.
+
+BEGIN;
+
+WITH const AS (
+    SELECT 604800         AS total_rows,
+           0.95::numeric  AS success_share
+), to_process AS (
+    SELECT user_id,
+           row_number() OVER (ORDER BY last_activity_dt DESC) AS rn,
+           (SELECT (total_rows*success_share)::int FROM const)       AS success_limit
+    FROM   duplicate_status_job
+    WHERE  status = 'NEW'
+    ORDER  BY last_activity_dt DESC
+    LIMIT  (SELECT total_rows FROM const)
+)
+UPDATE duplicate_status_job AS d
+SET    status              = CASE
+                               WHEN p.rn <= p.success_limit THEN 'SUCCESS'::duplicate_status
+                               ELSE 'ERROR'::duplicate_status
+                             END,
+       has_duplicate       = CASE
+                               WHEN p.rn <= p.success_limit THEN (p.rn % 2 = 0)
+                               ELSE NULL
+                             END,
+       last_execution_time = now() - (p.rn - 1) * interval '1 second'
+FROM   to_process p
+WHERE  d.user_id = p.user_id;
+
+COMMIT;
+
+Добавляю has_duplicate 50/50 для статуса ERROR
+
+BEGIN;
+
+WITH err_pool AS (
+    SELECT user_id
+    FROM   duplicate_status_job
+    WHERE  status = 'ERROR'
+      AND  has_duplicate IS NULL
+),
+sample AS (
+    SELECT user_id,
+           row_number() OVER () AS rn
+    FROM   err_pool
+    ORDER  BY random()
+    LIMIT (          
+        SELECT ceil(count(*) * 0.30) FROM err_pool
+    )
+)
+UPDATE duplicate_status_job AS d
+SET    has_duplicate = CASE WHEN s.rn % 2 = 0 THEN TRUE ELSE FALSE END
+FROM   sample s
+WHERE  d.user_id = s.user_id;
+
+COMMIT;
+
+Имитация работы планировщика в течение 40 дней. Обработаны 100% записей.
+95% SUCCESS, 5% ERROR.
+
+BEGIN;
+
+WITH totals AS (
+    SELECT count(*) AS tot FROM duplicate_status_job
+), ranked AS (
+    SELECT user_id,
+           row_number() OVER (ORDER BY last_activity_dt DESC) AS rn,
+           tot
+    FROM   duplicate_status_job, totals
+), limits AS (
+    SELECT tot,
+           floor(tot * 0.95)::bigint          AS succ_lim,   
+           floor(tot * 0.05)::bigint          AS err_tot     
+    FROM   totals
+), upd AS (
+    SELECT r.*,
+           l.succ_lim,
+           l.err_tot,
+           r.rn - l.succ_lim               AS err_pos,
+           now() - (r.rn - 1) * (interval '40 days') / (l.tot - 1) AS exec_ts
+    FROM   ranked r
+    CROSS  JOIN limits l
+)
+UPDATE duplicate_status_job AS d
+SET    status              = CASE
+                               WHEN u.rn <= u.succ_lim THEN 'SUCCESS'::duplicate_status
+                               ELSE 'ERROR'::duplicate_status
+                             END,
+       has_duplicate       = CASE
+                               WHEN u.rn <= u.succ_lim
+                                 THEN (u.rn % 2 = 0)
+                               ELSE CASE
+                                      WHEN u.err_pos <= floor(u.err_tot * 0.45)        THEN FALSE
+                                      WHEN u.err_pos <= floor(u.err_tot * 0.90)        THEN TRUE
+                                      ELSE NULL
+                                    END
+                             END,
+       last_execution_time = u.exec_ts
+FROM   upd u
+WHERE  d.user_id = u.user_id;
+
+COMMIT;
+
+Вставка 2000 строк в статусе NEW
+
+BEGIN;
+SET LOCAL synchronous_commit = OFF;   
+
+INSERT INTO duplicate_status_job (user_id, last_activity_dt)
+
+SELECT
+    gen_random_uuid()::text                            AS user_id,
+    now() - (random() * interval '365 days')           AS last_activity_dt
+FROM generate_series(1, 2000);                     
+
+COMMIT;
