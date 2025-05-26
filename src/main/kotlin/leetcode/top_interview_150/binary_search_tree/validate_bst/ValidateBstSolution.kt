@@ -11,7 +11,7 @@ class ValidateBstSolution {
         if (root == null) return true
         fun dfs(node: TreeNode?, leftBoundary: Long, rightBoundary: Long): Boolean {
             if (node == null) return true
-            val nodeValid = node.`val` in (leftBoundary + 1) until rightBoundary
+            val nodeValid = node.`val` < rightBoundary && node.`val` > leftBoundary
             return nodeValid &&
                     dfs(node.left, leftBoundary, node.`val`.toLong()) &&
                     dfs(node.right, node.`val`.toLong(), rightBoundary)
